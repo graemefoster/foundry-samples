@@ -1,14 +1,10 @@
-# Project
+# Azure AI Foundry Documentation Samples
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repository acts as the top-level directory for official Azure AI Foundry documentation sample code and examples. It includes notebooks and sample code that contain end-to-end examples as well as smaller code snippets for common developer tasks.
 
-As the maintainer of this project, please make a few updates:
+This repository is entirely open source, guidance on how to contribute and links to additional repositories are provided below.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+Use the samples in this repository to try out Azure AI Foundry scenarios on your local machine!
 
 ## Contributing
 
