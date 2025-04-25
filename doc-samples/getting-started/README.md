@@ -3,12 +3,10 @@
 
  - install azure CLI
  - pip install azure-ai-projects openai azure-identity
- - 
+ - az login
 
-## Create a project
-see: create_project.py
+## Create a project and model deployment
 
-## Create a project client
 see: create_project.py
 
 ## Run a chat completion
