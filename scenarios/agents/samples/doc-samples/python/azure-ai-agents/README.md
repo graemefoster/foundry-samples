@@ -14,9 +14,9 @@ This table tracks the current status of code samples for each supported tool in 
 
 | Tool               | Sample Description                     | Status          | Notes / Known Issues                          |
 |--------------------|-----------------------------------------|-----------------|-----------------------------------------------|
-| **Basic Agent**    | Using agent with no tools              | ❌ Doesn't exist|                                               |
+| **Basic Agent**    | Using agent with no tools              | ✅              |         Tested by Amanda                      |
 | **Bing**           | Using Bing in an agent                 | ❌ Doesn't exist|                                               |
-| **File Search**    | Uploading files                        | ❌ Doesn't exist|                                               |
+| **File Search**    | Uploading files                        | ✅ |                                               |
 |                    | Using blob storage (project data assets)| ❌ Doesn't exist|                                               |
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
 | **Azure AI Search**| Using a knowledge store                | ❌ Doesn't exist|                                               |
@@ -26,7 +26,7 @@ This table tracks the current status of code samples for each supported tool in 
 | **Function Calling**| Calling local functions               | ❌ Doesn't exist|                                               |
 | **Azure Functions**| Calling durable Azure Functions        | ❌ Doesn't exist|                                               |
 | **Logic Apps**     | Calling Logic Apps workflows           | ❌ Doesn't exist|                                               |
-| **Code Interpreter**| Using Code Interpreter                | ❌ Doesn't exist|                                               |
+| **Code Interpreter**| Using Code Interpreter                |  ✅             |                                               |
 |                    | Supported file types                   | ❌ Doesn't exist|                                               |
 | **OpenAPI**        | Calling external APIs with OpenAPI     | ❌ Doesn't exist|                                               |
 | **Quickstart**     | Agent example showcasing multiple tools| ❌ Doesn't exist|                                               |

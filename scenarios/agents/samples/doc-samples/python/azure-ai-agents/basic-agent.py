@@ -25,6 +25,8 @@ import os, time
 from azure.ai.agents import AgentsClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.agents.models import ListSortOrder, MessageTextContent
+from dotenv import load_dotenv
+load_dotenv()
 
 # [START create_project_client]
 agents_client = AgentsClient(

@@ -28,6 +28,8 @@ from azure.ai.agents.models import CodeInterpreterTool
 from azure.ai.agents.models import FilePurpose, MessageRole
 from azure.identity import DefaultAzureCredential
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
 agents_client = AgentsClient(
     endpoint=os.environ["PROJECT_ENDPOINT"],
@@ -38,7 +40,7 @@ with agents_client:
 
     # Upload a file and wait for it to be processed
     # [START upload_file_and_create_agent_with_code_interpreter]
-    file = agents_client.upload_file_and_poll(file_path="nifty_500_quarterly_results.csv", purpose=FilePurpose.AGENTS)
+    file = agents_client.upload_file_and_poll(file_path="/workspaces/foundry-samples/scenarios/agents/samples/doc-samples/data/nifty_500_quarterly_results.csv", purpose=FilePurpose.AGENTS)
     print(f"Uploaded file, file ID: {file.id}")
 
     code_interpreter = CodeInterpreterTool(file_ids=[file.id])

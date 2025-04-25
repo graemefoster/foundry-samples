@@ -8,7 +8,7 @@ param modelName string = 'gpt-4o'
 param modelFormat string = 'OpenAI'
 param modelVersion string = '2024-11-20'
 param modelSkuName string = 'GlobalStandard'
-param modelCapacity int = 50
+param modelCapacity int = 1
 
 // Create a short, unique suffix, that will be unique to each resource group
 // var uniqueSuffix = substring(uniqueString(resourceGroup().id), 0, 4)

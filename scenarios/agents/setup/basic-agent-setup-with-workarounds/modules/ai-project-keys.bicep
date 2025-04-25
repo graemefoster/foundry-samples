@@ -24,24 +24,27 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
     displayName: display_name
   }
 
-  #disable-next-line BCP081
-  resource project_connection_azure_openai 'connections@2025-04-01-preview' = {
-    name: '${project_name}-accountconnection'
-    properties: {
-      authType: 'ApiKey'
-      category: 'AzureOpenAI'
-      target: account_name_resource.properties.endpoint
-      credentials: {
-        key: account_name_resource.listKeys('2025-04-01-preview').key1
-      }
-      isSharedToAll: true
-      metadata: {
-        ApiType: 'Azure'
-        ResourceId: account_name_resource.id
-        location: account_name_resource.location
+    /*
+    This workaround is no longer needed
+    #disable-next-line BCP081
+    resource project_connection_azure_openai 'connections@2025-04-01-preview' = {
+      name: '${project_name}-accountconnection'
+      properties: {
+        authType: 'ApiKey'
+        category: 'AzureOpenAI'
+        target: account_name_resource.properties.endpoint
+        credentials: {
+          key: account_name_resource.listKeys('2025-04-01-preview').key1
+        }
+        isSharedToAll: true
+        metadata: {
+          ApiType: 'Azure'
+          ResourceId: account_name_resource.id
+          location: account_name_resource.location
+        }
       }
     }
-  }
+    */
 }
 // Azure AI Administrator Role -  Provides full access to manage AI resources and their settings
 // Assign Project SMI - Azure AI Developer Role

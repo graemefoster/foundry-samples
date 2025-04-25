@@ -4,9 +4,8 @@
 
 > **NOTE:** This template automatically performs the following workarounds:
 >
-> 1. Create a project connection to your account. This connection is of type Azure OpenAI.
->
-> 2. Assign the project system managed identity (SMI) the following role ‘Azure AI Developer’ on its parent AI Services resource
+> 1. Assign the project system managed identity (SMI) the following role ‘Azure AI Developer’ on its parent AI Services resource
+
 
 This bicep template provisions required resources for a basic project setup. A new Cognitive Services Account is created, a gpt-4o model is deployed, and a new project is created.
 
