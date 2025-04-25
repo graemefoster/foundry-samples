@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "10736034696436838895"
+      "templateHash": "16876189206530166895"
     }
   },
   "parameters": {
@@ -47,7 +47,7 @@
     },
     "modelCapacity": {
       "type": "int",
-      "defaultValue": 50
+      "defaultValue": 1
     },
     "deploymentTimestamp": {
       "type": "string",
@@ -219,7 +219,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "15443601113500940705"
+              "templateHash": "4276905608380897318"
             }
           },
           "parameters": {
@@ -240,28 +240,6 @@
             }
           },
           "resources": [
-            {
-              "type": "Microsoft.CognitiveServices/accounts/projects/connections",
-              "apiVersion": "2025-04-01-preview",
-              "name": "[format('{0}/{1}/{2}', parameters('account_name'), parameters('project_name'), format('{0}-accountconnection', parameters('project_name')))]",
-              "properties": {
-                "authType": "ApiKey",
-                "category": "AzureOpenAI",
-                "target": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name')), '2025-04-01-preview').endpoint]",
-                "credentials": {
-                  "key": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name')), '2025-04-01-preview').key1]"
-                },
-                "isSharedToAll": true,
-                "metadata": {
-                  "ApiType": "Azure",
-                  "ResourceId": "[resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name'))]",
-                  "location": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name')), '2025-04-01-preview', 'full').location]"
-                }
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('account_name'), parameters('project_name'))]"
-              ]
-            },
             {
               "type": "Microsoft.CognitiveServices/accounts/projects",
               "apiVersion": "2025-04-01-preview",
