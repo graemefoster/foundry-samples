@@ -6,6 +6,7 @@
 >
 > 1. Assign the project system managed identity (SMI) the following role ‘Azure AI Developer’ on its parent AI Services resource
 
+**For instructions on how to test Agents E2E on Foundry Developer Platform**, see here: https://microsoft-my.sharepoint.com/:w:/p/fosteramanda/ES-0A2WpCgVLrK3SH_7gT9YBBb8SZk639kKmU1AIpoeDJg?e=TE3JcO 
 
 This bicep template provisions required resources for a basic project setup. A new Cognitive Services Account is created, a gpt-4o model is deployed, and a new project is created.
 
