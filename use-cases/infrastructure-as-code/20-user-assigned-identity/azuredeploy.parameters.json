@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "aiServicesName": {
+        "value": "aiServices-sxwj42y3vgkzs"
+      },
+      "location": {
+        "value": "eastus2"
+      },
+      "defaultProjectName": {
+        "value": "aiServices-sxwj42y3vgkzs-proj"
+      },
+      "defaultProjectDisplayName": {
+        "value": "Project"
+      },
+      "defaultProjectDescription": {
+        "value": "Describe what your project is about."
+      },
+      "userAssignedIdentityName": {
+        "value": "my-identity"
+      },
+      "userIdentityResourceGroupName": {
+        "value": "ai-template-cmk"
+      }
+    }
+  }
