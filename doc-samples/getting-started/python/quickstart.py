@@ -5,7 +5,7 @@ load_dotenv()
 ##   pip install openai azure-ai-projects azure-identity
 ## - deploy a gpt-4o model
 
-## <chat_completion>
+# <chat_completion>
 from azure.ai.projects import AIProjectClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import FileSearchTool
