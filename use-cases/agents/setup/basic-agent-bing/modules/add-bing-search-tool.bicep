@@ -17,6 +17,7 @@ resource bingSearch 'Microsoft.Bing/accounts@2020-06-10' = {
   kind: 'Bing.Grounding'
 }
 
+#disable-next-line BCP081
 resource bing_search_account_connection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
   name: '${account_name}-bingsearchconnection'
   parent: account_name_resource
@@ -35,7 +36,3 @@ resource bing_search_account_connection 'Microsoft.CognitiveServices/accounts/co
     }
   }
 }
-
-
-
-
