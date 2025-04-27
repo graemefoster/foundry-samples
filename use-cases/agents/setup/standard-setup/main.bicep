@@ -170,6 +170,7 @@ module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assi
     cosmosDBName: aiDependencies.outputs.cosmosDBName
     projectPrincipalId: aiProject.outputs.projectPrincipalId
   }
+
 }
 
 // This role can be assigned before or after the caphost is created
@@ -195,7 +196,7 @@ module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bi
     accountCapHost: accountCapHost
   }
   dependsOn: [
-    aiSearchRoleAssignments, cosmosAccountRoleAssignments
+    aiSearchRoleAssignments, cosmosAccountRoleAssignments, storageAccountRoleAssignment
   ]
 }
 
