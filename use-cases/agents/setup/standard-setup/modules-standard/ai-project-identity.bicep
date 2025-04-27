@@ -72,9 +72,8 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
     name: azureStorageConnection
     properties: {
       category: 'AzureStorageAccount'
-      target: 'https://${azureStorageName}.blob.core.windows.net/'
+      target: storageAccount.properties.primaryEndpoints.blob
       authType: 'AAD'
-      isSharedToAll: true
       metadata: {
         ApiType: 'Azure'
         ResourceId: storageAccount.id
@@ -88,7 +87,7 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
     name: aiSearchConnection
     properties: {
       category: 'CognitiveSearch'
-      target: 'https://${aiSearchName}.search.windows.net'
+      target: searchService.properties.endpoint
       authType: 'AAD'
       metadata: {
         ApiType: 'Azure'
