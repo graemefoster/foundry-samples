@@ -57,7 +57,7 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
     name: cosmosDBConnection
     properties: {
       category: 'CosmosDB'
-      target: 'https://${cosmosDBName}.documents.azure.com:443/'
+      target: cosmosDBAccount.properties.documentEndpoint
       authType: 'AAD'
       metadata: {
         ApiType: 'Azure'
