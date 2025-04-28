@@ -1,8 +1,8 @@
-param account_name string
+param accountName string
 param location string
-param project_name string
+param projectName string
 param projectDescription string  
-param display_name string
+param displayName string
 
 param aiSearchName string
 param aiSearchServiceResourceGroupName string
@@ -29,32 +29,28 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing 
   scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
 }
 
-var cosmosDBConnection = '${project_name}-cosmosconnection'
-var azureStorageConnection = '${project_name}-storageconnection'
-var aiSearchConnection = '${project_name}-searchconnection'
-
 #disable-next-line BCP081
-resource account_name_resource 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
-  name: account_name
+resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
+  name: accountName
   scope: resourceGroup()
 }
 
 #disable-next-line BCP081
-resource account_name_project_name 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
-  parent: account_name_resource
-  name: project_name
+resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
+  parent: account
+  name: projectName
   location: location
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
     description: projectDescription
-    displayName: display_name
+    displayName: displayName
   }
 
   #disable-next-line BCP081
   resource project_connection_cosmosdb_account 'connections@2025-04-01-preview' = {
-    name: cosmosDBConnection
+    name: cosmosDBName
     properties: {
       category: 'CosmosDB'
       target: cosmosDBAccount.properties.documentEndpoint
@@ -69,7 +65,7 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
 
   #disable-next-line BCP081
   resource project_connection_azure_storage 'connections@2025-04-01-preview' = {
-    name: azureStorageConnection
+    name: azureStorageName
     properties: {
       category: 'AzureStorageAccount'
       target: storageAccount.properties.primaryEndpoints.blob
@@ -84,10 +80,10 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
 
   #disable-next-line BCP081
   resource project_connection_azureai_search 'connections@2025-04-01-preview' = {
-    name: aiSearchConnection
+    name: aiSearchName
     properties: {
       category: 'CognitiveSearch'
-      target: searchService.properties.endpoint
+      target: 'https://${aiSearchName}.search.windows.net'
       authType: 'AAD'
       metadata: {
         ApiType: 'Azure'
@@ -97,31 +93,32 @@ resource account_name_project_name 'Microsoft.CognitiveServices/accounts/project
     }
   }
 
-  #disable-next-line BCP081
-  resource project_connection_azure_openai 'connections@2025-04-01-preview' = {
-    name: '${project_name}-accountconnection'
-    properties: {
-      authType: 'ApiKey'
-      category: 'AzureOpenAI'
-      target: account_name_resource.properties.endpoint
-      credentials: {
-        key: account_name_resource.listKeys('2025-04-01-preview').key1
-      }
-      isSharedToAll: true
-      metadata: {
-        ApiType: 'Azure'
-        ResourceId: account_name_resource.id
-        location: account_name_resource.location
-      }
-    }
+}
+
+// Assign Project SMI - Azure AI Developer Role
+// Most likely not permanent, but for now, this is the only way to assign the role to the project SMI
+resource azureAIDeveloperRoleId 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: '64702f94-c441-49e6-a78b-ef80e0188fee'  // Built-in role ID
+  scope: resourceGroup()
+}
+
+
+resource projectSMIRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(azureAIDeveloperRoleId.id, accountName, account.id, projectName)
+  scope: project
+  properties: {
+    principalId: project.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: azureAIDeveloperRoleId.id
   }
 }
 
-output projectName string = account_name_project_name.name
-output projectId string = account_name_project_name.id
-output projectPrincipalId string = account_name_project_name.identity.principalId
+output projectName string = project.name
+output projectId string = project.id
+output projectPrincipalId string = project.identity.principalId
+output projectWorkspaceId string = project.properties.amlWorkspace.internalId
 
 // return the BYO connection names
-output cosmosDBConnection string = cosmosDBConnection
-output azureStorageConnection string = azureStorageConnection
-output aiSearchConnection string = aiSearchConnection
+output cosmosDBConnection string = cosmosDBName
+output azureStorageConnection string = azureStorageName
+output aiSearchConnection string = aiSearchName

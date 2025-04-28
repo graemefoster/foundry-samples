@@ -1,7 +1,7 @@
 param cosmosDBConnection string 
 param azureStorageConnection string 
 param aiSearchConnection string
-param projectFullName string
+param projectName string
 param accountName string
 param projectCapHost string
 param accountCapHost string
@@ -14,8 +14,13 @@ var vectorStoreConnections = ['${aiSearchConnection}']
 #disable-next-line BCP081
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
    name: accountName
-   scope: resourceGroup()
 }
+#disable-next-line BCP081
+resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' existing = {
+  name: projectName
+  parent: account
+}
+
 
 #disable-next-line BCP081
  resource accountCapabilityHost 'Microsoft.CognitiveServices/accounts/capabilityHosts@2025-04-01-preview' = {
@@ -25,16 +30,8 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' exist
      capabilityHostKind: 'Agents'
    
    }
-   dependsOn: [
-     account
-   ]
 }
 
-#disable-next-line BCP081
-resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' existing = {
-  name: projectFullName
-  scope: resourceGroup()
-}
 
 #disable-next-line BCP081
 resource projectCapabilityHost 'Microsoft.CognitiveServices/accounts/projects/capabilityHosts@2025-04-01-preview' = {
@@ -47,6 +44,6 @@ resource projectCapabilityHost 'Microsoft.CognitiveServices/accounts/projects/ca
     threadStorageConnections: threadConnections
   }
   dependsOn: [
-    accountCapabilityHost, project
+    accountCapabilityHost
   ]
 }

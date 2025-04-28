@@ -1,5 +1,5 @@
 
-param account_name string
+param accountName string
 param location string
 param modelName string 
 param modelFormat string 
@@ -8,8 +8,8 @@ param modelSkuName string
 param modelCapacity int 
 
 #disable-next-line BCP081
-resource account_name_resource 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
-  name: account_name
+resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
+  name: accountName
   location: location
   sku: {
     name: 'S0'
@@ -20,7 +20,7 @@ resource account_name_resource 'Microsoft.CognitiveServices/accounts@2025-04-01-
   }
   properties: {
     allowProjectManagement: true
-    customSubDomainName: account_name
+    customSubDomainName: accountName
     networkAcls: {
       defaultAction: 'Allow'
       virtualNetworkRules: []
@@ -35,7 +35,7 @@ resource account_name_resource 'Microsoft.CognitiveServices/accounts@2025-04-01-
 
 #disable-next-line BCP081
 resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview'=  {
-  parent: account_name_resource
+  parent: account
   name: modelName
   sku : {
     capacity: modelCapacity
@@ -50,7 +50,8 @@ resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-
   }
 }
 
-output account_name string = account_name_resource.name
-output account_name_id string = account_name_resource.id
-output aiServicesTarget string = account_name_resource.properties.endpoint
-output accountPrincipalId string = account_name_resource.identity.principalId
+output accountName string = account.name
+output accountID string = account.id
+output accountTarget string = account.properties.endpoint
+output accountPrincipalId string = account.identity.principalId
+
