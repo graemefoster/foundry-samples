@@ -38,7 +38,6 @@ param azureCosmosDBAccountResourceId string = ''
 param projectCapHost string = 'caphostproj'
 param accountCapHost string = 'caphostacc'
 
-// User new or existing dependent resources
 @allowed([
   'false'
   'true'
