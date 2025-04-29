@@ -1,33 +1,37 @@
-param projectPrincipalId string
-param azureStorageName string
-param projectWorkspaceId string
+@description('Name of the storage account')
+param storageName string
 
-@description('Role Definition ID for Storage Blob Data Owner')
-var storageBlobDataOwnerRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+@description('Principal ID of the AI Project')
+param aiProjectPrincipalId string
 
-@description('Name of the container to assign the role')
-var agentContainerName = '${projectWorkspaceId}-azureml-agent'
+@description('Workspace Id of the AI Project')
+param workspaceId string
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
-  name: azureStorageName
-}
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01' existing = {
-  parent: storageAccount
-  name: 'default' // Blob service is always named 'default'
+
+// Reference existing storage account
+resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
+  name: storageName
+  scope: resourceGroup()
 }
 
-resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' existing = {
-  name: agentContainerName
-  parent: blobService
+// Storage Blob Data Owner Role
+resource storageBlobDataOwner 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'  // Built-in role ID
+  scope: resourceGroup()
 }
 
+
+var conditionStr= '((!(ActionMatches{\'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read\'})  AND  !(ActionMatches{\'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/filter/action\'}) AND  !(ActionMatches{\'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write\'}) ) OR (@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringStartsWithIgnoreCase \'${workspaceId}\' AND @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringLikeIgnoreCase \'*-azureml-agent\'))'
+
+// Assign Storage Blob Data Owner role
 resource storageBlobDataOwnerAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  scope: blobContainer
-  name: guid(blobContainer.id, storageBlobDataOwnerRoleId, projectPrincipalId)
+  scope: storage
+  name: guid(storageBlobDataOwner.id, storage.id)
   properties: {
-    principalId: projectPrincipalId
-    roleDefinitionId: storageBlobDataOwnerRoleId
+    principalId: aiProjectPrincipalId
+    roleDefinitionId: storageBlobDataOwner.id
     principalType: 'ServicePrincipal'
+    conditionVersion: '2.0'
+    condition: conditionStr
   }
 }
-

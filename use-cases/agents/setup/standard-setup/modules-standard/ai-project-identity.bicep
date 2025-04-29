@@ -94,24 +94,24 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   }
 
 }
+// This workaround is no longer needed
+// // Assign Project SMI - Azure AI Developer Role
+// // Most likely not permanent, but for now, this is the only way to assign the role to the project SMI
+// resource azureAIDeveloperRoleId 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+//   name: '64702f94-c441-49e6-a78b-ef80e0188fee'  // Built-in role ID
+//   scope: resourceGroup()
+// }
 
-// Assign Project SMI - Azure AI Developer Role
-// Most likely not permanent, but for now, this is the only way to assign the role to the project SMI
-resource azureAIDeveloperRoleId 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
-  name: '64702f94-c441-49e6-a78b-ef80e0188fee'  // Built-in role ID
-  scope: resourceGroup()
-}
 
-
-resource projectSMIRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(azureAIDeveloperRoleId.id, accountName, account.id, projectName)
-  scope: project
-  properties: {
-    principalId: project.identity.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: azureAIDeveloperRoleId.id
-  }
-}
+// resource projectSMIRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(azureAIDeveloperRoleId.id, accountName, account.id, projectName)
+//   scope: project
+//   properties: {
+//     principalId: project.identity.principalId
+//     principalType: 'ServicePrincipal'
+//     roleDefinitionId: azureAIDeveloperRoleId.id
+//   }
+// }
 
 output projectName string = project.name
 output projectId string = project.id

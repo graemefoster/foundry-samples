@@ -1,10 +1,10 @@
 // Standard agent setup 
 
 @description('The region to deploy your AI Services resource and project')
-param location string = resourceGroup().location
+param location string = 'westus'
 
 @description('Name for your AI Services resource.')
-param aiServices string = 'aiServices'
+param aiServices string = 'aiservices'
 
 @description('Name for your project resource.')
 param firstProjectName string = 'project'
@@ -34,6 +34,7 @@ param aiSearchResourceId string = ''
 param azureStorageAccountResourceId string = ''
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param azureCosmosDBAccountResourceId string = ''
+
 
 param projectCapHost string = 'caphostproj'
 param accountCapHost string = 'caphostacc'
@@ -233,16 +234,16 @@ dependsOn: [
   ]
 }
 
-// // The Storage Blob Data Owner role must be assigned before the caphost is created
-// module storageContainersRoleAssignment 'modules-standard/blob-storage-container-role-assignments.bicep' = {
-//   name: 'storage-containers-${uniqueSuffix}-deployment'
-//   scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
-//   params: { 
-//     projectPrincipalId: aiProject.outputs.projectPrincipalId
-//     azureStorageName: aiDependencies.outputs.azureStorageName
-//     projectWorkspaceId: aiProject.outputs.projectWorkspaceId
-//   }
-//   dependsOn: [
-//     addProjectCapabilityHost
-//   ]
-// }
+// The Storage Blob Data Owner role must be assigned before the caphost is created
+module storageContainersRoleAssignment 'modules-standard/blob-storage-container-role-assignments.bicep' = {
+  name: 'storage-containers-${uniqueSuffix}-deployment'
+  scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
+  params: { 
+    aiProjectPrincipalId: aiProject.outputs.projectPrincipalId
+    storageName: aiDependencies.outputs.azureStorageName
+    workspaceId: aiProject.outputs.projectWorkspaceId
+  }
+  dependsOn: [
+    addProjectCapabilityHost
+  ]
+}
