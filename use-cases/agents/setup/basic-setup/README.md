@@ -9,9 +9,7 @@ All agents created in this project will automatically use Microsoft managed, mul
 
 ### Prerequisites
 1. To deploy the template, you must have the following roles:
-    * Cognitive Services Contributor or Contributor
-    * [This is needed for the workarounds] Owner or Role Based Access Administrator (because we are assigning project SMI the AI Developer Role, won’t be needed once we fix this)
-        * Permission for: Microsoft.Authorization/roleAssignments/write 
+    * Cognitive Services Contributor or Contributor 
 1. To create your first agent you must have the permissions: Azure AI Developer and Cognitive Services User
  
 ### Steps
