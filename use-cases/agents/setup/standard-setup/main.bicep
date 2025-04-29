@@ -117,8 +117,8 @@ module aiDependencies 'modules-standard/standard-dependent-resources.bicep' = {
     cosmosDBExists: validateExistingResources.outputs.cosmosDBExists
 	
 	// vnet injection
-	vnetName: virtualNetwork
-	networkInjection: enableNetworkInjection
+    vnetName: virtualNetwork
+    networkInjection: enableNetworkInjection
     }
 }
 
@@ -138,8 +138,8 @@ module aiAccount 'modules-standard/ai-account-identity.bicep' = {
     modelSkuName: modelSkuName
     modelCapacity: modelCapacity
 	
-	subnetId: aiDependencies.outputs.subnetId
-	networkInjection: enableNetworkInjection
+    subnetId: aiDependencies.outputs.subnetId
+    networkInjection: enableNetworkInjection
   }
   dependsOn: [
     validateExistingResources, aiDependencies
@@ -227,8 +227,8 @@ module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bi
     aiSearchConnection: aiProject.outputs.aiSearchConnection
     projectCapHost: projectCapHost
     accountCapHost: accountCapHost
-	subnetId: aiDependencies.outputs.subnetId
-	networkInjection: enableNetworkInjection
+    subnetId: aiDependencies.outputs.subnetId
+    networkInjection: enableNetworkInjection
   }
   dependsOn: [
     aiSearchRoleAssignments, cosmosAccountRoleAssignments, storageAccountRoleAssignment

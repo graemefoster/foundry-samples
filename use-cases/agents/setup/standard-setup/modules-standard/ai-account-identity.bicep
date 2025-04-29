@@ -29,13 +29,13 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
       ipRules: []
     }
     publicNetworkAccess: 'Enabled'
-	networkInjections:((networkInjection == 'true') ? [
-	{
-		scenario: 'agent'
-		subnetArmId: subnetId
-		useMicrosoftManagedNetwork: false
-	}
-	] : [])
+    networkInjections:((networkInjection == 'true') ? [
+    {
+      scenario: 'agent'
+      subnetArmId: subnetId
+      useMicrosoftManagedNetwork: false
+    }
+    ] : [])
     // true is not supported today
     disableLocalAuth: false
   }
