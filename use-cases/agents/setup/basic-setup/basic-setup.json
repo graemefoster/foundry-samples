@@ -5,15 +5,15 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "7003199052869733265"
+      "templateHash": "1714052608002840600"
     }
   },
   "parameters": {
-    "account_name": {
+    "accountName": {
       "type": "string",
-      "defaultValue": "[format('aiServices{0}', substring(uniqueString(utcNow()), 0, 4))]"
+      "defaultValue": "[format('basicaccount{0}', substring(uniqueString(utcNow()), 0, 4))]"
     },
-    "project_name": {
+    "projectName": {
       "type": "string",
       "defaultValue": "project"
     },
@@ -27,7 +27,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "westus2"
+      "defaultValue": "[resourceGroup().location]"
     },
     "modelName": {
       "type": "string",
@@ -54,7 +54,7 @@
     {
       "type": "Microsoft.CognitiveServices/accounts",
       "apiVersion": "2025-04-01-preview",
-      "name": "[parameters('account_name')]",
+      "name": "[parameters('accountName')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "S0"
@@ -65,20 +65,36 @@
       },
       "properties": {
         "allowProjectManagement": true,
-        "customSubDomainName": "[parameters('account_name')]",
+        "customSubDomainName": "[toLower(parameters('accountName'))]",
         "networkAcls": {
           "defaultAction": "Allow",
           "virtualNetworkRules": [],
           "ipRules": []
         },
         "publicNetworkAccess": "Enabled",
-        "disableLocalAuth": false
+        "disableLocalAuth": true
       }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/projects",
+      "apiVersion": "2025-04-01-preview",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('projectName'))]",
+      "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "description": "[parameters('projectDescription')]",
+        "displayName": "[parameters('projectDisplayName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+      ]
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('account_name'), parameters('modelName'))]",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('modelName'))]",
       "sku": {
         "capacity": "[parameters('modelCapacity')]",
         "name": "[parameters('modelSkuName')]"
@@ -91,38 +107,18 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.CognitiveServices/accounts/projects",
-      "apiVersion": "2025-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('account_name'), format('{0}', parameters('project_name')))]",
-      "location": "[parameters('location')]",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "description": "[parameters('projectDescription')]",
-        "displayName": "[parameters('projectDisplayName')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
       ]
     }
   ],
   "outputs": {
-    "ENDPOINT": {
+    "account_name": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('account_name')), '2025-04-01-preview').endpoint]"
+      "value": "[parameters('accountName')]"
     },
     "project_name": {
       "type": "string",
-      "value": "[format('{0}', parameters('project_name'))]"
-    },
-    "account_name": {
-      "type": "string",
-      "value": "[parameters('account_name')]"
+      "value": "[parameters('projectName')]"
     }
   }
 }

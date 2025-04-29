@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "value": "westus2"
+      "value": "eastus"
     },
-    "account_name": {
-      "value": ""
+    "ai_services": {
+      "value": "aiServices"
     },
     "project_name": {
-      "value": ""
+      "value": "project"
     },
     "modelName": {
       "value": "gpt-4o"
@@ -24,7 +24,7 @@
       "value": "GlobalStandard"
     },
     "modelCapacity": {
-      "value": 30
+      "value": 1
     }
   }
 }

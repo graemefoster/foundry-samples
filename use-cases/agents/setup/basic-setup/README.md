@@ -1,36 +1,18 @@
 # Azure AI Agent Service: Basic Setup 1RP
 
 ## Basic Agent Setup
-
-> **NOTE:** This template required the following workarounds to be performed after it is deployed:
-> 
-> 1. Assign the project system managed identity (SMI) the following role ‘Azure AI Developer’ on its parent AI Services resource 
->    
+   
 
 This bicep template provisions required resources for a basic project setup. A new Cognitive Services Account is created, a gpt-4o model is deployed, and a new project is created.
 
 All agents created in this project will automatically use Microsoft managed, multitenant search and storage resources.
 
 ### Prerequisites
-1. Use only allowlisted subscriptions for 1RP. Two known allowlisted subscriptions are:
-    * Azure OpenAI - Agents - Experiments - Microsoft Azure
-    * AzureAI-Agents-ERA-Corp - Microsoft Azure
-    
-1. Westus2 is the only region currently enabled for end-to-end testing. Ensure both Cognitive Services Account and Project are created in this region.
-   
 1. To deploy the template, you must have the following roles:
     * Cognitive Services Contributor or Contributor
     * [This is needed for the workarounds] Owner or Role Based Access Administrator (because we are assigning project SMI the AI Developer Role, won’t be needed once we fix this)
-<<<<<<< HEAD:use-cases/agents/setup/basic-setup/README.md
         * Permission for: Microsoft.Authorization/roleAssignments/write 
 1. To create your first agent you must have the permissions: Azure AI Developer and Cognitive Services User
-=======
-        * Permission for: Microsoft.Authorization/roleAssignments/write
-1. To create an agent you must have the following roles:
-   * Azure AI Developer
-   * Cognitive Services User
-
->>>>>>> 76d5e96d980cfe782e45278f992cf3a848b51300:scenarios/agents/setup/basic-setup/README.md
  
 ### Steps
 
@@ -40,7 +22,7 @@ All agents created in this project will automatically use Microsoft managed, mul
 * Create new (or use existing) resource group:
 
 ```bash
-    az group create --name <new-rg-name> --location westus2
+    az group create --name <new-rg-name> --location eastus
 ```
 
 * Deploy the template
