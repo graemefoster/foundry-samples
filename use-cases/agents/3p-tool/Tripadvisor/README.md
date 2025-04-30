@@ -59,3 +59,4 @@ You can follow the [code sample](./tripadvisor.py) to use Tripadvisor through Ag
    ``` python
    auth = OpenApiConnectionAuthDetails(security_scheme=OpenApiConnectionSecurityScheme(connection_id="your_connection_id"))
    ```
+## Customer Support Contact
