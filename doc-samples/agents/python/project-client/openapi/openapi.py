@@ -26,51 +26,49 @@ USAGE:
 # Import necessary libraries
 import os
 import jsonref
-from azure.ai.agents import AgentsClient
+from azure.ai.projects import AIProjectClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.agents.models import OpenApiTool, OpenApiAnonymousAuthDetails
-from dotenv import load_dotenv
-load_dotenv()
 
-# Initialize the Agents Client using the endpoint and default credentials
-agents_client = AgentsClient(
-    endpoint=os.environ["PROJECT_ENDPOINT"],
-    credential=DefaultAzureCredential(),
-)
-# </initialization>
+endpoint = os.environ["PROJECT_ENDPOINT"]
+model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
+# Initialize the project client using the endpoint and default credentials
+with AIProjectClient(
+    endpoint=endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),
+) as project_client:
+    # </initialization>
 
-# <weather_tool_setup>
-# --- Weather OpenAPI Tool Setup ---
-# Load the OpenAPI specification for the weather service from a local JSON file using jsonref to handle references
-with open(os.path.join(os.path.dirname(__file__), "weather_openapi.json"), "r") as f:
-    openapi_weather = jsonref.loads(f.read())
-# </weather_tool_setup>
+    # <weather_tool_setup>
+    # --- Weather OpenAPI Tool Setup ---
+    # Load the OpenAPI specification for the weather service from a local JSON file using jsonref to handle references
+    with open(os.path.join(os.path.dirname(__file__), "weather_openapi.json"), "r") as f:
+        openapi_weather = jsonref.loads(f.read())
+    # </weather_tool_setup>
 
-# <countries_tool_setup>
-# --- Countries OpenAPI Tool Setup ---
-# Load the OpenAPI specification for the countries service from a local JSON file
-with open(os.path.join(os.path.dirname(__file__), "countries.json"), "r") as f:
-    openapi_countries = jsonref.loads(f.read())
+    # <countries_tool_setup>
+    # --- Countries OpenAPI Tool Setup ---
+    # Load the OpenAPI specification for the countries service from a local JSON file
+    with open(os.path.join(os.path.dirname(__file__), "countries.json"), "r") as f:
+        openapi_countries = jsonref.loads(f.read())
 
-# Create Auth object for the OpenApiTool (note: using anonymous auth here; connection or managed identity requires additional setup)
-auth = OpenApiAnonymousAuthDetails()
+    # Create Auth object for the OpenApiTool (note: using anonymous auth here; connection or managed identity requires additional setup)
+    auth = OpenApiAnonymousAuthDetails()
 
-# Initialize the main OpenAPI tool definition for weather
-openapi_tool = OpenApiTool(
-    name="get_weather", spec=openapi_weather, description="Retrieve weather information for a location", auth=auth
-)
-# Add the countries API definition to the same tool object
-openapi_tool.add_definition(
-    name="get_countries", spec=openapi_countries, description="Retrieve a list of countries", auth=auth
-)
-# </countries_tool_setup>
+    # Initialize the main OpenAPI tool definition for weather
+    openapi_tool = OpenApiTool(
+        name="get_weather", spec=openapi_weather, description="Retrieve weather information for a location", auth=auth
+    )
+    # Add the countries API definition to the same tool object
+    openapi_tool.add_definition(
+        name="get_countries", spec=openapi_countries, description="Retrieve a list of countries", auth=auth
+    )
+    # </countries_tool_setup>
 
-# Use the agents client context manager
-with agents_client:
     # <agent_creation>
     # --- Agent Creation ---
     # Create an agent configured with the combined OpenAPI tool definitions
-    agent = agents_client.create_agent(
+    agent = project_client.agents.create_agent(
         model=os.environ["MODEL_DEPLOYMENT_NAME"], # Specify the model deployment
         name="my-agent", # Give the agent a name
         instructions="You are a helpful agent", # Define agent's role
@@ -82,11 +80,11 @@ with agents_client:
     # <thread_management>
     # --- Thread Management ---
     # Create a new conversation thread for the interaction
-    thread = agents_client.create_thread()
+    thread = project_client.agents.create_thread()
     print(f"Created thread, ID: {thread.id}")
 
     # Create the initial user message in the thread
-    message = agents_client.create_message(
+    message = project_client.agents.create_message(
         thread_id=thread.id,
         role="user",
         content="What's the weather in Seattle and What is the name and population of the country that uses currency with abbreviation THB?",
@@ -98,7 +96,7 @@ with agents_client:
     # --- Message Processing (Run Creation and Auto-processing) ---
     # Create and automatically process the run, handling tool calls internally
     # Note: This differs from the function_tool example where tool calls are handled manually
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    run = project_client.agents.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
     # </message_processing>
 
@@ -108,7 +106,7 @@ with agents_client:
         print(f"Run failed: {run.last_error}")
 
     # Retrieve the steps taken during the run for analysis
-    run_steps = agents_client.list_run_steps(thread_id=thread.id, run_id=run.id)
+    run_steps = project_client.agents.list_run_steps(thread_id=thread.id, run_id=run.id)
 
     # Loop through each step to display information
     for step in run_steps.data:
@@ -133,10 +131,10 @@ with agents_client:
     # <cleanup>
     # --- Cleanup ---
     # Delete the agent resource to clean up
-    agents_client.delete_agent(agent.id)
+    project_client.agents.delete_agent(agent.id)
     print("Deleted agent")
 
     # Fetch and log all messages exchanged during the conversation thread
-    messages = agents_client.list_messages(thread_id=thread.id)
+    messages = project_client.agents.list_messages(thread_id=thread.id)
     print(f"Messages: {messages}")
     # </cleanup>

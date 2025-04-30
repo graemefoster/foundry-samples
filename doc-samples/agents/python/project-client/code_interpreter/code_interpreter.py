@@ -25,8 +25,6 @@ USAGE:
 
 # <imports>
 import os
-from dotenv import load_dotenv
-load_dotenv()
 from azure.ai.projects import AIProjectClient
 from azure.ai.agents.models import CodeInterpreterTool
 from azure.ai.agents.models import FilePurpose, MessageRole
