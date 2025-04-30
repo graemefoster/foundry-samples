@@ -2,40 +2,41 @@
   AI Foundry account and project - with your User-Assigned managed identity.
   
   Description: 
-  - Create an AI Foundry (previously known as Azure AI Services) account and project with UAI.
-  - Create a gpt-4o model deployment
-  - When creating a project, the Identity is not updateable. Please select 'SystemAssigned', 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated. .
-  - Creating your first project is needed to support more capabilities and is the default reoute for APIs if no paramter is provided.
+  - Creates an AI Foundry (previously known as Azure AI Services) account and project with UAI.
+  - Creates a gpt-4o model deployment
+
+  Known limitations:
+  - When creating a project, managed identity cannot be updated. Please select 'SystemAssigned', 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation.
 
 */
 @description('That name is the name of our application. It has to be unique. Type a name followed by your resource group name. (<name>-<resourceGroupName>)')
-param aiServicesName string = 'aiServices-${uniqueString(resourceGroup().id)}'
+param aiFoundryName string = 'your-resource'
 
 @description('Location for all resources.')
-param location string = resourceGroup().location
+param location string = 'eastus'
 
 @description('Name of the first project')
-param defaultProjectName string = '${aiServicesName}-proj'
+param defaultProjectName string = '${aiFoundryName}-proj'
 param defaultProjectDisplayName string = 'Project'
 param defaultProjectDescription string = 'Describe what your project is about.'
 
 /*
   Step 1: Get your existing/previously created Managed Identity
 
-*/ 
-@description('User Assigned Identity Name')
-param userAssignedIdentityName string
+*/
 @description('User Assigned Identity Resource Group Name')
 param userIdentityResourceGroupName string = resourceGroup().name
+
+@description('User Assigned Identity Name')
+param userAssignedIdentityName string = 'aifoundry-test-uai'
 
 var userAssignedIdentityId = extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, '${userIdentityResourceGroupName}'), 'Microsoft.ManagedIdentity/userAssignedIdentities', '${userAssignedIdentityName}')
 
 /*
   Step 2: Create a Cognitive Services Account 
-
 */ 
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
-  name: aiServicesName
+  name: aiFoundryName
   location: location
   identity: {
     type: 'SystemAssigned,UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
@@ -51,19 +52,20 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
     // Networking
     publicNetworkAccess: 'Enabled'
 
-    // Specifies wheether this resource support project management as child resources, used as containers for access management, data isolation, and cost in AI Foundry.
+    // Specifies whether this resource support project management as child resources, used as containers for access management, data isolation, and cost in AI Foundry.
     allowProjectManagement: true
 
+    // Defines developer API endpoint subdomain
+    customSubDomainName: aiFoundryName
+
     // Auth
-    disableLocalAuth: true
+    disableLocalAuth: false
   }
 }
 
 /*
   Step 3: Deploy gpt-4o model
-  
 */
-
 resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
   parent: account
   name: 'gpt-4o'
@@ -82,7 +84,6 @@ resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-
 
 /*
   Step 4: Create a Project
-
 */
 resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
   name: defaultProjectName
@@ -92,7 +93,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   identity: {
     type: 'SystemAssigned,UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
     userAssignedIdentities: {
-    '${userAssignedIdentityId}': {}
+      '${userAssignedIdentityId}': {}
     }
   }
   
@@ -102,6 +103,10 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
     isDefault: true // can't be updated after creation; can only be set by one project in the account, the first project created.
   }
 }
+
+/* Step 5:
+ Grant managed identity 'Azure AI Administrator' role on account
+*/
 
 output accountId string = account.id
 output accountName string = account.name
