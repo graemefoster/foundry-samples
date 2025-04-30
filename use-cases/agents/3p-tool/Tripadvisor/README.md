@@ -15,11 +15,11 @@ Get travel data, guidance and reviews
 
 1. Select **+new connection** in the settings page.
 
-   :::image type="content" source="../../media/tools/licensed-data/connected-resources.png" alt-text="A screenshot showing the connections for the selected AI project." lightbox="../../media/tools/licensed-data/connected-resources.png":::
+   :::image type="content" source="./media/connected-resources.png" alt-text="A screenshot showing the connections for the selected AI project." lightbox="../../media/tools/licensed-data/connected-resources.png":::
    
 1. Select **custom keys** in **other resource types**.
 
-   :::image type="content" source="../../media/tools/licensed-data/custom-keys.png" alt-text="A screenshot showing the custom key option in the settings page." lightbox="../../media/tools/licensed-data/custom-keys.png":::
+   :::image type="content" source="./media/custom-keys.png" alt-text="A screenshot showing the custom key option in the settings page." lightbox="../../media/tools/licensed-data/custom-keys.png":::
 
 1. Enter the following information to create a connection to store your Tripadvisor key:
    1. Set **Custom keys** to "key", with the value being your Tripadvisor API key.
@@ -27,25 +27,21 @@ Get travel data, guidance and reviews
    1. Set the connection name to your connection name. You use this connection name in your sample code or Foundry Portal later.
    1. For the **Access** setting, you can choose either *this project only* or *shared to all projects*. Just make sure in your code, the connection string of the project you entered has access to this connection.
 
-   :::image type="content" source="../../media/tools/licensed-data/connect-custom-resource.png" alt-text="A screenshot showing the screen for adding Tripadvisor connection information." lightbox="../../media/tools/licensed-data/connect-custom-resource.png":::
+   :::image type="content" source="./media/connect-custom-resource.png" alt-text="A screenshot showing the screen for adding Tripadvisor connection information." lightbox="../../media/tools/licensed-data/connect-custom-resource.png":::
 
 ## Use Tripadvisor tool through Foundry portal
 
 1. To use the Tripadvisor tool in the Azure AI Foundry, in the **Create and debug** screen for your agent, scroll down the **Setup** pane on the right to **action**. Then select **Add**.
 
-    :::image type="content" source="../../media/tools/knowledge-tools.png" alt-text="A screenshot showing the available tool categories in the Azure AI Foundry portal." lightbox="../../media/tools/knowledge-tools.png":::
-
 1. Select **Tripadvisor** and follow the prompts to add the tool. 
-
-   :::image type="content" source="../../media/tools/knowledge-tools-list.png" alt-text="A screenshot showing available knowledge tools." lightbox="../../media/tools/knowledge-tools-list.png":::
 
 1. Give a name for your Tripadvisor tool and provide an optional description.
  
-    :::image type="content" source="../../media/tools/licensed-data/add-data-source.png" alt-text="A screenshot showing the Tripadvisor data source." lightbox="../../media/tools/licensed-data/add-data-source.png":::
+    :::image type="content" source="./media/add-data-source.png" alt-text="A screenshot showing the Tripadvisor data source." lightbox="../../media/tools/licensed-data/add-data-source.png":::
 
 1. Select the custom key connection you just created. 
 
-    :::image type="content" source="../../media/tools/licensed-data/add-connection.png" alt-text="A screenshot showing the connection for your Tripadvisor tool, and a JSON example." lightbox="../../media/tools/licensed-data/add-connection.png":::
+    :::image type="content" source="./media/add-connection.png" alt-text="A screenshot showing the connection for your Tripadvisor tool, and a JSON example." lightbox="../../media/tools/licensed-data/add-connection.png":::
 
 1. Finish and start chatting.
 
