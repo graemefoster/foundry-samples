@@ -9,7 +9,7 @@
 #   2. Manually from the Actions tab / GitHub CLI (workflow_dispatch)
 #   3. Via a slash-command comment in a PR ("/e2e <setup list>")
 # -----------------------------------------------------------------
-
+name: "Run Samples"
 # ────────────────────────────────────────────────────────────────
 # 0️⃣  TRIGGERS
 # ────────────────────────────────────────────────────────────────
