@@ -122,6 +122,8 @@ foreach (ThreadMessage threadMessage in messages)
         if (contentItem is MessageTextContent textItem)
         {
             string response = textItem.Text;
+
+            // If we have Text URL citation annotations, reformat the response to show title & URL for citations
             if (textItem.Annotations != null)
             {
                 foreach (MessageTextAnnotation annotation in textItem.Annotations)
