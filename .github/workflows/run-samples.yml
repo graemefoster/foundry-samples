@@ -112,16 +112,20 @@ jobs:
             if (!requested.length) {
               // If no setups are found (e.g., invalid comment), fail the workflow early.
               core.setFailed('No setups selected – stopping workflow.');
+              // Note: Script execution CONTINUES after setFailed, so we set the output below.
             }
 
             // Construct the matrix object in the format required by the downstream job's strategy.
+            // If 'requested' is empty due to the failure check above, this will be { include: [] }.
             const matrix = {
               // The 'include' key pairs with the 'setup' variable name used in the e2e job.
               include: requested.map((s) => ({ setup: s }))
             };
 
-            // Convert the JavaScript matrix object into a JSON string to be used as the step's output.
-            return JSON.stringify(matrix);
+            // Explicitly set the output, even if the job is marked to fail.
+            // The downstream job's 'if' condition will prevent it from running if this job fails.
+            core.setOutput('matrix', JSON.stringify(matrix));
+            // No final 'return' statement needed when using core.setOutput
 
 # ────────────────────────────────────────────────────────────────
 # 2️⃣  MAIN TEST JOB – one copy per setup
