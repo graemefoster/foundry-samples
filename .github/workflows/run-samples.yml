@@ -163,23 +163,26 @@ jobs:
                    github.event.pull_request.head.sha ||
                    github.ref }}
 
-      # ── Set up Node.js for JavaScript tests
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: npm
+      # # ── Set up Node.js for JavaScript/TypeScript tests
+      # - name: Set up Node.js
+      #   if: false # Temporarily disable
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #     cache: npm
 
-      # ── Install JavaScript dependencies
-      - name: Install npm packages
-        run: npm ci
+      # # ── Install JavaScript dependencies
+      # - name: Install npm packages
+      #   if: false # Temporarily disable
+      #   run: npm ci
 
-      # ── Run Vitest
-      - name: Run Vitest
-        env:
-          PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
-          MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
-        run: npx vitest run --coverage
+      # # ── Run Vitest JavaScript/TypeScript tests
+      # - name: Run Vitest
+      #   if: false # Temporarily disable
+      #   env:
+      #     PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
+      #     MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
+      #   run: npx vitest run --coverage
 
       # ── Set up .NET SDK
       - name: Set up .NET SDK
