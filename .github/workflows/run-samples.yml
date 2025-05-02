@@ -5,7 +5,7 @@
 # (e.g., SAI_UAI or UAI) that supplies its own PROJECT_CLIENT
 # secret.  MODEL_DEPLOYMENT_NAME is shared across all setups.
 # The workflow can be started three ways:
-#   1. Automatically on any PR that modifies docs-samples/agents/**
+#   1. Automatically on any PR that modifies doc-samples/agents/**
 #   2. Manually from the Actions tab / GitHub CLI (workflow_dispatch)
 #   3. Via a slash-command comment in a PR ("/e2e <setup list>")
 # -----------------------------------------------------------------
@@ -21,7 +21,7 @@ on:
       - main
     # Only when sample code changes
     paths:
-      - docs-samples/agents/**
+      - doc-samples/agents/**
 
   # Run-button or gh CLI trigger
   workflow_dispatch:
@@ -208,7 +208,7 @@ jobs:
           PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
           MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
         run: |
-          pytest docs-samples/agents/python --maxfail=1 --disable-warnings
+          pytest doc-samples/agents/python --maxfail=1 --disable-warnings
 
       # ── Set up .NET SDK
       - name: Set up .NET SDK
