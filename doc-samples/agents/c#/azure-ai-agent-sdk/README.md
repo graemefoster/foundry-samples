@@ -16,8 +16,8 @@ This table tracks the current status of code samples for each supported tool in 
 | Tool               | Sample Description                     | Status          | Notes / Known Issues                          |
 |--------------------|-----------------------------------------|-----------------|-----------------------------------------------|
 | **Basic Agent**    | Using agent with no tools              | ❌ Doesn't exist|                                               |
-| **Bing**           | Using Bing in an agent                 | ❌ Doesn't exist|                                               |
-| **File Search**    | Uploading files                        | ❌ Doesn't exist|                                               |
+| **Bing**           | Using Bing in an agent                 | ⚠️ Exists| Sample updated - works with project connection string, but not with project endpoint |
+| **File Search**    | Uploading files                        | ⚠️ Exists| Sample updated - works with project connection string, but not with project endpoint |
 |                    | Using blob storage (project data assets)| ❌ Doesn't exist|                                               |
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
 | **Azure AI Search**| Using a knowledge store                | ❌ Doesn't exist|                                               |

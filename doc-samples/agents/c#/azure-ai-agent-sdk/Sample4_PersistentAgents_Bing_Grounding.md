@@ -15,7 +15,7 @@ var connectionId = System.Environment.GetEnvironmentVariable("AZURE_BING_CONECTI
 PersistentAgentsClient agentClient = new(projectEndpoint, new DefaultAzureCredential());
 ```
 
-2. We will use the Bing connection ID to initialize the `BingGroundingToolDefinition`.
+2. We will use the Bing connection Id to initialize the `BingGroundingToolDefinition`.
 
 ```C# Snippet:AgentsBingGrounding_GetConnection
 ToolConnectionList connectionList = new()
@@ -47,7 +47,7 @@ PersistentAgent agent = await agentClient.CreateAgentAsync(
    tools: [ bingGroundingTool ]);
 ```
 
-4. Now we will create the thread, add the message , containing a question for agent and start the run.
+4. Now we will create the thread, add the message containing a question for agent and start the run.
 
 Synchronous sample:
 ```C# Snippet:AgentsBingGrounding_CreateThreadMessage
@@ -105,15 +105,17 @@ if (run.Status != RunStatus.Completed)
 
 ```
 
-5. Print the agent messages to console in chronological order.
+5. Print the agent messages to console in chronological order (including formatting URL citations).
 
 Synchronous sample:
 ```C# Snippet:AgentsBingGrounding_Print
+// Retrieve all messages from the agent client
 PageableList<ThreadMessage> messages = agentClient.GetMessages(
     threadId: thread.Id,
     order: ListSortOrder.Ascending
 );
 
+// Process messages in order
 foreach (ThreadMessage threadMessage in messages)
 {
     Console.Write($"{threadMessage.CreatedAt:yyyy-MM-dd HH:mm:ss} - {threadMessage.Role,10}: ");
@@ -122,6 +124,8 @@ foreach (ThreadMessage threadMessage in messages)
         if (contentItem is MessageTextContent textItem)
         {
             string response = textItem.Text;
+
+            // If we have Text URL citation annotations, reformat the response to show title & URL for citations
             if (textItem.Annotations != null)
             {
                 foreach (MessageTextAnnotation annotation in textItem.Annotations)
@@ -185,14 +189,14 @@ foreach (ThreadMessage threadMessage in messages)
 6. Clean up resources by deleting thread and agent.
 
 Synchronous sample:
-```C# Snippet:AgentsBingGroundingCleanup
+```C# Snippet:AgentsBingGrounding_Cleanup
 // Delete thread and agent
 agentClient.DeleteThread(threadId: thread.Id);
 agentClient.DeleteAgent(agentId: agent.Id);
 ```
 
 Asynchronous sample:
-```C# Snippet:AgentsBingGroundingCleanupAsync
+```C# Snippet:AgentsBingGroundingAsync_Cleanup
 // Delete thread and agent
 await agentClient.DeleteThreadAsync(threadId: thread.Id);
 await agentClient.DeleteAgentAsync(agentId: agent.Id);
