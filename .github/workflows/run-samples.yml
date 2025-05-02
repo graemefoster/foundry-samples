@@ -200,7 +200,7 @@ jobs:
       # Installs packages listed in the specified requirements.txt file (excluding azure-ai-projects)
       - name: Install Python dependencies
         run: |
-          pip install -r docs-samples/agents/python/requirements.txt
+          pip install -r doc-samples/agents/python/requirements.txt 
 
       # ── Run PyTest
       - name: Run PyTest
