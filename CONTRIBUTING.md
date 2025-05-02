@@ -23,7 +23,7 @@ Help us keep this project open and inclusive. Please read and follow our [Code o
 
 ### Before Making Code Changes
 
-1. Search the [repository](https://github.com/azure-ai-foundry/docs-samples/pulls) for an open or closed PR
+1. Search the [repository](https://github.com/azure-ai-foundry/doc-samples/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
 2. Determine whether this repository is the best place for the contribution.
 
@@ -48,7 +48,7 @@ contribute your changes.
 3. Add the original repository as a remote:
 
    ```shell
-   git remote add upstream https://github.com/azure-ai-foundry/docs-samples.git
+   git remote add upstream https://github.com/azure-ai-foundry/doc-samples.git
    ```
 
 ##### 2. Install Dev Dependencies
