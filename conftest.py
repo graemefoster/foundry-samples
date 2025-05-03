@@ -3,7 +3,7 @@
 # Purpose
 # -------
 # Treat every Python sample under  doc-samples/agents/python/**
-# as a Pytest test item.  The script “passes” if it runs without
+# as a Pytest test item.  The script "passes" if it runs without
 # raising an exception (exit code 0).
 #
 # How it works
@@ -49,7 +49,7 @@ def pytest_collect_file(parent, path):
     `path` is a py.path.local object; convert to Path for easier checks.
     """
     if path.ext == ".py" and _is_under_sample_root(pathlib.Path(path)):
-        return SampleItem.from_parent(parent, fspath=path)
+        return SampleItem.from_parent(parent, name=path.basename, fspath=path)
 
 
 class SampleItem(pytest.Item):
