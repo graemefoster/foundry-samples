@@ -29,7 +29,7 @@ Before you submit the PR, please double check:
 - you have **everything** required above ready
 - you have **fully** tested your code sample
 
-Then, you can go ahead and create a PR. By creating a PR, you automatically agree to the Contributor License Agreement and see more details [here](../../CONTRIBUTING.md). 
+Then, you can go ahead and create a PR. By creating a PR, you automatically agree to the Contributor License Agreement and see more details [here](../../../CONTRIBUTING.md). 
 
 When creating the PR, please make sure you give your PR a reviewer-friendly name. We will come back to you within 10 business days. 
 
