@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------
 # Run the same end-to-end test-suite against multiple "setups".
 # A setup represents one already-provisioned environment
-# (e.g., SAI_UAI or UAI) that supplies its own PROJECT_CLIENT
+# (e.g., SAI_UAI or UAI) that supplies its own PROJECT_ENDPOINT
 # secret.  MODEL_DEPLOYMENT_NAME is shared across all setups.
 # The workflow can be started three ways:
 #   1. Automatically on any PR that modifies doc-samples/agents/**
@@ -151,7 +151,7 @@ jobs:
       # Needed if you acquire a cloud token via OIDC
       id-token: write
 
-    # Map to per-setup environment (for PROJECT_CLIENT secret)
+    # Map to per-setup environment (for PROJECT_ENDPOINT)
     environment: setup-${{ matrix.setup }}
 
     steps:
@@ -180,7 +180,7 @@ jobs:
       # - name: Run Vitest
       #   if: false # Temporarily disable
       #   env:
-      #     PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
+      #     PROJECT_ENDPOINT:    ${{ secrets.PROJECT_ENDPOINT}}
       #     MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
       #   run: npx vitest run --coverage
       # ── Set up Python
@@ -206,7 +206,7 @@ jobs:
       # ── Run PyTest
       - name: Run PyTest
         env:
-          PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
+          PROJECT_ENDPOINT:      ${{ secrets.PROJECT_ENDPOINT }}
           MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
         run: |
           pytest doc-samples/agents/python --maxfail=1 --disable-warnings
@@ -224,6 +224,6 @@ jobs:
       # ── Run .NET tests
       - name: dotnet test
         env:
-          PROJECT_CLIENT:        ${{ secrets.PROJECT_CLIENT }}
+          PROJECT_ENDPOINT:      ${{ secrets.PROJECT_ENDPOINT }}
           MODEL_DEPLOYMENT_NAME: ${{ secrets.MODEL_DEPLOYMENT_NAME }}
         run: dotnet test -c Release --verbosity normal
