@@ -14,7 +14,7 @@ The tool catalog in Azure AI Foundry portal is the hub to discover and use a wid
 
 |Tool  |Description  |
 |---------|---------|
-| [Tripadvisor](./Tripadvisor/tripadvisor.md) | This tool lets you access Tripadvisor's useful travel platform that can, for example, provide travel guidance and reviews. |
+| [Tripadvisor](./Tripadvisor/README.md) | This tool lets you access Tripadvisor's useful travel platform that can, for example, provide travel guidance and reviews. |
 
 1. Review the README file provided by the partner and get started!
 
