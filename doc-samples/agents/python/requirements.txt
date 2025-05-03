@@ -2,3 +2,4 @@ pytest
 openai
 azure-ai-projects
 azure-identity
+dotenv
