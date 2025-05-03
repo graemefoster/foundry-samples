@@ -6,6 +6,7 @@ The tool catalog in Azure AI Foundry portal is the hub to discover and use a wid
 > [!IMPORTANT]
 > * Your use of connected non-Microsoft services is subject to the terms between you and the service provider. By connecting to a non-Microsoft service, you acknowledge that some of your data, such as prompt content, is passed to the non-Microsoft service, and/or your application might receive data from the non-Microsoft service. You're responsible for your use of non-Microsoft data. 
 > * Using tools from tool catalog may incur usage with tool providers, review the pricing plan with your selected tool data providers.
+> * Code samples and OpenAPI spec are provided by partners as-is. **need help from CELA to rewrite this**
 
 ## Get Started
 1. Create an Azure AI Agent following the [documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/quickstart)
