@@ -1,8 +1,8 @@
 # JavaScript QuickStart
 
-## Rename sample.env to .env
+## Rename env.template to .env
 
-Rename `sample.env` to `.env` and fill in the values. 
+Rename `env.template` to `.env` and fill in the values. 
 
 ## Install dependencies
 
