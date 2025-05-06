@@ -10,24 +10,21 @@ async function chatCompletion() {
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
     const project = new AIProjectClient(endpoint, new DefaultAzureCredential());
 
-    const client = project.inference.chatCompletions();
+    const client = project.inference.azureOpenAI();
 
-    const response = await client.post({
-      body: {
-        model: deployment,
+    const chatCompletion = await client.chat.completions.create({
+        deployment,
         messages: [
-          { role: "system", content: "You are a helpful writing assistant" },
-          { role: "user", content: "Write me a poem about flowers" },
+            { role: "system", content: "You are a helpful writing assistant" },
+            { role: "user", content: "Write me a poem about flowers" },
         ],
-      },
     });
   
-    console.log("response = ", JSON.stringify(response, null, 2));
+    console.log("response = ", JSON.stringify(chatCompletion, null, 2));
     // </chat_completion>
 }
 
 chatCompletion().catch(console.error);
-
 
 async function runAgent() {
     // <create_and_run_agent>
