@@ -45,6 +45,7 @@ resource connection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01
     category: 'AzureStorageAccount'
     target: ((newOrExisting == 'new') ? newStorage.id : existingStorage.id)
     authType: 'AccountKey'
+    isSharedToAll: true
     credentials: {
       key: string((newOrExisting == 'new') ? newStorage.listKeys().keys : existingStorage.listKeys().keys)
     }
