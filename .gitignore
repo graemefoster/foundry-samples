@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+use-cases/infrastructure-setup/01-connections/your.deployment.parameters.json
