@@ -43,6 +43,7 @@ resource connection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01
     category: 'CognitiveSearch'
     target: ((newOrExisting == 'new') ? newSearchService.properties.endpoint : existingSearchService.properties.endpoint)
     authType: 'ApiKey' // Supported auth types: ApiKey, AAD
+    isSharedToAll: true
     credentials: { 
       key: ((newOrExisting == 'new') ? newSearchService.listAdminKeys().primaryKey : existingSearchService.listAdminKeys().primaryKey)
     }
