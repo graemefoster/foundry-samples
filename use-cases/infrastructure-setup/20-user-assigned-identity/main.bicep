@@ -10,7 +10,7 @@
 
 */
 @description('That name is the name of our application. It has to be unique. Type a name followed by your resource group name. (<name>-<resourceGroupName>)')
-param aiFoundryName string = 'your-resource'
+param aiFoundryName string = 'foundryuai16'
 
 @description('Location for all resources.')
 param location string = 'eastus'
@@ -39,7 +39,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   name: aiFoundryName
   location: location
   identity: {
-    type: 'SystemAssigned,UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
+    type: 'UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
     userAssignedIdentities: {
       '${userAssignedIdentityId}': {}
     }
@@ -66,21 +66,21 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
 /*
   Step 3: Deploy gpt-4o model
 */
-resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
-  parent: account
-  name: 'gpt-4o'
-  sku : {
-    capacity: 1
-    name: 'GlobalStandard'
-  }
-  properties: {
-    model:{
-      name: 'gpt-4o'
-      format: 'OpenAI'
-      version: '2024-08-06'
-    }
-  }
-}
+// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+//   parent: account
+//   name: 'gpt-4o'
+//   sku : {
+//     capacity: 1
+//     name: 'GlobalStandard'
+//   }
+//   properties: {
+//     model:{
+//       name: 'gpt-4o'
+//       format: 'OpenAI'
+//       version: '2024-08-06'
+//     }
+//   }
+// }
 
 /*
   Step 4: Create a Project
@@ -91,7 +91,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   location: location
   
   identity: {
-    type: 'SystemAssigned,UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
+    type: 'UserAssigned' // Select 'UserAssigned' or 'SystemAssigned,UserAssigned' during creation as this cannot be updated.
     userAssignedIdentities: {
       '${userAssignedIdentityId}': {}
     }
@@ -105,7 +105,8 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
 }
 
 /* Step 5:
- Grant managed identity 'Azure AI Administrator' role on account
+ Grant managed identity 'Azure AI Administrator' role on account if not existant
+ @TODO
 */
 
 output accountId string = account.id
