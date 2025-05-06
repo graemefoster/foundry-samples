@@ -1,15 +1,28 @@
 import { DefaultAzureCredential } from '@azure/identity';
+import { AIProjectClient } from '@azure/ai-projects';
 import { AgentsClient } from '@azure/ai-agents';
 import { config } from 'dotenv';
 config(); 
 
 async function chatCompletion() {
     // <chat_completion>
-    const connectionString = process.env.INFERENCE_ENDPOINT;
+    const endpoint = process.env.INFERENCE_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
+    const project = new AIProjectClient(endpoint, new DefaultAzureCredential());
 
+    const client = project.inference.chatCompletions();
 
-
+    const response = await client.post({
+      body: {
+        model: deployment,
+        messages: [
+          { role: "system", content: "You are a helpful writing assistant" },
+          { role: "user", content: "Write me a poem about flowers" },
+        ],
+      },
+    });
+  
+    console.log("response = ", JSON.stringify(response, null, 2));
     // </chat_completion>
 }
 
@@ -20,9 +33,9 @@ async function runAgent() {
     // <create_and_run_agent>
 
     // Create an Azure AI Client
-    const connectionString = process.env.PROJECT_ENDPOINT;
+    const endpoint = process.env.PROJECT_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
-    const client = new AgentsClient(connectionString, new DefaultAzureCredential());
+    const client = new AgentsClient(endpoint, new DefaultAzureCredential());
 
     // Create an Agent
     const agent = await client.createAgent(deployment, {
