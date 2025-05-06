@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@azure/ai-agents": "^1.0.0-alpha.20250505.3",
+    "@azure/ai-projects": "^1.0.0-alpha.20250505.4",
     "@azure/arm-cognitiveservices": "^7.6.0",
     "@azure/identity": "^4.9.1",
     "dotenv": "^16.5.0"
