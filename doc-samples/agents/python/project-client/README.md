@@ -8,14 +8,14 @@ This table tracks the current status of code samples for each supported tool in 
 
 | Sample               | Sample Description                               | Status                  | Notes / Known Issues                       |
 |--------------------|--------------------------------------------------|--------------------------|--------------------------------------------|
-| **Bing**           | Using Bing in an agent                           | ⚠️ Doesn't work          |                                            |
-| **File Search**    | Uploading files                                  | ❌ Doesn't exist          |                                            |
-|                    | Using blob storage (project data assets)         | ❌ Doesn't exist          |                                            |
+| **Bing**           | Using Bing in an agent                           | ✅ Exists and works          |                                            |
+| **File Search**    | Uploading files                                  | ✅ Exists and works          |                                            |
+|                    | Using blob storage (project data assets)         | ✅ Exists and works          |                                            |
 |                    | Managing files                                   | ❌ Doesn't exist          |                                            |
-| **Azure AI Search**| Using a knowledge store                          | ❌ Doesn't exist          |                                            |
-| **Fabric**         | Grounding with Fabric data                       | ❌ Doesn't exist          |                                            |
-| **SharePoint**     | Grounding with SharePoint files                  | ❌ Doesn't exist          |                                            |
-| **TripAdvisor**    | Using licensed TripAdvisor data                  | ❌ Doesn't exist          |                                            |
+| **Azure AI Search**| Using a knowledge store                          | ✅ Exists and works          |                                            |
+| **Fabric**         | Grounding with Fabric data                       | ✅ Exists and works          |                                            |
+| **SharePoint**     | Grounding with SharePoint files                  | ⚠️ Exists and yet to work          |                                            |
+| **TripAdvisor**    | Using licensed TripAdvisor data                  | ⚠️ Exists and doesn't work            |                                            |
 | **Function Calling**| Calling local functions                         | ❌ Doesn't exist          |                                            |
 | **Azure Functions**| Calling durable Azure Functions                  | ❌ Doesn't exist          |                                            |
 | **Logic Apps**     | Calling Logic Apps workflows                     | ❌ Doesn't exist          |                                            |

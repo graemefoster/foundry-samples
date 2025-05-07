@@ -2,8 +2,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 # ------------------------------------
-
-
 """
 FILE: sample_agents_bing_grounding.py
 
@@ -18,91 +16,73 @@ USAGE:
 
     pip install azure.ai.projects azure-identity
 
-    Set this environment variables with your own values:
-    PROJECT_CONNECTION_STRING - the Azure AI Project connection string, as found in your AI Studio Project.
-    BING_CONNECTION_NAME - the name of the connection of Grounding with Bing Search
-    
+    Set these environment variables with your own values:
+    PROJECT_ENDPOINT - the Azure AI Project endpoint, as found in your AI Studio Project.
+    AZURE_AI_CONNECTION_ID - the connection ID for the Bing Grounding tool.
+    MODEL_DEPLOYMENT_NAME - the deployment name of the AI model.
 """
-# <create a project client>
+
+# Import necessary libraries and modules
 import os
 from azure.identity import DefaultAzureCredential
-from azure.ai.projects.onedp import AIProjectClient
+from azure.ai.agents import AgentsClient
 from azure.ai.agents.models import MessageRole, BingGroundingTool
+from azure.ai.projects import AIProjectClient
 
-
-# Create an Azure AI Client from a connection string, copied from your AI Studio project.
-# At the moment, it should be in the format "<HostName>;<AzureSubscriptionId>;<ResourceGroup>;<HubName>"
-# Customer needs to login to Azure subscription via Azure CLI and set the environment variables
-# connection string should be copied from the project in AI Studio
-
+# Define the project endpoint (replace with your actual project endpoint)
 # Example: project_endpoint = "https://<your-ai-services-resource-name>.services.ai.azure.com/api/projects/<your-project-name>"
+project_endpoint = os.environ["PROJECT_ENDPOINT"]
 
-project_endpoint = ""
-
-# Takes an endpoint and a credential to create a project client
-project_client = AIProjectClient(
-    endpoint=project_endpoint,
-    credential=DefaultAzureCredential(),
-)
-# </create a project client>
-
-# Decision 1: Dp we actually need to create a project client here?
-# Decision 2: Is there an easier way to get the connection name using the default connections
-
-# <create agent>
+# Define the connection ID for the Bing Grounding tool (replace with your actual connection ID)
 # Example connection_id= "/subscriptions/<sub-id>/resourceGroups/<your-rg-name>/providers/Microsoft.CognitiveServices/accounts/<your-ai-services-name>/projects/<your-project-name>/connections/<your-bing-connection-name>"
-conn_id = ""
-
+conn_id = os.environ["BING_CONNECTION_NAME"]
 print(conn_id)
 
-# Initialize agent bing tool and add the connection id
+# Initialize the Bing Grounding tool with the connection ID
 bing = BingGroundingTool(connection_id=conn_id)
 
-# Create agent with the bing tool and process assistant run
-with project_client:
-    agents_client = project_client.agents.get_client()
+# Create an AIProjectClient instance to interact with the Azure AI service
+project_client = AIProjectClient(
+    endpoint=project_endpoint,  # Azure AI service endpoint
+    credential=DefaultAzureCredential(),  # Authentication credentials
+)
 
-    agent = agents_client.create_agent(
-        model="gpt-4o",
-        name="my-agent",
-        instructions="use the tool to respond",
-        tools=bing.definitions,
+# Use the project client to perform agent operations
+with project_client:
+    # Create an agent with the specified model, name, instructions, and tools
+    agent = project_client.agents.create_agent(
+        model= os.environ["MODEL_DEPLOYMENT_NAME"],  # Model deployment name
+        name="my-agent",  # Name of the agent
+        instructions="You are a helpful agent",  # Instructions for the agent
+        tools=bing.definitions,  # Tools available to the agent
     )
     print(f"Created agent, ID: {agent.id}")
-    # </create agent>
 
-    # <create thread>
-    # Create thread for communication
-    thread = agents_client.create_thread()
-    print(f"Created thread, ID: {thread.id}")
+    # Create a thread for communication with the agent
+    thread = project_client.agents.create_thread()
+    print(f"Created thread and run, ID: {thread.id}")
 
-    # Create message to thread
-    message = agents_client.create_message(
-        thread_id=thread.id,
-        role="user",
-        content="How is the weather in Seattle today?",
+    # Create a message in the thread to interact with the agent
+    message = project_client.agents.create_message(
+        thread_id=thread.id,  # ID of the thread
+        role="user",  # Role of the message sender (e.g., user)
+        content="what is the weather in Seattle today?",  # Message content
     )
-    print(f"Created message, ID: {message.id}")
-    # </create thread>
+    print(f"Created message: {message['id']}")
 
-    # <create run>
-    # Create and process agent run in thread with tools
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    # Create and process an agent run in the thread using the tools
+    run = project_client.agents.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
 
+    # Check if the run failed and log the error if applicable
     if run.status == "failed":
         print(f"Run failed: {run.last_error}")
-    
-    run_steps = agents_client.list_run_steps(run_id=run.id, thread_id=thread.id)
-    run_steps_data = run_steps['data']
-    # print(f"Last run step detail: {run_steps_data[-1]}")
-    print(f"Last run step detail: {run_steps_data}")
 
-    # Delete the assistant when done
-    agents_client.delete_agent(agent.id)
+    # Delete the agent when done to clean up resources
+    project_client.agents.delete_agent(agent.id)
     print("Deleted agent")
 
-    # Fetch and log all messages
-    messages = agents_client.list_messages(thread_id=thread.id)
+    # Fetch and log all messages in the thread
+    messages = project_client.agents.list_messages(thread_id=thread.id)
     print(f"Messages: {messages}")
 # </create run>
