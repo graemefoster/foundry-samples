@@ -4,9 +4,6 @@ param aiSearchConnection string
 param projectName string
 param accountName string
 param projectCapHost string
-param accountCapHost string
-param subnetId string
-param networkInjection string
 
 var threadConnections = ['${cosmosDBConnection}']
 var storageConnections = ['${azureStorageConnection}']
@@ -24,17 +21,6 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   parent: account
 }
 
-
-// #disable-next-line BCP081
-//  resource accountCapabilityHost 'Microsoft.CognitiveServices/accounts/capabilityHosts@2025-04-01-preview' = if (networkInjection == 'false') {
-//    name: accountCapHost
-//    parent: account
-//    properties: {
-//      capabilityHostKind: 'Agents'
-   
-//    }
-// }
-
 #disable-next-line BCP081
 resource projectCapabilityHost 'Microsoft.CognitiveServices/accounts/projects/capabilityHosts@2025-04-01-preview' = {
   name: projectCapHost
@@ -45,7 +31,4 @@ resource projectCapabilityHost 'Microsoft.CognitiveServices/accounts/projects/ca
     storageConnections: storageConnections
     threadStorageConnections: threadConnections
   }
-  dependsOn: [
-    accountCapabilityHost
-  ]
 }

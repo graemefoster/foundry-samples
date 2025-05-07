@@ -302,9 +302,6 @@ module addProjectCapabilityHost 'modules-network-secured/add-project-capability-
     azureStorageConnection: aiProject.outputs.azureStorageConnection
     aiSearchConnection: aiProject.outputs.aiSearchConnection
     projectCapHost: projectCapHost
-    accountCapHost: accountCapHost
-    subnetId: vnet.outputs.subnetId
-    networkInjection: enableNetworkInjection
   }
   dependsOn: [
     aiSearchRoleAssignments, cosmosAccountRoleAssignments, storageAccountRoleAssignment
