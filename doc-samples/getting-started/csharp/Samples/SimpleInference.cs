@@ -7,6 +7,7 @@ using Azure.Core.Pipeline;
 
 namespace AiAgentsTests
 {
+    //<chat_completion>
     public class SimpleInference
     {
         public static void Main(string[] args)
@@ -44,4 +45,5 @@ namespace AiAgentsTests
  
         }
     }
+    // </chat_completion>
 }

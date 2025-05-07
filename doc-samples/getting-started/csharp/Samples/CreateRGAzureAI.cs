@@ -18,7 +18,7 @@ namespace AiAgentsTests
 
     // This is an app that creates a resource group, a Azure AI Foundry project.
     // It uses the Azure SDK for .NET to interact with Azure resources.
-
+    // <create_project>
     public class CreateRGAzureAI
     {
         public static void CreateRG(string[] args)
@@ -69,6 +69,7 @@ namespace AiAgentsTests
                 foundryResourceName,
                 parameters);
         }
+        // </create_project>
     }
 }
 

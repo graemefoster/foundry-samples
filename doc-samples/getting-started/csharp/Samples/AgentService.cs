@@ -9,6 +9,8 @@ using System.Threading;
 
 namespace AiAgentsTests
 {
+
+    // <create_and_run_agent>
     public class AgentService
     {
         public static void MathAgent()
@@ -84,4 +86,5 @@ namespace AiAgentsTests
             agentClient.DeleteAgent(agentId: agent.Id);
         }
     }
+    // </create_and_run_agent>
 }
