@@ -25,15 +25,15 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
 }
 
 
-#disable-next-line BCP081
- resource accountCapabilityHost 'Microsoft.CognitiveServices/accounts/capabilityHosts@2025-04-01-preview' = if (networkInjection == 'false') {
-   name: accountCapHost
-   parent: account
-   properties: {
-     capabilityHostKind: 'Agents'
+// #disable-next-line BCP081
+//  resource accountCapabilityHost 'Microsoft.CognitiveServices/accounts/capabilityHosts@2025-04-01-preview' = if (networkInjection == 'false') {
+//    name: accountCapHost
+//    parent: account
+//    properties: {
+//      capabilityHostKind: 'Agents'
    
-   }
-}
+//    }
+// }
 
 #disable-next-line BCP081
 resource projectCapabilityHost 'Microsoft.CognitiveServices/accounts/projects/capabilityHosts@2025-04-01-preview' = {

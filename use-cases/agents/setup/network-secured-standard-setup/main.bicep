@@ -17,8 +17,8 @@ param resourceGroupLocation string = resourceGroup().location
     'westus'
     'westus3'
   ])
-  @description('Location for all resources.')
-  param location string = resourceGroupLocation
+@description('Location for all resources.')
+param location string = resourceGroupLocation
 
 @description('Name for your AI Services resource.')
 param aiServices string = 'aiservices'
@@ -27,7 +27,7 @@ param aiServices string = 'aiservices'
 param firstProjectName string = 'project'
 
 @description('This project will be a sub-resource of your account')
-param projectDescription string = 'some description'
+param projectDescription string = 'A project for the AI Foundry account with network secured deployed Agent'
 
 @description('The display name of the project')
 param displayName string = 'project'
@@ -44,14 +44,13 @@ param modelSkuName string = 'GlobalStandard'
 @description('The tokens per minute (TPM) of your model deployment')
 param modelCapacity int = 1
 
+//Existing standard Agent required resources
 @description('The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param aiSearchResourceId string = ''
-
 @description('The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param azureStorageAccountResourceId string = ''
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param azureCosmosDBAccountResourceId string = ''
-
 
 param projectCapHost string = 'caphostproj'
 param accountCapHost string = 'caphostacc'
@@ -165,7 +164,7 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
     publicNetworkAccess: resourcePublicNetworkAccess 
   }
   dependsOn: [
-    vnet, validateExistingResources, aiDependencies
+    validateExistingResources, aiDependencies
   ]
 }
 
@@ -195,9 +194,6 @@ module aiProject 'modules-network-secured/ai-project-identity.bicep' = {
     // dependent resources
     accountName: aiAccount.outputs.accountName
   }
-  dependsOn: [
-    privateEndpointAndDNS
-  ]
 }
 
 
@@ -212,7 +208,7 @@ module aiProject 'modules-network-secured/ai-project-identity.bicep' = {
 // 3. Links private DNS zones to the VNet for name resolution
 // 4. Configures network policies to restrict access to private endpoints only
 module privateEndpointAndDNS 'modules-network-secured/private-endpoint-and-dns.bicep' = {
-    name: '${uniqueSuffix}--private-endpoint'
+    name: '${uniqueSuffix}-private-endpoint'
     params: {
       aiAccountName: aiAccount.outputs.accountName    // AI Services to secure
       aiSearchName: aiDependencies.outputs.aiSearchName       // AI Search to secure
@@ -222,11 +218,6 @@ module privateEndpointAndDNS 'modules-network-secured/private-endpoint-and-dns.b
       peSubnetName: vnet.outputs.peSubnetName        // Subnet for private endpoints
       suffix: uniqueSuffix                                    // Unique identifier
     }
-    dependsOn: [
-        vnet
-        aiAccount
-        aiDependencies
-    ]
   }
 
 
@@ -270,6 +261,38 @@ module aiSearchRoleAssignments 'modules-network-secured/ai-search-role-assignmen
   ]
 }
 
+
+// The Cosmos DB Operator role must be assigned before the caphost is created
+module cosmosContainerRoleAssignments 'modules-network-secured/cosmos-container-role-assignments.bicep' = {
+    name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
+    scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
+    params: {
+      cosmosAccountName: aiDependencies.outputs.cosmosDBName
+      projectWorkspaceId: aiProject.outputs.projectWorkspaceId
+      projectPrincipalId: aiProject.outputs.projectPrincipalId
+    
+    }
+  dependsOn: [
+    addProjectCapabilityHost
+    ]
+  }
+
+  // The Storage Blob Data Owner role must be assigned before the caphost is created
+module storageContainersRoleAssignment 'modules-network-secured/blob-storage-container-role-assignments.bicep' = {
+    name: 'storage-containers-${uniqueSuffix}-deployment'
+    scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
+    params: { 
+      aiProjectPrincipalId: aiProject.outputs.projectPrincipalId
+      storageName: aiDependencies.outputs.azureStorageName
+      workspaceId: aiProject.outputs.projectWorkspaceId
+    }
+    dependsOn: [
+      addProjectCapabilityHost
+    ]
+  }
+  
+
+// This module creates the capability host for the project and account
 module addProjectCapabilityHost 'modules-network-secured/add-project-capability-host.bicep' = {
   name: 'capabilityHost-configuration-${projectName}-${uniqueSuffix}-deployment'
   params: {
@@ -288,30 +311,4 @@ module addProjectCapabilityHost 'modules-network-secured/add-project-capability-
   ]
 }
 
-module cosmosContainerRoleAssignments 'modules-network-secured/cosmos-container-role-assignments.bicep' = {
-  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
-  scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
-  params: {
-    cosmosAccountName: aiDependencies.outputs.cosmosDBName
-    projectWorkspaceId: aiProject.outputs.projectWorkspaceId
-    projectPrincipalId: aiProject.outputs.projectPrincipalId
-  
-  }
-dependsOn: [
-  addProjectCapabilityHost
-  ]
-}
 
-// The Storage Blob Data Owner role must be assigned before the caphost is created
-module storageContainersRoleAssignment 'modules-network-secured/blob-storage-container-role-assignments.bicep' = {
-  name: 'storage-containers-${uniqueSuffix}-deployment'
-  scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
-  params: { 
-    aiProjectPrincipalId: aiProject.outputs.projectPrincipalId
-    storageName: aiDependencies.outputs.azureStorageName
-    workspaceId: aiProject.outputs.projectWorkspaceId
-  }
-  dependsOn: [
-    addProjectCapabilityHost
-  ]
-}
