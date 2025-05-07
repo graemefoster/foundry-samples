@@ -4,7 +4,8 @@
 The Due Diligence Risk Analyst is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The agent processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted reports with visual risk indicators.
 
 **Prerequisites**
-Obtain an API key for your Auquan Risk Agent.
+Obtain an API key for your Auquan Risk Agent by contacting us.
+You can contact us via this page : https://www.auquan.com/cta
 
 
 **Setup**
@@ -17,12 +18,7 @@ Obtain an API key for your Auquan Risk Agent.
 7. Set the connection name to your connection name. You use this connection name in your sample code or Foundry Portal later.
 8. For the Access setting, you can choose either this project only or shared to all projects. Just make sure in your code, the connection string of the project you entered has access to this connection.
 
-**Use Auquan Risk Agent tool through Foundry portal**
-1. To use the Auquan Risk tool in the Azure AI Foundry, in the Create and debug screen for your agent, scroll down the Setup pane on the right to action. Then select Add.
-2. Select Auquan and follow the prompts to add the tool.
-3. Give a name for your Auquan tool and provide an optional description.
-4. Select the custom key connection you just created.
-5. Finish and start chatting.
 
 
 **Customer Support Contact**
+support@auquan.com
