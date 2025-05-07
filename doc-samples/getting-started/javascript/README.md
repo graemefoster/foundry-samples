@@ -2,32 +2,14 @@
 
 ## Rename env.template to .env
 
-Rename `env.template` to `.env` and fill in the values. 
+Rename `env.template` to `.env` and fill in the values based on your AI Foundry project.
 
 ## Install dependencies
 
- - install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+ - Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
  - az login
  - npm install
 
-## Create a project and model deployment
+## Run a chat completion and agent
 
-`npm run create-project`
-
-## Run a chat completion
-
-
-
-## Create and run an agent
-
-
-
-## Add file search to agent
-
-
-
-## Evaluate agent run
-
-This will return scores for how good the agent performed on the task
-
-
+Run `npm start` to start the application and trigger the chat completion and agent.
