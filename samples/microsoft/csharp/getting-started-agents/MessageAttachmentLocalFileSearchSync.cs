@@ -12,23 +12,38 @@ var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = await client.Administration.CreateAgentAsync(
-    model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions."
-);
+string fileName = "sample_file_for_upload.txt";
+string fullPath = Path.Combine(AppContext.BaseDirectory, fileName);
 
-PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+File.WriteAllText(
+    path: fullPath,
+    contents: "The word 'apple' uses the code 442345, while the word 'banana' uses the code 673457.");
+
+PersistentAgent agent = client.Administration.CreateAgent(
+    model: modelDeploymentName,
+    name: "my-agent",
+    instructions: "You are a helpful agent that can help fetch data from files you know about.",
+    tools: [new CodeInterpreterToolDefinition()]);
+
+PersistentAgentFileInfo uploadedAgentFile = client.Files.UploadFile(
+    filePath: fullPath,
+    purpose: PersistentAgentFilePurpose.Agents);
+
+MessageAttachment attachment = new(
+    fileId: uploadedAgentFile.Id,
+    tools: [new CodeInterpreterToolDefinition()]);
+
+PersistentAgentThread thread = client.Threads.CreateThread();
 
 client.Messages.CreateMessage(
-    thread.Id,
-    MessageRole.User,
-    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    threadId: thread.Id,
+    role: MessageRole.User,
+    content: "Can you give me the documented codes for 'banana' and 'orange'?",
+    attachments: [attachment]);
 
 ThreadRun run = client.Runs.CreateRun(
     thread.Id,
-    agent.Id,
-    additionalInstructions: "Please address the user as Jane Doe. The user has a premium account.");
+    agent.Id);
 
 do
 {
@@ -56,5 +71,6 @@ foreach (ThreadMessage threadMessage in messages)
     }
 }
 
+client.Files.DeleteFile(uploadedAgentFile.Id);
 client.Threads.DeleteThread(threadId: thread.Id);
 client.Administration.DeleteAgent(agentId: agent.Id);

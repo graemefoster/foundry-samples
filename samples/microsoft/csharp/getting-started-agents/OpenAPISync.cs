@@ -10,25 +10,34 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
+var openApiSpec = configuration["OpenApiSpec"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = await client.Administration.CreateAgentAsync(
-    model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions."
+OpenApiToolDefinition openApiToolDef = new(
+    name: "get_weather",
+    description: "Retrieve weather information for a location",
+    spec: BinaryData.FromBytes(File.ReadAllBytes(openApiSpec)),
+    auth: new OpenApiAnonymousAuthDetails(),
+    defaultParams: ["format"]
 );
 
-PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+PersistentAgent agent = client.Administration.CreateAgent(
+    model: modelDeploymentName,
+    name: "Open API Tool Calling Agent",
+    instructions: "You are a helpful agent.",
+    tools: [openApiToolDef]
+);
+
+PersistentAgentThread thread = client.Threads.CreateThread();
 
 client.Messages.CreateMessage(
     thread.Id,
     MessageRole.User,
-    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    "What's the weather in Seattle?");
 
 ThreadRun run = client.Runs.CreateRun(
     thread.Id,
-    agent.Id,
-    additionalInstructions: "Please address the user as Jane Doe. The user has a premium account.");
+    agent.Id);
 
 do
 {

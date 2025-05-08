@@ -10,25 +10,38 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
+var filePath = configuration["FileNameWithCompletePath"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = await client.Administration.CreateAgentAsync(
-    model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions."
+PersistentAgentFileInfo uploadedFile = client.Files.UploadFile(
+    filePath: filePath,
+    purpose: PersistentAgentFilePurpose.Agents
 );
 
-PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+PersistentAgent agent = client.Administration.CreateAgent(
+    model: modelDeploymentName,
+    name: "File Image Understanding Agent",
+    instructions: "Analyze images from internally uploaded files."
+);
+
+PersistentAgentThread thread = client.Threads.CreateThread();
+
+var contentBlocks = new List<MessageInputContentBlock>
+{
+    new MessageInputTextBlock("Here is an uploaded file. Please describe it:"),
+    new MessageInputImageFileBlock(new MessageImageFileParam(uploadedFile.Id))
+};
 
 client.Messages.CreateMessage(
-    thread.Id,
-    MessageRole.User,
-    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    threadId: thread.Id,
+    role: MessageRole.User,
+    contentBlocks: contentBlocks
+);
 
 ThreadRun run = client.Runs.CreateRun(
-    thread.Id,
-    agent.Id,
-    additionalInstructions: "Please address the user as Jane Doe. The user has a premium account.");
+    threadId: thread.Id,
+    assistantId: agent.Id
+);
 
 do
 {
@@ -43,7 +56,7 @@ Pageable<ThreadMessage> messages = client.Messages.GetMessages(
     threadId: thread.Id,
     order: ListSortOrder.Ascending);
 
-foreach (ThreadMessage threadMessage in messages)
+foreach (ThreadMessage threadMessage in messages)   
 {
     foreach (MessageContent content in threadMessage.ContentItems)
     {
@@ -52,9 +65,14 @@ foreach (ThreadMessage threadMessage in messages)
             case MessageTextContent textItem:
                 Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
                 break;
+
+            case MessageImageFileContent fileItem:
+                Console.WriteLine($"[{threadMessage.Role}]: Image File (internal ID): {fileItem.FileId}");
+                break;
         }
     }
 }
 
+client.Files.DeleteFile(uploadedFile.Id);
 client.Threads.DeleteThread(threadId: thread.Id);
 client.Administration.DeleteAgent(agentId: agent.Id);

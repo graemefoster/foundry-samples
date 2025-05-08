@@ -2,6 +2,7 @@ using Azure;
 using Azure.AI.Agents.Persistent;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -10,20 +11,22 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
+
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = await client.Administration.CreateAgentAsync(
+PersistentAgent agent = client.Administration.CreateAgent(
     model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions."
+    name: "My Friendly Test Agent",
+    instructions: "You politely help with math questions. Use the code interpreter tool when asked to visualize numbers.",
+    tools: [new CodeInterpreterToolDefinition()]
 );
 
-PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+PersistentAgentThread thread = client.Threads.CreateThread();
 
 client.Messages.CreateMessage(
     thread.Id,
     MessageRole.User,
-    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    "Hi, Agent! Draw a graph for a line with a slope of 4 and y-intercept of 9.");
 
 ThreadRun run = client.Runs.CreateRun(
     thread.Id,
@@ -51,6 +54,20 @@ foreach (ThreadMessage threadMessage in messages)
         {
             case MessageTextContent textItem:
                 Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
+            case MessageImageFileContent imageFileContent:
+                Console.WriteLine($"[{threadMessage.Role}]: Image content file ID = {imageFileContent.FileId}");
+                BinaryData imageContent = client.Files.GetFileContent(imageFileContent.FileId);
+                string tempFilePath = Path.Combine(AppContext.BaseDirectory, $"{Guid.NewGuid()}.png");
+                File.WriteAllBytes(tempFilePath, imageContent.ToArray());
+                client.Files.DeleteFile(imageFileContent.FileId);
+
+                ProcessStartInfo psi = new()
+                {
+                    FileName = tempFilePath,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
                 break;
         }
     }
