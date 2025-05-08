@@ -1,4 +1,4 @@
-# Connect with partner-authored tools in Azure AI Agent Service
+# Connect with non-Microsoft tools in Azure AI Agent Service
 
 ## Overview
 The tool catalog in Azure AI Foundry portal is the hub to discover and use a wide range of tools for building AI agents with Azure AI Agent Service. The tool catalog features tools for extending your agents' abilities using hosted tools, and ones offered from partners such as Tripadvisor, and Morningstar. You can discover all tools offered by **partners** in this folder.
