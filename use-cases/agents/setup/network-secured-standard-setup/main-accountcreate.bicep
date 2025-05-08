@@ -25,7 +25,7 @@ param aiServices string = 'aiservices'
 
 // Model deployment parameters
 @description('The name of the model you want to deploy')
-param modelName string = 'gpt-4o'
+param modelName string = 'gpt-4o-mini'
 @description('The provider of your model')
 param modelFormat string = 'OpenAI'
 @description('The version of your model')
@@ -34,20 +34,6 @@ param modelVersion string = '2024-05-13'
 param modelSkuName string = 'GlobalStandard'
 @description('The tokens per minute (TPM) of your model deployment')
 param modelCapacity int = 1
-
-
-@allowed([
-  'false'
-  'true'
-])
-param enableNetworkInjection string = 'true'
-
-@description('Specifies the public network access for the Azure AI Foundry resource.')
-@allowed([
-  'Disabled'
-  'Enabled'
-])
-param resourcePublicNetworkAccess string = 'Disabled'
 
 
 // Create a short, unique suffix, that will be unique to each resource group
@@ -73,18 +59,26 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
     // workspace organization
     accountName: accountName
     location: location
-
     modelName: modelName
     modelFormat: modelFormat
     modelVersion: modelVersion
     modelSkuName: modelSkuName
     modelCapacity: modelCapacity
-	
     subnetId: vnet.outputs.subnetId
-    networkInjection: enableNetworkInjection
-    publicNetworkAccess: resourcePublicNetworkAccess 
   }
 }
 
+module aiAccountCapabilityHost 'modules-network-secured/add-account-capability-host.bicep' = {
+  name: 'ai-${accountName}-${uniqueSuffix}-capability-host'
+  params: {
+    accountName: accountName
+    accountCapHost: 'agents'
+  }
+  dependsOn: [
+    aiAccount
+  ]
+}
 
-
+output accountName string = aiAccount.outputs.accountName
+output subscriptionID string = subscription().subscriptionId
+output resourceGroupName string = resourceGroup().name

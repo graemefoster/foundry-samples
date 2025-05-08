@@ -32,40 +32,15 @@ param projectDescription string = 'A project for the AI Foundry account with net
 @description('The display name of the project')
 param displayName string = 'project'
 
-// Model deployment parameters
-@description('The name of the model you want to deploy')
-param modelName string = 'gpt-4o'
-@description('The provider of your model')
-param modelFormat string = 'OpenAI'
-@description('The version of your model')
-param modelVersion string = '2024-05-13'
-@description('The sku of your model deployment')
-param modelSkuName string = 'GlobalStandard'
-@description('The tokens per minute (TPM) of your model deployment')
-param modelCapacity int = 1
-
 //Existing standard Agent required resources
 @description('The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param aiSearchResourceId string = ''
+param aiSearchResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-fdp-ni-eus/providers/Microsoft.Search/searchServices/aiservicesdbfssearch'
 @description('The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureStorageAccountResourceId string = ''
+param azureStorageAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-fdp-ni-eus/providers/Microsoft.Storage/storageAccounts/aiservicesdbfsstorage'
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureCosmosDBAccountResourceId string = ''
+param azureCosmosDBAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-fdp-ni-eus/providers/Microsoft.DocumentDB/databaseAccounts/aiservicesdbfscosmosdb'
 
 param projectCapHost string = 'caphostproj'
-
-@allowed([
-  'false'
-  'true'
-])
-param enableNetworkInjection string = 'true'
-
-@description('Specifies the public network access for the Azure AI Foundry resource.')
-@allowed([
-  'Disabled'
-  'Enabled'
-])
-param resourcePublicNetworkAccess string = 'Disabled'
 
 
 // Create a short, unique suffix, that will be unique to each resource group

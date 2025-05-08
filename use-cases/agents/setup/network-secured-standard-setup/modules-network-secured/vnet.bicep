@@ -17,7 +17,7 @@ This module deploys the core network infrastructure with security controls:
 param location string
 
 @description('The name of the virtual network')
-param vnetName string = 'agents-vnet'
+param vnetName string = 'agents-vnet-test'
 
 @description('The name of Agents Subnet')
 param agentSubnetName string = 'default'

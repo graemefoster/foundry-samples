@@ -1,6 +1,5 @@
 param accountName string
 
-#disable-next-line BCP081
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
   name: accountName
 }
