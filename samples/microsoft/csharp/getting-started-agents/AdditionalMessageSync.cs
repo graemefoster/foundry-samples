@@ -14,8 +14,8 @@ PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential(
 PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
     name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions."
-);
+    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
+    tools: [new CodeInterpreterToolDefinition()]);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
 
