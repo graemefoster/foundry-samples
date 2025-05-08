@@ -2,7 +2,7 @@
 
 ## Rename env.template to .env
 
-Rename `env.template` to `.env` and fill in the values based on your AI Foundry project.
+Rename `env.template` to `.env` and fill in the endpoint values based on your AI Foundry project.
 
 ## Install dependencies
 

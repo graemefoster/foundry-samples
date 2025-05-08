@@ -15,8 +15,7 @@
   "type": "module",
   "main": "src/quickstart.js",
   "scripts": {
-    "start": "node src/quickstart.js",
-    "create-project": "node src/create-project.js"
+    "start": "node src/quickstart.js"
   },
   "dependencies": {
     "@azure/ai-agents": "^1.0.0-alpha.20250505.3",
