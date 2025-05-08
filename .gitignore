@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-* .env
+*.env
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+use-cases/infrastructure-setup/01-connections/your.deployment.parameters.json
