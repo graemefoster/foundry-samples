@@ -13,7 +13,7 @@ You can contact us via this page : https://www.auquan.com/cta
 2. Select +new connection in the settings page.
 3. Select custom keys in other resource types.
 4. Enter the following information to create a connection to store your Auquan Risk Agent Tool key:
-5. Set Custom keys to "key", with the value being your Auquan Risk Agent Tool API key.
+5. Set Custom keys to "x-api-key", with the value being your Auquan Risk Agent Tool API key.
 6. Make sure is secret is checked.
 7. Set the connection name to your connection name. You use this connection name in your sample code or Foundry Portal later.
 8. For the Access setting, you can choose either this project only or shared to all projects. Just make sure in your code, the connection string of the project you entered has access to this connection.
