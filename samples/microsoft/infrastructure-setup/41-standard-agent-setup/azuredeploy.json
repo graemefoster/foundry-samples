@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.35.1.17967",
-      "templateHash": "4269638694629069341"
+      "templateHash": "3238454214624215890"
     }
   },
   "parameters": {
@@ -81,21 +81,21 @@
     },
     "aiSearchResourceId": {
       "type": "string",
-      "defaultValue": "/subscriptions/921496dc-987f-410f-bd57-426eb2611356/resourceGroups/rg-amanda1rp-westus2/providers/Microsoft.Search/searchServices/aiservicesatgzsearch",
+      "defaultValue": "",
       "metadata": {
         "description": "The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created."
       }
     },
     "azureStorageAccountResourceId": {
       "type": "string",
-      "defaultValue": "/subscriptions/921496dc-987f-410f-bd57-426eb2611356/resourceGroups/rg-amanda1rp-westus2/providers/Microsoft.Storage/storageAccounts/aiservicesatgzstorage",
+      "defaultValue": "",
       "metadata": {
         "description": "The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created."
       }
     },
     "azureCosmosDBAccountResourceId": {
       "type": "string",
-      "defaultValue": "/subscriptions/921496dc-987f-410f-bd57-426eb2611356/resourceGroups/rg-amanda1rp-westus2/providers/Microsoft.DocumentDB/databaseAccounts/aiservicesatgzcosmosdb",
+      "defaultValue": "",
       "metadata": {
         "description": "The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created."
       }
@@ -1286,7 +1286,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.35.1.17967",
-              "templateHash": "12300359194728762865"
+              "templateHash": "5181953434548371888"
             }
           },
           "parameters": {
@@ -1317,7 +1317,7 @@
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
               "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('storageName'))]",
-              "name": "[guid(resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'), resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')))]",
+              "name": "[guid(resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'), resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), parameters('aiProjectPrincipalId'), parameters('workspaceId'))]",
               "properties": {
                 "principalId": "[parameters('aiProjectPrincipalId')]",
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
