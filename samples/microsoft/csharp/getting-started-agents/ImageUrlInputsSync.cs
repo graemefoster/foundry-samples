@@ -12,23 +12,37 @@ var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = await client.Administration.CreateAgentAsync(
+PersistentAgent agent = client.Administration.CreateAgent(
     model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal math tutor. Write and run code to answer math questions."
+    name: "Image Understanding Agent",
+    instructions: "You are an image-understanding agent. Analyze images and provide textual descriptions."
 );
 
-PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+PersistentAgentThread thread = client.Threads.CreateThread();
+
+MessageImageUrlParam imageUrlParam = new(
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+)
+{
+    Detail = ImageDetailLevel.High
+};
+
+var contentBlocks = new List<MessageInputContentBlock>
+{
+    new MessageInputTextBlock("Could you describe this image?"),
+    new MessageInputImageUrlBlock(imageUrlParam)
+};
 
 client.Messages.CreateMessage(
-    thread.Id,
-    MessageRole.User,
-    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    threadId: thread.Id,
+    role: MessageRole.User,
+    contentBlocks: contentBlocks
+);
 
 ThreadRun run = client.Runs.CreateRun(
-    thread.Id,
-    agent.Id,
-    additionalInstructions: "Please address the user as Jane Doe. The user has a premium account.");
+    threadId: thread.Id,
+    assistantId: agent.Id
+);
 
 do
 {
@@ -51,6 +65,10 @@ foreach (ThreadMessage threadMessage in messages)
         {
             case MessageTextContent textItem:
                 Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
+
+            case MessageImageFileContent fileItem:
+                Console.WriteLine($"[{threadMessage.Role}]: Image File (internal ID): {fileItem.FileId}");
                 break;
         }
     }

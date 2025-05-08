@@ -7,24 +7,24 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
-
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
-PersistentAgent agent = client.Administration.CreateAgent(
+PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
     name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
-    tools: [new CodeInterpreterToolDefinition()]);
+    instructions: "You are a personal electronics tutor. Write and run code to answer questions."
+);
 
-PersistentAgentThread thread = client.Threads.CreateThread();
-client.Messages.CreateMessage(
+PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+
+await client.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
     "What is the impedance formula?");
 
-ThreadRun run = client.Runs.CreateRun(
+ThreadRun run = await client.Runs.CreateRunAsync(
     threadId: thread.Id,
     agent.Id,
     additionalMessages: [
@@ -41,27 +41,29 @@ ThreadRun run = client.Runs.CreateRun(
 
 do
 {
-    Thread.Sleep(TimeSpan.FromMilliseconds(500));
-    run = client.Runs.GetRun(thread.Id, run.Id);
+    await Task.Delay(TimeSpan.FromMilliseconds(500));
+    run = await client.Runs.GetRunAsync(thread.Id, run.Id);
 }
 while (run.Status == RunStatus.Queued
     || run.Status == RunStatus.InProgress
     || run.Status == RunStatus.RequiresAction);
 
-Pageable<ThreadMessage> messages = client.Messages.GetMessages(
-    thread.Id,
+AsyncPageable<ThreadMessage> messages = client.Messages.GetMessagesAsync(
+    threadId: thread.Id,
     order: ListSortOrder.Ascending);
 
-foreach (ThreadMessage threadMessage in messages)
+await foreach (ThreadMessage threadMessage in messages)
 {
-    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    foreach (MessageContent content in threadMessage.ContentItems)
     {
-        if (contentItem is MessageTextContent textItem)
+        switch (content)
         {
-            Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+            case MessageTextContent textItem:
+                Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
         }
     }
 }
 
-client.Threads.DeleteThread(threadId: thread.Id);
-client.Administration.DeleteAgent(agentId: agent.Id);
+await client.Threads.DeleteThreadAsync(threadId: thread.Id);
+await client.Administration.DeleteAgentAsync(agentId: agent.Id);

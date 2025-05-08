@@ -1,6 +1,6 @@
-# Sample of Azure.AI.Agents using Azure Functions
+# Sample for using Azure Functions with agents in Azure.AI.Agents
 
-# Prerequisites
+## Prerequisites
 To make a function call we need to create and deploy the Azure function. In the code snippet below, we have an example of function on C# which can be used by the code above.
 
 ```C#
@@ -63,9 +63,9 @@ az login
 az functionapp create --resource-group your-resource-group --consumption-plan-location region --runtime dotnet-isolated --functions-version 4 --name function_name --storage-account storage_account_already_present_in_resource_group --app-insights existing_or_new_application_insights_name
 ```
 
-This function writes data to the output queue and hence needs to be authenticated to Azure, so we will need to assign the function system identity and provide it `Storage Queue Data Contributor`. To do that in Azure portal select the function, located in `your-resource-group` resource group and in Settings > Identity, switch it on and click Save. After that assign the `Storage Queue Data Contributor` permission on storage account used by our function (`storage_account_already_present_in_resource_group` in the script above) for just assigned System Managed identity.
+This function writes data to the output queue and hence needs to be authenticated to Azure, so we will need to assign the function system identity and provide it `Storage Queue Data Contributor`. To do that in Azure portal select the function, located in `your-resource-group` resource group and in Settings>Identity, switch it on and click Save. After that assign the `Storage Queue Data Contributor` permission on storage account used by our function (`storage_account_already_present_in_resource_group` in the script above) for just assigned System Managed identity.
 
-Now we will create the function itself. Install [.NET](https://dotnet.microsoft.com/download) and [Core Tools](https://go.microsoft.com/fwlink/?linkid=2174087) and create the function project using next commands. 
+Now we will create the function itself. Install [.NET](https://dotnet.microsoft.com/download) and [Core Tools](https://go.microsoft.com/fwlink/?linkid=2174087) and create the function project using next commands.
 ```
 func init FunctionProj --worker-runtime dotnet-isolated --target-framework net8.0
 cd FunctionProj
@@ -75,7 +75,7 @@ dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues --
 ```
 
 **Note:** There is a "Azure Queue Storage trigger", however the attempt to use it results in error for now.
-We have created a project, containing HTTP-triggered azure function with the logic in `Foo.cs` file. As far as we need to trigger Azure function by a new message in the queue, we will replace the content of a Foo.cs by the C# sample code above. 
+We have created a project, containing HTTP-triggered azure function with the logic in `Foo.cs` file. As far as we need to trigger Azure function by a new message in the queue, we will replace the content of a Foo.cs by the C# sample code above.
 To deploy the function run the command from dotnet project folder:
 
 ```
@@ -101,177 +101,213 @@ Please note that the input `CorrelationId` is the same as output.
 *Hint:* Place multiple messages to input queue and keep second internet browser window with the output queue open and hit the refresh button on the portal user interface, so that you will not miss the message. If the message instead went to `azure-function-foo-input-poison` queue, the function completed with error, please check your setup.
 After we have tested the function and made sure it works, please make sure that the Azure AI Project have the next roles for the storage account: `Storage Account Contributor`, `Storage Blob Data Contributor`, `Storage File Data Privileged Contributor`, `Storage Queue Data Contributor` and `Storage Table Data Contributor`. Now the function is ready to be used by the agent.
 
-In the example below we are calling function "foo", which responds "Bar". 
-1. We create `AzureFunctionToolDefinition` object, with the function name, description, input and output queues, followed by function parameters. Plus we need to read in environment variables to get necessary parameters.
-```C# Snippet:AgentsAzureFunctionsDefineFunctionTools
-var projectEndpoint = new Uri(configuration["ProjectEndpoint"]);
-var modelDeploymentName = configuration["ModelDeploymentName"];
-var storageQueueUri = configuration["StorageQueueURI"];
+In the example below we are calling function "foo", which responds "Bar".
 
-PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
+## Azure.AI.Agents Sample Code
 
-AzureFunctionToolDefinition azureFnTool = new(
-    name: "foo",
-    description: "Get answers from the foo bot.",
-    inputBinding: new AzureFunctionBinding(
-        new AzureFunctionStorageQueue(
-            queueName: "azure-function-foo-input",
-            storageServiceEndpoint: storageQueueUri
-        )
-    ),
-    outputBinding: new AzureFunctionBinding(
-        new AzureFunctionStorageQueue(
-            queueName: "azure-function-tool-output",
-            storageServiceEndpoint: storageQueueUri
-        )
-    ),
-    parameters: BinaryData.FromObjectAsJson(
-            new
-            {
-                Type = "object",
-                Properties = new
+1. First, we set up the necessary configuration, initialize the `PersistentAgentsClient`, define the `AzureFunctionToolDefinition` for our Azure Function, and then create the agent. This step includes all necessary `using` directives.
+
+    Common setup:
+
+    ```C# Snippet:AzureFunctionStep1CommonSetup
+    using Azure;
+    using Azure.AI.Agents.Persistent;
+    using Azure.Identity;
+    using Microsoft.Extensions.Configuration;
+    using System.Text.Json;
+
+    IConfigurationRoot configuration = new ConfigurationBuilder()
+        .SetBasePath(AppContext.BaseDirectory)
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .Build();
+
+    var projectEndpoint = configuration["ProjectEndpoint"];
+    var modelDeploymentName = configuration["ModelDeploymentName"];
+    var storageQueueUri = configuration["StorageQueueURI"];
+    PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
+
+    AzureFunctionToolDefinition azureFnTool = new(
+        name: "foo",
+        description: "Get answers from the foo bot.",
+        inputBinding: new AzureFunctionBinding(
+            new AzureFunctionStorageQueue(
+                queueName: "azure-function-foo-input",
+                storageServiceEndpoint: storageQueueUri
+            )
+        ),
+        outputBinding: new AzureFunctionBinding(
+            new AzureFunctionStorageQueue(
+                queueName: "azure-function-tool-output",
+                storageServiceEndpoint: storageQueueUri
+            )
+        ),
+        parameters: BinaryData.FromObjectAsJson(
+                new
                 {
-                    query = new
+                    Type = "object",
+                    Properties = new
                     {
-                        Type = "string",
-                        Description = "The question to ask.",
+                        query = new
+                        {
+                            Type = "string",
+                            Description = "The question to ask.",
+                        },
+                        outputqueueuri = new
+                        {
+                            Type = "string",
+                            Description = "The full output queue uri."
+                        }
                     },
-                    outputqueueuri = new
-                    {
-                        Type = "string",
-                        Description = "The full output queue uri."
-                    }
                 },
-            },
-        new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
-    )
-);
-```
+            new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
+        )
+    );
+    ```
 
-2. Next we need to create an agent. In this scenario we are asking it to supply storage queue URI to the azure function whenever it is called.
+    Synchronous sample:
 
-Synchronous sample:
-```C# Snippet:AgentsAzureFunctionsCreateAgentWithFunctionToolsSync
-PersistentAgent agent = client.CreateAgent(
-    model: modelDeploymentName,
-    name: "azure-function-agent-foo",
+    ```C# Snippet:AzureFunctionStep1CreateAgentSync
+    PersistentAgent agent = client.Administration.CreateAgent(
+        model: modelDeploymentName,
+        name: "azure-function-agent-foo",
         instructions: "You are a helpful support agent. Use the provided function any "
         + "time the prompt contains the string 'What would foo say?'. When you invoke "
         + "the function, ALWAYS specify the output queue uri parameter as "
         + $"'{storageQueueUri}/azure-function-tool-output'. Always responds with "
         + "\"Foo says\" and then the response from the tool.",
-    tools: [azureFnTool]);
-```
+        tools: [azureFnTool]
+    );
+    ```
 
-Asynchronous sample:
-```C# Snippet:AgentsAzureFunctionsCreateAgentWithFunctionTools
-PersistentAgent agent = await client.CreateAgentAsync(
-    model: modelDeploymentName,
-    name: "azure-function-agent-foo",
+    Asynchronous sample:
+
+    ```C# Snippet:AzureFunctionStep1CreateAgentAsync
+    PersistentAgent agent = await client.Administration.CreateAgentAsync(
+        model: modelDeploymentName,
+        name: "azure-function-agent-foo",
         instructions: "You are a helpful support agent. Use the provided function any "
         + "time the prompt contains the string 'What would foo say?'. When you invoke "
         + "the function, ALWAYS specify the output queue uri parameter as "
         + $"'{storageQueueUri}/azure-function-tool-output'. Always responds with "
         + "\"Foo says\" and then the response from the tool.",
-    tools: [azureFnTool]);
-```
+        tools: [azureFnTool]
+    );
+    ```
 
-3. After we have created a message with request to ask "What would foo say?", we need to wait while the run is in queued, in progress or requires action states.
+2. Next, we create a new persistent agent thread and add an initial user message to it.
 
-Synchronous sample:
-```C# Snippet:AgentsAzureFunctionsHandlePollingWithRequiredActionSync
-PersistentAgentThread thread = client.CreateThread();
+    Synchronous sample:
 
-client.CreateMessage(
-    thread.Id,
-    MessageRole.User,
-    "What is the most prevalent element in the universe? What would foo say?");
+    ```C# Snippet:AzureFunctionStep2CreateThreadMessageSync
+    PersistentAgentThread thread = client.Threads.CreateThread();
 
-ThreadRun run = client.CreateRun(thread, agent);
+    client.Messages.CreateMessage(
+        thread.Id,
+        MessageRole.User,
+        "What is the most prevalent element in the universe? What would foo say?");
+    ```
 
-do
-{
-    Thread.Sleep(TimeSpan.FromMilliseconds(500));
-    run = client.GetRun(thread.Id, run.Id);
-}
-while (run.Status == RunStatus.Queued
-    || run.Status == RunStatus.InProgress
-    || run.Status == RunStatus.RequiresAction);
-```
+    Asynchronous sample:
 
-Asynchronous sample:
-```C# Snippet:AgentsAzureFunctionsHandlePollingWithRequiredAction
-PersistentAgentThread thread = await client.CreateThreadAsync();
+    ```C# Snippet:AzureFunctionStep2CreateThreadMessageAsync
+    PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
 
-await client.CreateMessageAsync(
-    thread.Id,
-    MessageRole.User,
-    "What is the most prevalent element in the universe? What would foo say?");
+    await client.Messages.CreateMessageAsync(
+        thread.Id,
+        MessageRole.User,
+        "What is the most prevalent element in the universe? What would foo say?");
+    ```
 
-ThreadRun run = await client.CreateRunAsync(thread, agent);
+3. Then, we create a run for the agent on the thread and poll its status until it completes or requires action.
 
-do
-{
-    await Task.Delay(TimeSpan.FromMilliseconds(500));
-    run = await client.GetRunAsync(thread.Id, run.Id);
-}
-while (run.Status == RunStatus.Queued
-    || run.Status == RunStatus.InProgress
-    || run.Status == RunStatus.RequiresAction);
-```
+    Synchronous sample:
 
-4. Finally, we will print out the messages to the console in chronological order.
+    ```C# Snippet:AzureFunctionStep3RunAndPollSync
+    ThreadRun run = client.Runs.CreateRun(thread.Id, agent.Id);
 
-Synchronous sample:
-```C# Snippet:AgentsAzureFunctionsPrintSync
-PageableList<ThreadMessage> messages = client.GetMessages(
-    threadId: thread.Id,
-    order: ListSortOrder.Ascending
-);
-
-foreach (ThreadMessage threadMessage in messages)
-{
-    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    do
     {
-        if (contentItem is MessageTextContent textItem)
-        {
-            Console.Write($"{threadMessage.Role}: {textItem.Text}");
-        }
-        Console.WriteLine();
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
+        run = client.Runs.GetRun(thread.Id, run.Id);
     }
-}
-```
+    while (run.Status == RunStatus.Queued
+        || run.Status == RunStatus.InProgress
+        || run.Status == RunStatus.RequiresAction);
+    ```
 
-Asynchronous sample:
-```C# Snippet:AgentsAzureFunctionsPrint
-PageableList<ThreadMessage> messages = await client.GetMessagesAsync(
-    threadId: thread.Id,
-    order: ListSortOrder.Ascending
-);
+    Asynchronous sample:
 
-foreach (ThreadMessage threadMessage in messages)
-{
-    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    ```C# Snippet:AzureFunctionStep3RunAndPollAsync
+    ThreadRun run = await client.Runs.CreateRunAsync(thread.Id, agent.Id);
+
+    do
     {
-        if (contentItem is MessageTextContent textItem)
-        {
-            Console.Write($"{threadMessage.Role}: {textItem.Text}");
-        }
-        Console.WriteLine();
+        await Task.Delay(TimeSpan.FromMilliseconds(500));
+        run = await client.Runs.GetRunAsync(thread.Id, run.Id);
     }
-}
-```
+    while (run.Status == RunStatus.Queued
+        || run.Status == RunStatus.InProgress
+        || run.Status == RunStatus.RequiresAction);
+    ```
 
-5. Finally, we delete all the resources, we have created in this sample.
+4. After the run is complete, we retrieve and process the messages from the thread.
 
-Synchronous sample:
-```C# Snippet:AgentsAzureFunctionsCleanupSync
-client.DeleteThread(thread.Id);
-client.DeleteAgent(agent.Id);
-```
+    Synchronous sample:
 
-Asynchronous sample:
-```C# Snippet:AgentsAzureFunctionsCleanup
-await client.DeleteThreadAsync(thread.Id);
-await client.DeleteAgentAsync(agent.Id);
-```
+    ```C# Snippet:AzureFunctionStep4ProcessResultsSync
+    Pageable<ThreadMessage> messages = client.Messages.GetMessages(
+        threadId: thread.Id,
+        order: ListSortOrder.Ascending
+    );
+
+    foreach (ThreadMessage threadMessage in messages)
+    {
+        foreach (MessageContent content in threadMessage.ContentItems)
+        {
+            switch (content)
+            {
+                case MessageTextContent textItem:
+                    Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                    break;
+            }
+        }
+    }
+    ```
+
+    Asynchronous sample:
+
+    ```C# Snippet:AzureFunctionStep4ProcessResultsAsync
+    AsyncPageable<ThreadMessage> messages = client.Messages.GetMessagesAsync(
+        threadId: thread.Id,
+        order: ListSortOrder.Ascending
+    );
+
+    await foreach (ThreadMessage threadMessage in messages)
+    {
+        foreach (MessageContent content in threadMessage.ContentItems)
+        {
+            switch (content)
+            {
+                case MessageTextContent textItem:
+                    Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                    break;
+            }
+        }
+    }
+    ```
+
+5. Finally, we clean up the created resources by deleting the thread and the agent.
+
+    Synchronous sample:
+
+    ```C# Snippet:AzureFunctionStep5CleanupSync
+    client.Threads.DeleteThread(thread.Id);
+    client.Administration.DeleteAgent(agent.Id);
+    ```
+
+    Asynchronous sample:
+
+    ```C# Snippet:AzureFunctionStep5CleanupAsync
+    await client.Threads.DeleteThreadAsync(thread.Id);
+    await client.Administration.DeleteAgentAsync(agent.Id);
+    ```

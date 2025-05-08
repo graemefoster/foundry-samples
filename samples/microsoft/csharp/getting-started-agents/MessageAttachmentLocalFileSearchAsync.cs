@@ -7,37 +7,45 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
+
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
+
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
+
+string fileName = "sample_file_for_upload.txt";
+string fullPath = Path.Combine(AppContext.BaseDirectory, fileName);
+
+File.WriteAllText(
+    path: fullPath,
+    contents: "The word 'apple' uses the code 442345, while the word 'banana' uses the code 673457.");
 
 PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
+    name: "my-agent",
+    instructions: "You are a helpful agent that can help fetch data from files you know about.",
+    tools: [new CodeInterpreterToolDefinition()]);
+
+PersistentAgentFileInfo uploadedAgentFile = await client.Files.UploadFileAsync(
+    filePath: "sample_file_for_upload.txt",
+    purpose: PersistentAgentFilePurpose.Agents);
+
+
+MessageAttachment attachment = new(
+    fileId: uploadedAgentFile.Id,
     tools: [new CodeInterpreterToolDefinition()]);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
 
 await client.Messages.CreateMessageAsync(
-    thread.Id,
-    MessageRole.User,
-    "What is the impedance formula?");
+    threadId: thread.Id,
+    role: MessageRole.User,
+    content: "Can you give me the documented codes for 'banana' and 'orange'?",
+    attachments: [attachment]);
 
 ThreadRun run = await client.Runs.CreateRunAsync(
-    threadId: thread.Id,
-    agent.Id,
-    additionalMessages: [
-        new ThreadMessageOptions(
-            role: MessageRole.Agent,
-            content: "E=mc^2"
-        ),
-        new ThreadMessageOptions(
-            role: MessageRole.User,
-            content: "What is the impedance formula?"
-        ),
-    ]
-);
+    thread.Id,
+    agent.Id);
 
 do
 {
@@ -65,5 +73,6 @@ await foreach (ThreadMessage threadMessage in messages)
     }
 }
 
+await client.Files.DeleteFileAsync(uploadedAgentFile.Id);
 await client.Threads.DeleteThreadAsync(threadId: thread.Id);
 await client.Administration.DeleteAgentAsync(agentId: agent.Id);

@@ -7,36 +7,39 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
+
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
+var filePath = configuration["FileNameWithCompletePath"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
+
+PersistentAgentFileInfo uploadedFile = await client.Files.UploadFileAsync(
+    filePath: filePath,
+    purpose: PersistentAgentFilePurpose.Agents
+);
 
 PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
-    tools: [new CodeInterpreterToolDefinition()]);
+    name: "File Image Understanding Agent",
+    instructions: "Analyze images from internally uploaded files."
+);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+
+var contentBlocks = new List<MessageInputContentBlock>
+{
+    new MessageInputTextBlock("Here is an uploaded file. Please describe it:"),
+    new MessageInputImageFileBlock(new MessageImageFileParam(uploadedFile.Id))
+};
 
 await client.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
-    "What is the impedance formula?");
+    contentBlocks: contentBlocks);
 
 ThreadRun run = await client.Runs.CreateRunAsync(
     threadId: thread.Id,
-    agent.Id,
-    additionalMessages: [
-        new ThreadMessageOptions(
-            role: MessageRole.Agent,
-            content: "E=mc^2"
-        ),
-        new ThreadMessageOptions(
-            role: MessageRole.User,
-            content: "What is the impedance formula?"
-        ),
-    ]
+    assistantId: agent.Id
 );
 
 do
@@ -65,5 +68,6 @@ await foreach (ThreadMessage threadMessage in messages)
     }
 }
 
+await client.Files.DeleteFileAsync(uploadedFile.Id);
 await client.Threads.DeleteThreadAsync(threadId: thread.Id);
 await client.Administration.DeleteAgentAsync(agentId: agent.Id);
