@@ -7,7 +7,7 @@
     },
     "servers": [
       {
-        "url": "https://staging-alchemist-backend.auquan.com",
+        "url": "https://agents.auquan.com",
         "description": "Staging server"
       }
     ],
