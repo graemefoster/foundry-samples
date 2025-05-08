@@ -2,7 +2,7 @@ import { DefaultAzureCredential } from '@azure/identity';
 import { AIProjectClient } from '@azure/ai-projects';
 import { AgentsClient } from '@azure/ai-agents';
 import { config } from 'dotenv';
-config(); 
+config();
 
 async function chatCompletion() {
     // <chat_completion>
@@ -19,7 +19,7 @@ async function chatCompletion() {
             { role: "user", content: "Write me a poem about flowers" },
         ],
     });
-  
+
     console.log("response = ", JSON.stringify(chatCompletion, null, 2));
     // </chat_completion>
 }
@@ -63,6 +63,12 @@ async function runAgent() {
     await client.deleteAgent(agent.id);
     console.log(`Deleted Agent, Agent ID: ${agent.id}`);
     // </create_and_run_agent>
+
+    // <create_filesearch_agent> 
+
+    // Create the file search agent
+    
+    // </create_filesearch_agent>
 }
 
 runAgent().catch(console.error);
