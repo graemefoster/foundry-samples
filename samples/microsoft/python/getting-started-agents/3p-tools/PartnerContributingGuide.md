@@ -1,9 +1,9 @@
 # 3p Tool Partner Contributing Guide
 
 ## Who should read this?
-This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Foundry Tool Catalog** so that customers can integrate your APIs with Azure AI Agent service through a tool to retrieve data or integrating with a workflow.
+This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Agent Service non-Microsoft tools** so that customers can integrate your APIs with Azure AI Agent service through a tool to retrieve data or integrating with a workflow.
 
-## Prepare your PR
+## Prepare your Pull Request (PR)
 Your PR needs to create a new folder with the tool name and include the following information: 
 - `README.md` (required): follow this [template](./README_template_for_parter.md) as an example and this README file will serve as public documentation for help customers set up and use the tool with your API through Azure AI Agent service
   - The name, logo, and description in this README file will be used in the Azure AI Foundry Portal user experience and marketing materials.
