@@ -239,45 +239,19 @@ resource aiServicesDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGr
   properties: {
     privateDnsZoneConfigs: [
       {
-        name: '${aiAccountName}-dns-config'
+        name: '${aiAccountName}-dns-aiserv-config'
         properties: {
           privateDnsZoneId: aiServicesPrivateDnsZone.id
         }
       }
-    ]
-  }
-  dependsOn: [
-    aiServicesLink
-  ]
-}
-
-// 3) DNS Zone Group for Azure OpenAI
-resource aiOpenAIDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01' = {
-  parent: aiAccountPrivateEndpoint
-  name: '${aiAccountName}-openAi-dns-group'
-  properties: {
-    privateDnsZoneConfigs: [
       {
-        name: '${aiAccountName}-openAi-dns-config'
+        name: '${aiAccountName}-dns-openai-config'
         properties: {
           privateDnsZoneId: openAiPrivateDnsZone.id
         }
       }
-    ]
-  }
-  dependsOn: [
-    aiOpenAILink
-  ]
-}
-
-//3) DNS Zone Group for Cognitive Services
-resource cognitiveServicesDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01' = {
-  parent: aiAccountPrivateEndpoint
-  name: '${aiAccountName}-cognitiveServices-dns-group'
-  properties: {
-    privateDnsZoneConfigs: [
       {
-        name: '${aiAccountName}-cognitiveServices-dns-config'
+        name: '${aiAccountName}-dns-cogserv-config'
         properties: {
           privateDnsZoneId: cognitiveServicesPrivateDnsZone.id
         }
@@ -285,9 +259,12 @@ resource cognitiveServicesDnsGroup 'Microsoft.Network/privateEndpoints/privateDn
     ]
   }
   dependsOn: [
+    aiServicesLink 
     cognitiveServicesLink
+    aiOpenAILink
   ]
 }
+
 
 
 // Private DNS Zone for AI Search
