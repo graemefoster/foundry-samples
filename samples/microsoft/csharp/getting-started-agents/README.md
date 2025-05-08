@@ -15,7 +15,7 @@ This table tracks the current status of code samples for each supported tool in 
 
 | Tool               | Sample Description                     | Status          | Notes / Known Issues                          |
 |--------------------|-----------------------------------------|-----------------|-----------------------------------------------|
-| **Basic Agent**    | Using agent with no tools              | ❌ Doesn't exist|                                               |
+| **Basic Agent**    | Using agent with no tools              | ✅ Fully functional and validated|                                               |
 | **Bing**           | Using Bing in an agent                 | ⚠️ Exists| Sample updated - works with project connection string, but not with project endpoint |
 | **File Search**    | Uploading files                        | ⚠️ Exists| Sample updated - works with project connection string, but not with project endpoint |
 |                    | Using blob storage (project data assets)| ❌ Doesn't exist|                                               |
@@ -24,12 +24,12 @@ This table tracks the current status of code samples for each supported tool in 
 | **Fabric**         | Grounding with Fabric data             | ❌ Doesn't exist|                                               |
 | **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist|                                               |
 | **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist|                                               |
-| **Function Calling**| Calling local functions               | ❌ Doesn't exist|                                               |
-| **Azure Functions**| Calling durable Azure Functions        | ❌ Doesn't exist|                                               |
+| **Function Calling**| Calling local functions               | ✅ Fully functional and validated|                                               |
+| **Azure Functions**| Calling durable Azure Functions        | ✅ Fully functional and validated|                                               |
 | **Logic Apps**     | Calling Logic Apps workflows           | ❌ Doesn't exist|                                               |
-| **Code Interpreter**| Using Code Interpreter                | ❌ Doesn't exist|                                               |
-|                    | Supported file types                   | ❌ Doesn't exist|                                               |
-| **OpenAPI**        | Calling external APIs with OpenAPI     | ❌ Doesn't exist|                                               |
+| **Code Interpreter**| Using Code Interpreter                | ✅ Fully functional and validated|                                               |
+|                    | Supported file types                   | ✅ Fully functional and validated|                                               |
+| **OpenAPI**        | Calling external APIs with OpenAPI     | ✅ Fully functional and validated|                                               |
 | **Quickstart**     | Agent example showcasing multiple tools| ❌ Doesn't exist|                                               |
 
 ---
