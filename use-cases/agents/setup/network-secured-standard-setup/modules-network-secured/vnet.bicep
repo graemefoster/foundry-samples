@@ -1,6 +1,5 @@
 /*
 Virtual Network Module
----------------------
 This module deploys the core network infrastructure with security controls:
 
 1. Address Space:

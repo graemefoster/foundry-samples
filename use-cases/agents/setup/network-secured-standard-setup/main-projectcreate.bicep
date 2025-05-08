@@ -53,7 +53,6 @@ param azureStorageAccountResourceId string = ''
 param azureCosmosDBAccountResourceId string = ''
 
 param projectCapHost string = 'caphostproj'
-param accountCapHost string = 'caphostacc'
 
 @allowed([
   'false'
@@ -146,22 +145,11 @@ module aiDependencies 'modules-network-secured/standard-dependent-resources.bice
 /*
   Create the AI Services account and gpt-4o model deployment
 */
-module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
+module aiAccount 'modules-network-secured/ai-account-reference.bicep' = {
   name: 'ai-${accountName}-${uniqueSuffix}-deployment'
   params: {
     // workspace organization
     accountName: accountName
-    location: location
-
-    modelName: modelName
-    modelFormat: modelFormat
-    modelVersion: modelVersion
-    modelSkuName: modelSkuName
-    modelCapacity: modelCapacity
-	
-    subnetId: vnet.outputs.subnetId
-    networkInjection: enableNetworkInjection
-    publicNetworkAccess: resourcePublicNetworkAccess 
   }
   dependsOn: [
     validateExistingResources, aiDependencies
