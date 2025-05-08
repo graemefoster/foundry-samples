@@ -1,7 +1,7 @@
 # 3p Tool Partner Contributing Guide
 
 ## Who should read this?
-This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Foundry Tool Catalog** so that customers can integrate your APIs with Azure AI Agent service through a tool to retrieve data or integrating with a workflow.
+This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Agent Service non-Microsoft tools** so that customers can integrate your APIs with Azure AI Agent service through a tool to retrieve data or integrating with a workflow.
 
 ## Prepare your PR
 Your PR needs to create a new folder with the tool name and include the following information: 
