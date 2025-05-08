@@ -6,7 +6,7 @@ param accountName string
 param projectCapHost string
 param accountCapHost string
 param subnetId string
-param networkInjection string
+param networkInjection bool = false
 
 var threadConnections = ['${cosmosDBConnection}']
 var storageConnections = ['${azureStorageConnection}']

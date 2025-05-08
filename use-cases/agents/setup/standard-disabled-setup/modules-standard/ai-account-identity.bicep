@@ -7,7 +7,6 @@ param location string
 // param modelSkuName string 
 // param modelCapacity int
 param subnetId string
-param networkInjection string
 
 #disable-next-line BCP081
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
@@ -28,14 +27,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
       virtualNetworkRules: []
       ipRules: []
     }
-    publicNetworkAccess: 'Enabled'
-    networkInjections:((networkInjection == 'true') ? [
-    {
-      scenario: 'agent'
-      subnetArmId: subnetId
-      useMicrosoftManagedNetwork: false
-    }
-    ] : null )
+    publicNetworkAccess: 'Disabled'
     // true is not supported today
     disableLocalAuth: false
   }

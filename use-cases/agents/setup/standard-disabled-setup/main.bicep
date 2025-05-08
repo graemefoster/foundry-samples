@@ -1,7 +1,7 @@
 // Standard agent setup 
 
 @description('The region to deploy your AI Services resource and project')
-param location string = 'westus2'
+param location string = 'eastus2'
 
 @description('Name for your AI Services resource.')
 param aiServices string = 'aiservices'
@@ -38,11 +38,6 @@ param azureCosmosDBAccountResourceId string = ''
 param projectCapHost string = 'caphostproj'
 param accountCapHost string = 'caphostacc'
 
-@allowed([
-  'false'
-  'true'
-])
-param enableNetworkInjection string = 'true'
 
 // Create a short, unique suffix, that will be unique to each resource group
 param deploymentTimestamp string = utcNow('yyyyMMddHHmmss')
@@ -96,7 +91,7 @@ module aiDependencies 'modules-standard/standard-dependent-resources.bicep' = {
     azureStorageName: azureStorageName
     aiSearchName: aiSearchName
     cosmosDBName: cosmosDBName
-
+    networkInjection: 'false'
     //keyvaultName: 'kv-${name}-${uniqueSuffix}'
 
     //  // AI Services account parameters
@@ -117,7 +112,6 @@ module aiDependencies 'modules-standard/standard-dependent-resources.bicep' = {
 	
 	// vnet injection
     vnetName: virtualNetwork
-    networkInjection: enableNetworkInjection
     }
 }
 
@@ -138,7 +132,6 @@ module aiAccount 'modules-standard/ai-account-identity.bicep' = {
     // modelCapacity: modelCapacity
 	
     subnetId: aiDependencies.outputs.subnetId
-    networkInjection: enableNetworkInjection
   }
   dependsOn: [
     validateExistingResources, aiDependencies
@@ -249,7 +242,6 @@ module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bi
     projectCapHost: projectCapHost
     accountCapHost: accountCapHost
     subnetId: aiDependencies.outputs.subnetId
-    networkInjection: enableNetworkInjection
   }
   dependsOn: [
     aiSearchRoleAssignments, cosmosAccountRoleAssignments, storageAccountRoleAssignment
