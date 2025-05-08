@@ -1,7 +1,9 @@
 # Connect with non-Microsoft tools in Azure AI Agent Service
 
 ## Overview
-The tool catalog in Azure AI Foundry portal is the hub to discover and use a wide range of tools for building AI agents with Azure AI Agent Service. The tool catalog features tools for extending your agents' abilities using hosted tools, and ones offered from partners such as Tripadvisor, and Morningstar. You can discover all tools offered by **partners** in this folder.
+To empower your AI agent with grounded data or the capability to take actions and automating workflows, the Foundry Agent service provides a wide range of built-in tools, such as Grounding with Bing Search, Azure AI Search, Azure Logic Apps, as well as third-party parter tools, such as Tripadvisor. This page is designed to provide an overview of tools provided in the AI Agent Service.
+
+The following tools are authored by **third-party partners**. Use the links below to view the documentation and code samples.
 
 > [!IMPORTANT]
 > * Your use of connected non-Microsoft services is subject to the terms between you and the service provider. By connecting to a non-Microsoft service, you acknowledge that some of your data, such as prompt content, is passed to the non-Microsoft service, and/or your application might receive data from the non-Microsoft service. You're responsible for your use of non-Microsoft data. 
