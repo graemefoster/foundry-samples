@@ -7,36 +7,41 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
+
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
 PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
-    name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
-    tools: [new CodeInterpreterToolDefinition()]);
+    name: "Image Understanding Agent",
+    instructions: "You are an image-understanding agent. Analyze images and provide textual descriptions."
+);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
 
+MessageImageUrlParam imageUrlParam = new(
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+)
+{
+    Detail = ImageDetailLevel.High
+};
+
+var contentBlocks = new List<MessageInputContentBlock>
+{
+    new MessageInputTextBlock("Could you describe this image?"),
+    new MessageInputImageUrlBlock(imageUrlParam)
+};
+
 await client.Messages.CreateMessageAsync(
-    thread.Id,
-    MessageRole.User,
-    "What is the impedance formula?");
+    threadId: thread.Id,
+    role: MessageRole.User,
+    contentBlocks: contentBlocks
+);
 
 ThreadRun run = await client.Runs.CreateRunAsync(
     threadId: thread.Id,
-    agent.Id,
-    additionalMessages: [
-        new ThreadMessageOptions(
-            role: MessageRole.Agent,
-            content: "E=mc^2"
-        ),
-        new ThreadMessageOptions(
-            role: MessageRole.User,
-            content: "What is the impedance formula?"
-        ),
-    ]
+    assistantId: agent.Id
 );
 
 do
@@ -60,6 +65,10 @@ await foreach (ThreadMessage threadMessage in messages)
         {
             case MessageTextContent textItem:
                 Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
+
+            case MessageImageFileContent fileItem:
+                Console.WriteLine($"[{threadMessage.Role}]: Image File (internal ID): {fileItem.FileId}");
                 break;
         }
     }

@@ -7,6 +7,7 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
+
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
@@ -14,30 +15,20 @@ PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential(
 PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: modelDeploymentName,
     name: "Math Tutor",
-    instructions: "You are a personal electronics tutor. Write and run code to answer questions.",
-    tools: [new CodeInterpreterToolDefinition()]);
+    instructions: "You are a personal math tutor. Write and run code to answer math questions."
+);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
 
 await client.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
-    "What is the impedance formula?");
+    "I need to solve the equation `3x + 11 = 14`. Can you help me?");
 
 ThreadRun run = await client.Runs.CreateRunAsync(
-    threadId: thread.Id,
+    thread.Id,
     agent.Id,
-    additionalMessages: [
-        new ThreadMessageOptions(
-            role: MessageRole.Agent,
-            content: "E=mc^2"
-        ),
-        new ThreadMessageOptions(
-            role: MessageRole.User,
-            content: "What is the impedance formula?"
-        ),
-    ]
-);
+    additionalInstructions: "Please address the user as Jane Doe. The user has a premium account.");
 
 do
 {
