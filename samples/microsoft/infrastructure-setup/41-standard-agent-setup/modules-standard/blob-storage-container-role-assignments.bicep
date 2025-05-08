@@ -26,7 +26,7 @@ var conditionStr= '((!(ActionMatches{\'Microsoft.Storage/storageAccounts/blobSer
 // Assign Storage Blob Data Owner role
 resource storageBlobDataOwnerAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: storage
-  name: guid(storage.id, aiProjectPrincipalId)
+  name: guid(storage.id, aiProjectPrincipalId, storageBlobDataOwner.id, workspaceId)
   properties: {
     principalId: aiProjectPrincipalId
     roleDefinitionId: storageBlobDataOwner.id
