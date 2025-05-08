@@ -64,6 +64,10 @@ await foreach (ThreadMessage threadMessage in messages)
             case MessageTextContent textItem:
                 Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
                 break;
+
+            case MessageImageFileContent fileItem:
+                Console.WriteLine($"[{threadMessage.Role}]: Image File (internal ID): {fileItem.FileId}");
+                break;
         }
     }
 }
