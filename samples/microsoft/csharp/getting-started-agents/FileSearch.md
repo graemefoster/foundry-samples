@@ -4,20 +4,23 @@ In this example we will create the local file, upload it to the newly created `V
 
 1. First we need to create agent client and read the environment variables that will be used in the next steps.
 ```C# Snippet:AgentsFileSearch_CreateClient
-// Get Connection information from Environment Variables
-// To use App Config instead:  https://learn.microsoft.com/en-us/visualstudio/ide/managing-application-settings-dotnet
-var projectEndpoint = System.Environment.GetEnvironmentVariable("PROJECT_ENDPOINT");
-var modelDeploymentName = System.Environment.GetEnvironmentVariable("MODEL_DEPLOYMENT_NAME");
+// Get Connection information from app configuration
+var projectEndpoint = configuration["ProjectEndpoint"];
+var modelDeploymentName = configuration["ModelDeploymentName"];
 
 // Create the Agent Client
-PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
+PersistentAgentsClient agentClient = new(
+    projectEndpoint,
+    new DefaultAzureCredential(),
+    new PersistentAgentsAdministrationClientOptions(
+        PersistentAgentsAdministrationClientOptions.ServiceVersion.V2025_05_01
+    ));
 ```
 
 2. Now we will create a local file and upload it to the data store.
 
 Synchronous sample:
 ```C# Snippet:AgentsFileSearch_UploadAgentFiles
-// Upload a file and wait for it to be processed
 // Create a local sample file
 System.IO.File.WriteAllText(
     path: "sample_file_for_upload.txt",
@@ -25,7 +28,7 @@ System.IO.File.WriteAllText(
 );
 
 // Upload local sample file to the agent
-PersistentAgentFile uploadedAgentFile = agentClient.UploadFile(
+PersistentAgentFileInfo uploadedAgentFile = agentClient.Files.UploadFile(
     filePath: "sample_file_for_upload.txt",
     purpose: PersistentAgentFilePurpose.Agents
 );
@@ -46,7 +49,7 @@ await System.IO.File.WriteAllTextAsync(
 );
 
 // Upload local sample file to the agent
-PersistentAgentFile uploadedAgentFile = await agentClient.UploadFileAsync(
+PersistentAgentFileInfo uploadedAgentFile = await agentClient.Files.UploadFileAsync(
     filePath: "sample_file_for_upload.txt",
     purpose: PersistentAgentFilePurpose.Agents
 );
@@ -65,7 +68,7 @@ Synchronous sample:
 // Create a vector store with the file and wait for it to be processed.
 // If you do not specify a vector store, CreateMessage will create a vector
 // store with a default expiration policy of seven days after they were last active
-VectorStore vectorStore = agentClient.CreateVectorStore(
+VectorStore vectorStore = agentClient.VectorStores.CreateVectorStore(
     fileIds: new List<string> { uploadedAgentFile.Id },
     name: "my_vector_store");
 
@@ -76,7 +79,7 @@ Asynchronous sample:
 // Create a vector store with the file and wait for it to be processed.
 // If you do not specify a vector store, CreateMessage will create a vector
 // store with a default expiration policy of seven days after they were last active
-VectorStore vectorStore = await agentClient.CreateVectorStoreAsync(
+VectorStore vectorStore = await agentClient.VectorStores.CreateVectorStoreAsync(
     fileIds: new List<string> { uploadedAgentFile.Id },
     name: "my_vector_store");
 
@@ -91,7 +94,7 @@ FileSearchToolResource fileSearchToolResource = new FileSearchToolResource();
 fileSearchToolResource.VectorStoreIds.Add(vectorStore.Id);
 
 // Create an agent with Tools and Tool Resources
-PersistentAgent agent = agentClient.CreateAgent(
+PersistentAgent agent = agentClient.Administration.CreateAgent(
         model: modelDeploymentName,
         name: "SDK Test Agent - Retrieval",
         instructions: "You are a helpful agent that can help fetch data from files you know about.",
@@ -106,7 +109,7 @@ FileSearchToolResource fileSearchToolResource = new FileSearchToolResource();
 fileSearchToolResource.VectorStoreIds.Add(vectorStore.Id);
 
 // Create an agent with Tools and Tool Resources
-PersistentAgent agent = await agentClient.CreateAgentAsync(
+PersistentAgent agent = await agentClient.Administration.CreateAgentAsync(
         model: modelDeploymentName,
         name: "SDK Test Agent - Retrieval",
         instructions: "You are a helpful agent that can help fetch data from files you know about.",
@@ -119,21 +122,21 @@ PersistentAgent agent = await agentClient.CreateAgentAsync(
 Synchronous sample:
 ```C# Snippet:AgentsFileSearch_CreateThreadAndRun
 // Create the agent thread for communication
-PersistentAgentThread thread = agentClient.CreateThread();
+PersistentAgentThread thread = agentClient.Threads.CreateThread();
 
 // Create message and run the agent
-ThreadMessage messageResponse = agentClient.CreateMessage(
+ThreadMessage messageResponse = agentClient.Messages.CreateMessage(
     thread.Id,
     MessageRole.User,
     "Can you give me the documented codes for 'banana' and 'orange'?");
 
-ThreadRun run = agentClient.CreateRun(thread, agent);
+ThreadRun run = agentClient.Runs.CreateRun(thread, agent);
 
 // Wait for the agent to finish running
 do
 {
     Thread.Sleep(TimeSpan.FromMilliseconds(500));
-    run = agentClient.GetRun(thread.Id, run.Id);
+    run = agentClient.Runs.GetRun(thread.Id, run.Id);
 }
 while (run.Status == RunStatus.Queued
     || run.Status == RunStatus.InProgress);
@@ -149,21 +152,21 @@ if (run.Status != RunStatus.Completed)
 Asynchronous sample:
 ```C# Snippet:AgentsFileSearchAsync_CreateThreadAndRun
 // Create the agent thread for communication
-PersistentAgentThread thread = await agentClient.CreateThreadAsync();
+PersistentAgentThread thread = await agentClient.Threads.CreateThreadAsync();
 
 // Create message and run the agent
-ThreadMessage messageResponse = await agentClient.CreateMessageAsync(
+ThreadMessage messageResponse = await agentClient.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
     "Can you give me the documented codes for 'banana' and 'orange'?");
 
-ThreadRun run = await agentClient.CreateRunAsync(thread, agent);
+ThreadRun run = await agentClient.Runs.CreateRunAsync(thread, agent);
 
 // Wait for the agent to finish running
 do
 {
     await Task.Delay(TimeSpan.FromMilliseconds(500));
-    run = await agentClient.GetRunAsync(thread.Id, run.Id);
+    run = await agentClient.Runs.GetRunAsync(thread.Id, run.Id);
 }
 while (run.Status == RunStatus.Queued
     || run.Status == RunStatus.InProgress);
@@ -177,10 +180,11 @@ if (run.Status != RunStatus.Completed)
 ```
 
 6. Print the agent messages to console in chronological order (including formatting file citations).
-```C# Snippet:AgentsFileSearch_Print
 
+Synchronous sample:
+```C# Snippet:AgentsFileSearch_Print
 // Retrieve all messages from the agent client
-PageableList<ThreadMessage> messages = agentClient.GetMessages(
+Pageable<ThreadMessage> messages = agentClient.Messages.GetMessages(
     threadId: thread.Id,
     order: ListSortOrder.Ascending
 );
@@ -233,21 +237,83 @@ foreach (ThreadMessage threadMessage in messages)
         Console.WriteLine();
     }
 }
+
 ```
+
+Asynchronous sample:
+```C# Snippet:AgentsFileSearchAsync_Print
+// Retrieve all messages from the agent client
+AsyncPageable<ThreadMessage> messages = agentClient.Messages.GetMessagesAsync(
+    threadId: thread.Id,
+    order: ListSortOrder.Ascending
+);
+
+// Helper method for replacing references
+static string replaceReferences(Dictionary<string, string> fileIds, string fileID, string placeholder, string text)
+{
+    if (fileIds.TryGetValue(fileID, out string replacement))
+        return text.Replace(placeholder, $" [{replacement}]");
+    else
+        return text.Replace(placeholder, $" [{fileID}]");
+}
+
+// Process messages in order
+await foreach (ThreadMessage threadMessage in messages)
+{
+    Console.Write($"{threadMessage.CreatedAt:yyyy-MM-dd HH:mm:ss} - {threadMessage.Role,10}: ");
+
+    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    {
+        if (contentItem is MessageTextContent textItem)
+        {
+            if (threadMessage.Role == MessageRole.Agent && textItem.Annotations.Count > 0)
+            {
+                string strMessage = textItem.Text;
+
+                // If we file path or file citation annotations - rewrite the 'source' FileId with the file name
+                foreach (MessageTextAnnotation annotation in textItem.Annotations)
+                {
+                    if (annotation is MessageTextFilePathAnnotation pathAnnotation)
+                    {
+                        strMessage = replaceReferences(fileIds, pathAnnotation.FileId, pathAnnotation.Text, strMessage);
+                    }
+                    else if (annotation is MessageTextFileCitationAnnotation citationAnnotation)
+                    {
+                        strMessage = replaceReferences(fileIds, citationAnnotation.FileId, citationAnnotation.Text, strMessage);
+                    }
+                }
+                Console.Write(strMessage);
+            }
+            else
+            {
+                Console.Write(textItem.Text);
+            }
+        }
+        else if (contentItem is MessageImageFileContent imageFileItem)
+        {
+            Console.Write($"<image from ID: {imageFileItem.FileId}");
+        }
+        Console.WriteLine();
+    }
+}
+```
+
 7. Finally, we delete all the resources created in this sample.
 
 Synchronous sample:
 ```C# Snippet:AgentsFileSearch_Cleanup
-client.DeleteVectorStore(vectorStore.Id);
-client.DeleteFile(uploadedAgentFile.Id);
-client.DeleteThread(thread.Id);
-client.DeleteAgent(agent.Id);
+// Clean up resources
+agentClient.VectorStores.DeleteVectorStore(vectorStore.Id);
+agentClient.Files.DeleteFile(uploadedAgentFile.Id);
+agentClient.Threads.DeleteThread(thread.Id);
+agentClient.Administration.DeleteAgent(agent.Id);
 ```
 
 Asynchronous sample:
 ```C# Snippet:AgentsFileSearchAsync_Cleanup
-await client.DeleteVectorStoreAsync(vectorStore.Id);
-await client.DeleteFileAsync(uploadedAgentFile.Id);
-await client.DeleteThreadAsync(thread.Id);
-await client.DeleteAgentAsync(agent.Id);
+// Clean up resources
+await agentClient.VectorStores.DeleteVectorStoreAsync(vectorStore.Id);
+await agentClient.Files.DeleteFileAsync(uploadedAgentFile.Id);
+await agentClient.Threads.DeleteThreadAsync(thread.Id);
+await agentClient.Administration.DeleteAgentAsync(agent.Id);
 ```
