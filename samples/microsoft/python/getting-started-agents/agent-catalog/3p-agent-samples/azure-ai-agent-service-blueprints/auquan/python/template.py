@@ -53,7 +53,7 @@ with project_client:
            - Example request format:
              ```bash
              curl -X POST "https://agents-backend.auquan.com/api/analyze-query" \
-               -H "X-API-Key: YOUR_API_KEY" \
+               -H "x-api-key: YOUR_API_KEY" \
                -H "Content-Type: application/json" \
                -d '{"query": "do a risk analysis for company_name"}'
              ```
