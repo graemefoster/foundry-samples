@@ -50,7 +50,7 @@ with AIProjectClient(
     # Create Auth object for the OpenApiTool (note that connection or managed identity auth setup requires additional setup in Azure)
     auth = OpenApiConnectionAuthDetails(security_scheme=OpenApiConnectionSecurityScheme(connection_id=conn_id))
 
-    # Initialize the main OpenAPI tool definition for weather
+    # Initialize the main OpenAPI tool definition for Auquan Risk Analyzer
     openapi_tool = OpenApiTool(
         name="auquan risk analyser tool", 
         spec=openapi_spec, 
