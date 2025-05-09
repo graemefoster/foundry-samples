@@ -35,7 +35,7 @@ with project_client:
 
     # Create an instance of the CodeInterpreterTool
     agent = project_client.agents.create_agent(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         name="auquan-risk-analyzer-agent",
         instructions=f"""
         You are a Due Diligence Risk Analyst with expertise in corporate risk assessment and analysis. Your primary responsibilities include:
