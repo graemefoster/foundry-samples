@@ -21,7 +21,7 @@ This table tracks the current status of code samples for each supported tool in 
 |                    | Using blob storage (project data assets)| ❌ Doesn't exist|                                               |
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
 | **Azure AI Search**| Using a knowledge store                | ❌ Doesn't exist|                                               |
-| **Fabric**         | Grounding with Fabric data             | ❌ Doesn't exist|                                               |
+| **Fabric**         | Grounding with Fabric data             | ⚠️ Exists| Sample not yet tested - but compiles properly and follows updated coding patterns |
 | **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist|                                               |
 | **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist|                                               |
 | **Function Calling**| Calling local functions               | ✅ Fully functional and validated|                                               |
