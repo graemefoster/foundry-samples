@@ -17,13 +17,13 @@ This table tracks the current status of code samples for each supported tool in 
 |--------------------|-----------------------------------------|-----------------|-----------------------------------------------|
 | **Basic Agent**    | Using agent with no tools              | ❌ Doesn't exist|                                               |
 | **Bing**           | Using Bing in an agent                 | ⚠️ Exists| Sample updated - get "Bing Search API key is missing" error |
-| **File Search**    | Uploading files                        | ✅/⚠️ | Sample updated - **Sync** sample works, **Async** sample crashes on await agentClient.Files.UploadFileAsync() |
+| **File Search**    | Uploading files                        | ✅ Fully functional and validated |  |
 |                    | Using blob storage (project data assets)| ⚠️ Exists| Sample not yet tested - but compiles properly and follows updated coding patterns |
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
 | **Azure AI Search**| Using a knowledge store                | ⚠️ Exists | Sample not yet tested - but compiles properly and follows updated coding patterns |
 | **Fabric**         | Grounding with Fabric data             | ⚠️ Exists| Sample not yet tested - but compiles properly and follows updated coding patterns |
-| **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist|                                               |
-| **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist|                                               |
+| **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist in docs or repo|                                               |
+| **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist in docs or repo|                                               |
 | **Function Calling**| Calling local functions               | ✅ Fully functional and validated|                                               |
 | **Azure Functions**| Calling durable Azure Functions        | ✅ Fully functional and validated|                                               |
 | **Logic Apps**     | Calling Logic Apps workflows           | ❌ Doesn't exist|                                               |
