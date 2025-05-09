@@ -36,62 +36,58 @@ from azure.identity import DefaultAzureCredential  # For authentication
 from azure.ai.projects import AIProjectClient  # Client to interact with Azure AI Projects
 
 # Retrieve the endpoint and model deployment name from environment variables
-endpoint = os.environ["PROJECT_ENDPOINT"]  # Azure AI service endpoint
-model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # AI model deployment name
+project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Ensure the PROJECT_ENDPOINT environment variable is set
+model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # Ensure the MODEL_DEPLOYMENT_NAME environment variable is set
 
-# Create an AIProjectClient instance to interact with the Azure AI service
-with AIProjectClient(
-    endpoint=endpoint,  # Azure AI service endpoint
-    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Authentication credentials
-) as project_client:
-    
-    # Access the AgentsClient from the AIProjectClient
-    agents_client = project_client.agents
+# Initialize the AIProjectClient with the endpoint and credentials
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
+    api_version="latest",
+)
 
+with project_client:
     # Initialize the CodeInterpreterTool for enabling code interpretation
     code_interpreter = CodeInterpreterTool()
 
     # Create an agent with the specified model, name, instructions, and tools
-    # Note: CodeInterpreter must be enabled in the agent creation for file attachment support
-    agent = agents_client.create_agent(
+    agent = project_client.agents.create_agent(
         model=model_deployment_name,  # Model deployment name
         name="my-agent",  # Name of the agent
-        instructions="You are helpful agent",  # Instructions for the agent
+        instructions="You are a helpful agent",  # Instructions for the agent
         tools=code_interpreter.definitions,  # Tools to be used by the agent
     )
     print(f"Created agent, agent ID: {agent.id}")
 
     # Create a thread for communication with the agent
-    thread = agents_client.create_thread()
+    thread = project_client.agents.threads.create()
     print(f"Created thread, thread ID: {thread.id}")
 
-    # [START upload_file_and_create_message_with_code_interpreter]
-    # We will upload the local file to Azure and will use it for vector store creation.
-    asset_uri = os.environ["AZURE_BLOB_URI"]
+    # Upload a file and create a message with the CodeInterpreterTool
+    asset_uri = os.environ["AZURE_BLOB_URI"]  # Ensure the AZURE_BLOB_URI environment variable is set
     ds = VectorStoreDataSource(asset_identifier=asset_uri, asset_type=VectorStoreDataSourceAssetType.URI_ASSET)
-
-    # Create a message with the attachment
     attachment = MessageAttachment(data_source=ds, tools=code_interpreter.definitions)
-    message = agents_client.create_message(
-        thread_id=thread.id, role="user", content="What does the attachment say?", attachments=[attachment]
+    message = project_client.agents.messages.create(
+        thread_id=thread.id,
+        role="user",
+        content="What does the attachment say?",
+        attachments=[attachment],
     )
-    # [END upload_file_and_create_message_with_code_interpreter]
-
-    print(f"Created message, message ID: {message.id}")
+    print(f"Created message, message ID: {message['id']}")
 
     # Create and process a run with the specified thread and agent
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    run = project_client.agents.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
 
-    # Check if the run failed and print the error message if so
     if run.status == "failed":
-        # Check if you got "Rate limit is exceeded.", then you want to get more quota
+        # Log the error if the run fails
         print(f"Run failed: {run.last_error}")
 
-    # Delete the agent after use
-    agents_client.delete_agent(agent.id)
-    print("Deleted agent")
+    # Fetch and log all messages from the thread
+    messages = project_client.agents.messages.list(thread_id=thread.id)
+    for message in messages.data:
+        print(f"Role: {message.role}, Content: {message.content}")
 
-    # List and print all messages in the thread
-    messages = agents_client.list_messages(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    # Delete the agent after use
+    project_client.agents.delete_agent(agent.id)
+    print("Deleted agent")
