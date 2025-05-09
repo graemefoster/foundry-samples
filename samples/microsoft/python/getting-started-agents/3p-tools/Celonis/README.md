@@ -13,11 +13,11 @@
 2. In the space, navigate to the package where you want to define your tools API.
 3. In the panel on the left, click on the **New asset** and select Process Copilot.
 
-![alt text](images/new_asset_menu.png)
+![alt text](media/new_asset_menu.png)
 
 4. In the Create Process Copilot Window, enter a name, select the knowledge model, select **Tools for your external Agent**, and click **Create**.
 
-![alt text](images/create_copilot_menu.png)
+![alt text](media/create_copilot_menu.png)
 
 
 5. Select the Knowledge Input. See: [Knowledge Input](https://docs.celonis.com/en/knowledge-input.html)
@@ -25,11 +25,11 @@
 6. Select the Tools. These are the set of tools your agent will have access to. See: [Tool Activation](https://docs.celonis.com/en/tool-activation.html). For the tool API, you can select from **Get Data**, **Get Insights**, **PQL Tool**, and **Trigger Action Flow**.  **Search Agent** will be added automatically.
 
 7. Click **Publish** in the upper right, then click **Publish** in the window that appears.
-![alt text](images/publish.png)
+![alt text](media/publish.png)
 
 
 8. Click **Show Tools API** in the upper right and then, click **Copy API to Clipboard** in the window that appears.
-![alt text](images/copy.png)
+![alt text](media/copy.png)
 
 
 
@@ -48,16 +48,16 @@
     4. Select **Access**.
 
 
-![alt text](images/connection.png)
+![alt text](media/connection.png)
 
 
 ## Use Celonis through the Foundry Portal
 
 1. To use the Celonis tool in the Azure AI foundry, in the **Create and debug** screen for your agent, scroll down the **Setup** pane on the right to **Actions**. Then select **Add**.
-![alt text](images/actions.png)
+![alt text](media/actions.png)
 
 2. Select **OpenAPI 3.0 specified tool**
-![alt text](images/add_action.png)
+![alt text](media/add_action.png)
 
 3. Create the tool
     1. Give a name and a description for the tool that will help the model understand the functionality.
@@ -65,7 +65,7 @@
     2. Define the Schema. Make sure the authentication method is set to **Connection**. For **Choose a connection**, use the connection name of the connection you made [above](#add-your-api-key-to-azure-ai-foundry)
 
     3. Paste the OpenAPI schema you created in [Create Your Celonis Tools API](#create-your-celonis-tools-api)
-![alt text](images/create_custom_tool.png)
+![alt text](media/create_custom_tool.png)
 
 4. Finish and start chatting.
 
