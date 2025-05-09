@@ -16,12 +16,12 @@ name: "Run Samples"
 on:
   # Automatic validation on pull requests
   pull_request_target:
-    # Only PRs whose base branch is main
-    branches:
-      - main
-    # Only when sample code changes
-    paths:
-      - doc-samples/agents/**
+    # # Only PRs whose base branch is main
+    # branches:
+    #   - main
+    # # Only when sample code changes
+    # paths:
+    #   - doc-samples/agents/**
 
   # Run-button or gh CLI trigger
   workflow_dispatch:
