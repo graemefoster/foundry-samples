@@ -1,0 +1,12 @@
+azure-identity
+azure-storage-blob
+semantic-kernel
+semantic-kernel[openai]
+python-dotenv
+aiohttp
+requests
+urllib3
+orjson
+pydantic
+termcolor
+azure-cognitiveservices-speech
