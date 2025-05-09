@@ -73,4 +73,4 @@ Ocp-Apim-Subscription-Key: <your key>
 ## Support
 Have a question or need assistance? Get in touch with our team:
 - Support: ai-support@mihcm.com
-- Info on how to setup an account with MiHCM: https://mihcm.com/contact-us/
+- Info on how to setup an account with MiHCM: https://mihcm.com/contact-us/ 
