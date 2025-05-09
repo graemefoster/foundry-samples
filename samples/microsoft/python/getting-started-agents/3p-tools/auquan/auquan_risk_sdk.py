@@ -52,7 +52,7 @@ with AIProjectClient(
 
     # Initialize the main OpenAPI tool definition for weather
     openapi_tool = OpenApiTool(
-        name="auquan risk tool", 
+        name="auquan risk analyser tool", 
         spec=openapi_spec, 
         description="retrieve risk analysis for a given company", 
         auth=auth
@@ -63,7 +63,7 @@ with AIProjectClient(
     # Create an agent configured with the combined OpenAPI tool definitions
     agent = project_client.agents.create_agent(
         model=model, # Specify the model deployment
-        name="my-auquan-agent", # Give the agent a name
+        name="auquan-risk-analyser-agent", # Give the agent a name
         instructions="You are a helpful research agent that conducts risk analysis on companies using data from Auquan.", # Define agent's role
         tools=openapi_tool.definitions, # Provide the list of tool definitions
     )
