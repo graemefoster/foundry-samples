@@ -30,7 +30,7 @@ from azure.ai.agents.models import OpenApiConnectionAuthDetails, OpenApiConnecti
 
 # Define the endpoint and model deployment name
 # Ensure these environment variables are set before running the script
-endpoint = os.environ["PROJECT_ENDPOINT"],  # Azure AI Project endpoint
+project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Azure AI Project endpoint
 model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # AI model deployment name
 
 # Define the Tripadvisor connection ID
@@ -130,51 +130,47 @@ tripadvisor_spec = {
     }
 }
 
-# Initialize the OpenAPI tool for Tripadvisor
-# This tool allows the agent to interact with the Tripadvisor API
-tripadvisor_tool = OpenApiTool(
-    name="TripadvisorTool",  # Name of the tool
-    description="Tool to access Tripadvisor data for travel recommendations.",  # Description of the tool
-    spec=tripadvisor_spec,  # OpenAPI specification
-    auth=OpenApiConnectionAuthDetails(
-        security_scheme=OpenApiConnectionSecurityScheme(connection_id=tripadvisor_conn_id)  # Authentication details
-    )
+# Initialize the AIProjectClient with the endpoint and credentials
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
+    api_version="latest",
 )
 
-# Create an AIProjectClient instance to interact with the Azure AI service
-with AIProjectClient(
-    endpoint=endpoint,  # Azure AI Project endpoint
-    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Authentication credentials
-) as project_client:
-    # Access the agents client
-    agents_client = project_client.agents
+with project_client:
+    # Initialize the OpenAPI tool for Tripadvisor
+    tripadvisor_tool = OpenApiTool(
+        name="TripadvisorTool",  # Name of the tool
+        description="Tool to access Tripadvisor data for travel recommendations.",  # Description of the tool
+        spec=tripadvisor_spec,  # OpenAPI specification
+        auth=OpenApiConnectionAuthDetails(
+            security_scheme=OpenApiConnectionSecurityScheme(connection_id=tripadvisor_conn_id)  # Authentication details
+        ),
+    )
 
-    # Create an agent with the Tripadvisor tool
-    # The agent uses the specified model and instructions to provide travel recommendations
-    agent = agents_client.create_agent(
-        model=model_deployment_name,  # AI model deployment name
+    # Create an agent with the specified model, name, instructions, and tools
+    agent = project_client.agents.create_agent(
+        model=model_deployment_name,  # Model deployment name
         name="tripadvisor-agent",  # Name of the agent
-        instructions="You are a helpful travel assistant that uses Tripadvisor data to provide travel guidance.",  # Agent instructions
+        instructions="You are a helpful travel assistant that uses Tripadvisor data to provide travel guidance.",  # Instructions for the agent
         tools=tripadvisor_tool.definitions,  # Tools available to the agent
     )
     print(f"Created agent, ID: {agent.id}")
 
     # Create a thread for communication with the agent
-    thread = agents_client.create_thread()
+    thread = project_client.agents.threads.create()
     print(f"Created thread, ID: {thread.id}")
 
-    # Send a message to the agent
-    # The agent will process this message and provide a response
-    message = agents_client.create_message(
+    # Send a message to the thread
+    message = project_client.agents.messages.create(
         thread_id=thread.id,
-        role="user",  # Role of the message sender
+        role="user",
         content="Can you recommend some top-rated hotels in Paris?",  # Message content
     )
-    print(f"Created message, ID: {message.id}")
+    print(f"Created message, ID: {message['id']}")
 
-    # Create and process an agent run in the thread
-    # This executes the agent's logic and generates a response
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    # Create and process a run with the specified thread and agent
+    run = project_client.agents.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
 
     if run.status == "failed":
@@ -182,12 +178,10 @@ with AIProjectClient(
         print(f"Run failed: {run.last_error}")
 
     # Fetch and log all messages from the thread
-    # This includes the agent's response to the user's message
-    messages = agents_client.list_messages(thread_id=thread.id)
-    for msg in messages.text_messages:
-        print(msg.text.value)
+    messages = project_client.agents.messages.list(thread_id=thread.id)
+    for message in messages.data:
+        print(f"Role: {message.role}, Content: {message.content}")
 
     # Delete the agent after use
-    # This cleans up resources and ensures no unnecessary charges
-    agents_client.delete_agent(agent.id)
+    project_client.agents.delete_agent(agent.id)
     print("Deleted agent")
