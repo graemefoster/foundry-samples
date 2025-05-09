@@ -1,4 +1,6 @@
-
+# Celonis
+## Description
+Search, retrieve, and get insights from data stored in the Celonis Process Intelligence Platform.
 
 ## Prerequisites
 1. A Celonis account with access to Celonis Studio.
@@ -22,7 +24,7 @@
 
 5. Select the Knowledge Input. See: [Knowledge Input](https://docs.celonis.com/en/knowledge-input.html)
 
-6. Select the Tools. These are the set of tools your agent will have access to. See: [Tool Activation](https://docs.celonis.com/en/tool-activation.html). For the tool API, you can select from **Get Data**, **Get Insights**, **PQL Tool**, and **Trigger Action Flow**.  **Search Agent** will be added automatically.
+6. Select the Tools. These are the set of tools your agent will have access to. See: [Tool Activation](https://docs.celonis.com/en/tool-activation.html). For the tool API, you can select from **Get Data**, **Get Insights**, **PQL Tool**, and **Trigger Action Flow**.  **Search Agent** will be added automatically. Our example API uses **Search Data**, **Get Data**, and **Get Insights**.
 
 7. Click **Publish** in the upper right, then click **Publish** in the window that appears.
 ![alt text](media/publish.png)
