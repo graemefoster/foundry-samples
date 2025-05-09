@@ -47,12 +47,12 @@ with project_client:
         API Usage Guidelines:
         Use the action tool shared which deals with the "https://agents.auquan.com/api/analyze-query" and has details like:
         1. Authentication:
-           - Use the provided API key directly in the X-API-Key header
+           - Use the provided API key directly in the x-api-key header
            - No need for JWT tokens or token refresh
            - API keys do not expire
            - Example request format:
              ```bash
-             curl -X POST "https://agents-backend.auquan.com/api/analyze-query" \
+             curl -X POST "https://agents.auquan.com/api/analyze-query" \
                -H "x-api-key: YOUR_API_KEY" \
                -H "Content-Type: application/json" \
                -d '{"query": "do a risk analysis for company_name"}'
@@ -61,7 +61,7 @@ with project_client:
         2. Error Handling:
            - 401 Unauthorized:
              - API key is invalid or missing
-             - Check the X-API-Key header is correctly set
+             - Check the x-api-key header is correctly set
              - Verify the API key is valid
            - 500 Internal Server Error:
              - Server-side issue
@@ -79,7 +79,7 @@ with project_client:
            ```bash
            # Make analysis request
            curl -X POST "https://agents.auquan.com/api/analyze-query" \
-             -H "X-API-Key: YOUR_API_KEY" \
+             -H "x-api-key: YOUR_API_KEY" \
              -H "Content-Type: application/json" \
              -d '{"query": "do a risk analysis for company_name"}'
            ```
