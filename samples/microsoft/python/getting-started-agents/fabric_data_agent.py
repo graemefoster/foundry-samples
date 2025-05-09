@@ -30,62 +30,57 @@ from azure.ai.agents.models import FabricTool  # Tool for interacting with Fabri
 # Define the path to the asset file (replace with your actual file path)
 asset_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets/product_info_1.md"))
 
-# Retrieve the endpoint and model deployment name from environment variables
-endpoint = os.environ["PROJECT_ENDPOINT"]  # Azure AI service endpoint
-model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # AI model deployment name
+# Retrieve the endpoint, model deployment name, and Fabric connection ID from environment variables
+project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Ensure the PROJECT_ENDPOINT environment variable is set
+model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # Ensure the MODEL_DEPLOYMENT_NAME environment variable is set
+conn_id = os.environ["FABRIC_CONNECTION_ID"]  # Ensure the FABRIC_CONNECTION_ID environment variable is set
 
-# [START create_agent_with_fabric_tool]
-# Retrieve the Fabric connection ID from environment variables
-conn_id = os.environ["FABRIC_CONNECTION_ID"]
-print(conn_id)
+# Initialize the AIProjectClient with the endpoint and credentials
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
+    api_version="latest",
+)
 
-# Initialize the FabricTool with the connection ID
-fabric = FabricTool(connection_id=conn_id)
+with project_client:
+    # Initialize the FabricTool with the connection ID
+    fabric = FabricTool(connection_id=conn_id)
 
-# Create an AIProjectClient instance to interact with the Azure AI service
-with AIProjectClient(
-    endpoint=endpoint,  # Azure AI service endpoint
-    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Authentication credentials
-) as project_client:
-    
-    # Access the AgentsClient from the AIProjectClient
-    agents_client = project_client.agents
-
-    # Create an agent with the specified model, name, instructions, tools, and headers
-    agent = agents_client.create_agent(
+    # Create an agent with the specified model, name, instructions, and tools
+    agent = project_client.agents.create_agent(
         model=model_deployment_name,  # Model deployment name
         name="my-agent",  # Name of the agent
         instructions="You are a helpful agent",  # Instructions for the agent
         tools=fabric.definitions,  # Tools available to the agent
         headers={"x-ms-enable-preview": "true"},  # Enable preview features
     )
-    # [END create_agent_with_fabric_tool]
     print(f"Created Agent, ID: {agent.id}")
 
     # Create a thread for communication with the agent
-    thread = agents_client.create_thread()
+    thread = project_client.agents.threads.create()
     print(f"Created thread, ID: {thread.id}")
 
-    # Create a message in the thread to interact with the agent
-    message = agents_client.create_message(
+    # Send a message to the thread
+    message = project_client.agents.messages.create(
         thread_id=thread.id,  # ID of the thread
         role="user",  # Role of the message sender (e.g., user)
-        content="<User query against Fabric resource>",  # Message content
+        content="What insights can you provide from the Fabric resource?",  # Message content
     )
-    print(f"Created message, ID: {message.id}")
+    print(f"Created message, ID: {message['id']}")
 
-    # Create and process an agent run in the thread using the tools
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    # Create and process a run with the specified thread and agent
+    run = project_client.agents.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
 
-    # Check if the run failed and log the error if applicable
     if run.status == "failed":
+        # Log the error if the run fails
         print(f"Run failed: {run.last_error}")
 
-    # Delete the agent when done to clean up resources
-    agents_client.delete_agent(agent.id)
-    print("Deleted agent")
+    # Fetch and log all messages from the thread
+    messages = project_client.agents.messages.list(thread_id=thread.id)
+    for message in messages.data:
+        print(f"Role: {message.role}, Content: {message.content}")
 
-    # Fetch and log all messages in the thread
-    messages = agents_client.list_messages(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    # Delete the agent after use
+    project_client.agents.delete_agent(agent.id)
+    print("Deleted agent")

@@ -29,29 +29,38 @@ import os
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
 
-# Define the endpoint and model deployment name (replace with your actual values)
-endpoint = os.environ["PROJECT_ENDPOINT"]  # Example: endpoint = "https://<your-ai-services-resource-name>.services.ai.azure.com/api/projects/<your-project-name>"# Example: model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
-model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"] # Replace with your model deployment name
+# Retrieve endpoint and model deployment name from environment variables
+project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Ensure the PROJECT_ENDPOINT environment variable is set
+model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # Ensure the MODEL_DEPLOYMENT_NAME environment variable is set
 
-# Create an AIProjectClient instance to interact with the Azure AI service
-with AIProjectClient(
-    endpoint=endpoint,  # Azure AI service endpoint
-    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Authentication credentials
-) as project_client:
+# Initialize the AIProjectClient with the endpoint and credentials
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
+    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
+    api_version="latest",
+)
 
-    # [START agents_sample]
+with project_client:
     # Create an agent with the specified model, name, and instructions
     agent = project_client.agents.create_agent(
         model=model_deployment_name,  # Model deployment name
         name="my-agent",  # Name of the agent
-        instructions="You are helpful agent",  # Instructions for the agent
+        instructions="You are a helpful agent",  # Instructions for the agent
     )
     print(f"Created agent, agent ID: {agent.id}")
 
-    # Do something with your Agent!
-    # For example, create a thread for communication with the agent
+    # Create a thread for communication with the agent
+    thread = project_client.agents.threads.create()
+    print(f"Created thread, ID: {thread.id}")
+
+    # Send a message to the thread
+    message = project_client.agents.messages.create(
+        thread_id=thread.id,  # ID of the thread
+        role="user",  # Role of the message sender (e.g., user)
+        content="Hello, how can I assist you today?",  # Message content
+    )
+    print(f"Created message, ID: {message['id']}")
 
     # Delete the agent when done to clean up resources
     project_client.agents.delete_agent(agent.id)
     print("Deleted agent")
-    # [END connection_sample]

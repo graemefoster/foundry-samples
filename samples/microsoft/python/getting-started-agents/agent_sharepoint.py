@@ -25,19 +25,20 @@ USAGE:
 import os
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects import AIProjectClient
-from azure.ai.agents.models import SharepointTool
-from azure.identity import DefaultAzureCredential
+from azure.ai.agents.models import MessageRole, SharepointTool
 
 # Retrieve endpoint and model deployment name from environment variables
-endpoint = os.environ["PROJECT_ENDPOINT"],  # Ensure the PROJECT_ENDPOINT environment variable is set
+project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Ensure the PROJECT_ENDPOINT environment variable is set
 model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # Ensure the MODEL_DEPLOYMENT_NAME environment variable is set
 
 # Initialize the AIProjectClient with the endpoint and credentials
-with AIProjectClient(
-    endpoint=endpoint,
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
     credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
-) as project_client:
+    api_version="latest",
+)
+
+with project_client:
     # Initialize SharePoint tool with connection ID
     sharepoint_connection = project_client.connections.get(
         name="CONNECTION_NAME",  # Replace with your actual connection name
@@ -46,11 +47,8 @@ with AIProjectClient(
     print(conn_id)
     sharepoint = SharepointTool(connection_id=conn_id)  # Initialize the SharePoint tool with the connection ID
     
-    # Access the agents client from the project client
-    agents_client = project_client.agents
-    
     # Create an agent with the specified model, name, instructions, and tools
-    agent = agents_client.create_agent(
+    agent = project_client.agents.create_agent(
         model=model_deployment_name,  # Model deployment name
         name="my-agent",  # Name of the agent
         instructions="You are a helpful agent",  # Instructions for the agent
@@ -59,19 +57,19 @@ with AIProjectClient(
     print(f"Created agent, ID: {agent.id}")
 
     # Create a thread for communication with the agent
-    thread = agents_client.create_thread()
+    thread = project_client.agents.threads.create()
     print(f"Created thread, ID: {thread.id}")
 
     # Send a message to the thread
-    message = agents_client.create_message(
+    message = project_client.agents.messages.create(
         thread_id=thread.id,  # ID of the thread
-        role="user",  # Role of the message sender (e.g., user)
+        role=MessageRole.USER,  # Role of the message sender (e.g., user)
         content="Hello, summarize the key points of the <sharepoint_resource_document>",  # Message content
     )
-    print(f"Created message, ID: {message.id}")
+    print(f"Created message, ID: {message['id']}")
 
     # Create and process an agent run in the thread using the tools
-    run = agents_client.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    run = project_client.agents.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
     print(f"Run finished with status: {run.status}")
 
     if run.status == "failed":
@@ -79,13 +77,11 @@ with AIProjectClient(
         print(f"Run failed: {run.last_error}")
 
     # Delete the agent when done to clean up resources
-    agents_client.delete_agent(agent.id)
+    project_client.agents.delete_agent(agent.id)
     print("Deleted agent")
 
     # Fetch and log all messages from the thread
-    messages = agents_client.list_message(thread_id=thread.id)
-    for msg in messages:
-        if msg.text_messages:  # Check if there are text messages
-            last_text = msg.text_messages[-1]  # Get the last text message
-            print(f"{msg.role}: {last_text.text.value}")  # Print the role and message content
+    messages = project_client.agents.messages.list(thread_id=thread.id)
+    for message in messages:
+        print(f"Role: {message['role']}, Content: {message['content']}")
 
