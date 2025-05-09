@@ -1,6 +1,6 @@
 # 🧠 ResearchFlow Agent
 
-This agent orchestrates a multi-step research workflow using AI, helping users gather, synthesize, and structure knowledge from complex sources—ideal for analysts, strategists, product teams, and technical writers.
+This agent orchestrates a multi-step research AI workflow, helping users gather, synthesize, and structure knowledge from complex sources. Ideal for analysts, strategists, product teams, and technical writers.
 
 ---
 
