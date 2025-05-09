@@ -20,7 +20,7 @@ This table tracks the current status of code samples for each supported tool in 
 | **File Search**    | Uploading files                        | ✅/⚠️ | Sample updated - **Sync** sample works, **Async** sample crashes on await agentClient.Files.UploadFileAsync() |
 |                    | Using blob storage (project data assets)| ⚠️ Exists| Sample not yet tested - but compiles properly and follows updated coding patterns |
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
-| **Azure AI Search**| Using a knowledge store                | ❌ Doesn't exist|                                               |
+| **Azure AI Search**| Using a knowledge store                | ⚠️ Exists | Sample not yet tested - but compiles properly and follows updated coding patterns |
 | **Fabric**         | Grounding with Fabric data             | ❌ Doesn't exist|                                               |
 | **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist|                                               |
 | **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist|                                               |
