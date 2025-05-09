@@ -22,8 +22,8 @@ This table tracks the current status of code samples for each supported tool in 
 |                    | Managing files                         | ❌ Doesn't exist|                                               |
 | **Azure AI Search**| Using a knowledge store                | ⚠️ Exists | Sample not yet tested - but compiles properly and follows updated coding patterns |
 | **Fabric**         | Grounding with Fabric data             | ❌ Doesn't exist|                                               |
-| **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist|                                               |
-| **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist|                                               |
+| **SharePoint**     | Grounding with SharePoint files        | ❌ Doesn't exist in docs or repo|                                               |
+| **TripAdvisor**    | Using licensed TripAdvisor data        | ❌ Doesn't exist in docs or repo|                                               |
 | **Function Calling**| Calling local functions               | ✅ Fully functional and validated|                                               |
 | **Azure Functions**| Calling durable Azure Functions        | ✅ Fully functional and validated|                                               |
 | **Logic Apps**     | Calling Logic Apps workflows           | ❌ Doesn't exist|                                               |
