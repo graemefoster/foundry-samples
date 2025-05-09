@@ -1,6 +1,6 @@
 # Celonis
 ## Description
-Search, retrieve, and get insights from data stored in the Celonis Process Intelligence Platform.
+Search, retrieve, get insights, and act on data stored in the Celonis Process Intelligence Platform.
 
 ## Prerequisites
 1. A Celonis account with access to Celonis Studio.
