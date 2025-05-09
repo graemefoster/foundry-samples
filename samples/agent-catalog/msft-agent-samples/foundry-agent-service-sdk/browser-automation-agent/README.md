@@ -1,6 +1,6 @@
 # 🌐 Browser Automation Agent
 
-This agent enables AI-powered browser automation using Azure AI Agent Service and the Playwright tool. It is designed to perform web-based tasks such as searching, scraping, summarizing, and interacting with dynamic websites in a secure and automated way.
+This agent enables AI-powered browser automation using Azure AI Agent Service and the Azure Playwright tool. It is designed to perform web-based tasks such as searching, scraping, summarizing, and interacting with dynamic websites in a secure and automated way.
 
 **WARNING:** Browser automation comes with significant security risks. Both errors in judgment by the AI and the presence of malicious or confusing instructions on web pages which the AI encounters may cause it to execute commands you do not intend, which could compromise the security of your browser, your computer, and any accounts to which the browser or AI has access, including personal information, financial, or enterprise systems. We recommend that you use this type of agent only in isolated environments with controlled access, such as browsers running within dedicated VMs.
 
