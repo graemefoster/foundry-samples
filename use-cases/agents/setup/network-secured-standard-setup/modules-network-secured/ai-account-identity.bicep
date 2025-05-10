@@ -1,10 +1,10 @@
 param accountName string
 param location string
-// param modelName string 
-// param modelFormat string 
-// param modelVersion string 
-// param modelSkuName string 
-// param modelCapacity int
+param modelName string 
+param modelFormat string 
+param modelVersion string 
+param modelSkuName string 
+param modelCapacity int
 param subnetId string
 param networkInjection string = 'true'
 
@@ -36,6 +36,23 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
       ] : null )
     // true is not supported today
     disableLocalAuth: false
+  }
+}
+
+#disable-next-line BCP081
+resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview'=  {
+  parent: account
+  name: modelName
+  sku : {
+    capacity: modelCapacity
+    name: modelSkuName
+  }
+  properties: {
+    model:{
+      name: modelName
+      format: modelFormat
+      version: modelVersion
+    }
   }
 }
 

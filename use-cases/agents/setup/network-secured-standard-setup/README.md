@@ -3,8 +3,7 @@
 > **NOTE:** This template is to set-up a network secured Standard Agent in AI Foundry. Includes: 
 * PNA disabled resources
 * PE's to all resources
-* network injection enabled for Agents
-* Deploy a VM for the user
+* Network injection enabled for Agents
 
 ## Steps 
 
@@ -17,8 +16,19 @@ See Instructions: https://microsoft-my.sharepoint.com/:w:/p/fosteramanda/ES-0A2W
     az group create --name <new-rg-name> --location westus
 ```
 
-2. Deploy the template
+2. Deploy the main-create.bicep
 
 ```bash
-    az deployment group create --resource-group <new-rg-name> --template-file main.bicep
+    az deployment group create --resource-group <new-rg-name> --template-file main-create.bicep
+```
+3. Run the CheckCapabilityHostReadiness.ps1 and edit the command to add your subscription ID, resource group name, and your newly deployed AI Services account resource name.
+
+```bash
+    .\CheckCapabilityHostReadiness.ps1 -subscriptionId "<your-sub-id>" -resourcegroup "<new-rg-name>" -accountname "<your-aiservices-name>"
+```
+
+4. Deploy the main-project-caphost-create.bicep
+
+```bash
+    az deployment group create --resource-group <new-rg-name> --template-file main-project-caphost-create.bicep.bicep
 ```

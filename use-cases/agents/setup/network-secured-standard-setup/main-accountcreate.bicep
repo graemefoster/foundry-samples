@@ -71,3 +71,5 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
 output accountName string = aiAccount.outputs.accountName
 output subscriptionID string = subscription().subscriptionId
 output resourceGroupName string = resourceGroup().name
+output vnetName string = vnet.outputs.virtualNetworkName
+output peSubnetName string = vnet.outputs.peSubnetName

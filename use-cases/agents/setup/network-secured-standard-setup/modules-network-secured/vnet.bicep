@@ -59,7 +59,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
     addressPrefix: '192.168.0.0/24'
 	delegations: [
       {
-        id: '${virtualNetwork.id}/subnets/default"'
+        id: '${virtualNetwork.id}/subnets/${agentSubnetName}'
         name: 'Microsoft.App/environments'
         properties: {
           serviceName: 'Microsoft.App/environments'
