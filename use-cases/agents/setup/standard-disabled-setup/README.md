@@ -1,6 +1,6 @@
 # Azure AI Agent Service: Standard Agent Setup 1RP with Public Networking
 
-> **NOTE:** This template is now supported for PNA disabled resources, including AI Foundry, with no network injection.
+> **NOTE:** This template is now supported for PNA disabled account with PE and no network injection
 
 ## Steps 
 

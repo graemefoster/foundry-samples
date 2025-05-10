@@ -182,9 +182,6 @@ module privateEndpointAndDNS 'modules-standard/private-endpoint-and-dns.bicep' =
   name: '${uniqueSuffix}-private-endpoint'
   params: {
     aiAccountName: aiAccount.outputs.accountName    // AI Services to secure
-    aiSearchName: aiDependencies.outputs.aiSearchName       // AI Search to secure
-    storageName: aiDependencies.outputs.azureStorageName        // Storage to secure
-    cosmosDBName:aiDependencies.outputs.cosmosDBName
     vnetName: aiDependencies.outputs.virtualNetworkName    // VNet containing subnets
     peSubnetName: aiDependencies.outputs.peSubnetName        // Subnet for private endpoints
     suffix: uniqueSuffix                                    // Unique identifier
