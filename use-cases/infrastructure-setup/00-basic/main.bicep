@@ -1,6 +1,6 @@
-param aiFoundryName string = 'resourcename'
+param aiFoundryName string = 'dentestlocalauth'
 param aiProjectName string = '${aiFoundryName}-proj'
-param location string = 'westus'
+param location string = 'eastus2'
 
 /*
   An AI Foundry resources is a variant of a CognitiveServices/account resource type
@@ -16,10 +16,13 @@ resource aiFoundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   }
   kind: 'AIServices'
   properties: {
-    allowProjectManagement: true // required to work in AI Foundry
+    // required to work in AI Foundry
+    allowProjectManagement: true 
 
     // Defines developer API endpoint subdomain
     customSubDomainName: aiFoundryName
+
+    disableLocalAuth: true
   }
 }
 
@@ -36,26 +39,26 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-pre
     type: 'SystemAssigned'
   }
   properties: {
-    displayName: 'test'
-    description: 'test2'
-    isDefault: true
+    // displayName: 'test'
+    // description: 'test2'
+    // isDefault: true
   }
 }
 
 /*
   Optionally deploy a model to use in playground, agents and other tools.
 */
-resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
-  parent: aiFoundry
-  name: 'gpt-4o'
-  sku : {
-    capacity: 1
-    name: 'GlobalStandard'
-  }
-  properties: {
-    model:{
-      name: 'gpt-4o'
-      format: 'OpenAI'
-    }
-  }
-}
+// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+//   parent: aiFoundry
+//   name: 'gpt-4o'
+//   sku : {
+//     capacity: 1
+//     name: 'GlobalStandard'
+//   }
+//   properties: {
+//     model:{
+//       name: 'gpt-4o'
+//       format: 'OpenAI'
+//     }
+//   }
+// }
