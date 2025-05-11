@@ -46,9 +46,9 @@ var accountName = toLower('${aiServices}${uniqueSuffix}')
 var projectName = toLower('${firstProjectName}${uniqueSuffix}')
 
 
-var cosmosDBName = toLower('${aiServices}${uniqueSuffix}cosmosdb')
-var aiSearchName = toLower('${aiServices}${uniqueSuffix}search')
-var azureStorageName = toLower('${aiServices}${uniqueSuffix}storage')
+var cosmosDBName = toLower('${uniqueSuffix}cosmosdb')
+var aiSearchName = toLower('${uniqueSuffix}search')
+var azureStorageName = toLower('${uniqueSuffix}storage')
 
 // Check if existing resources have been passed in
 var storagePassedIn = azureStorageAccountResourceId != ''
