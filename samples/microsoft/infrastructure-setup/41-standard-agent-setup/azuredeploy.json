@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.35.1.17967",
-      "templateHash": "4768679139946314715"
+      "templateHash": "5457331272009350675"
     }
   },
   "parameters": {
@@ -692,7 +692,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.35.1.17967",
-              "templateHash": "13099405622055526939"
+              "templateHash": "16395582201733037631"
             }
           },
           "parameters": {
@@ -823,7 +823,7 @@
             },
             "projectWorkspaceId": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('accountName'), parameters('projectName')), '2025-04-01-preview').amlWorkspace.internalId]"
+              "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('accountName'), parameters('projectName')), '2025-04-01-preview').internalId]"
             },
             "cosmosDBConnection": {
               "type": "string",
