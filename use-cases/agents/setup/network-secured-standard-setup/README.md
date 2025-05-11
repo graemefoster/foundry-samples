@@ -1,4 +1,6 @@
-# Azure AI Agent Service: Standard Agent Setup 1RP with Public Networking
+# Azure AI Agent Service: Standard Agent Setup 1RP with Private E2E Networking 
+
+README: NO WORKING DO NOT USE
 
 > **NOTE:** This template is to set-up a network secured Standard Agent in AI Foundry. Includes: 
 * PNA disabled resources
