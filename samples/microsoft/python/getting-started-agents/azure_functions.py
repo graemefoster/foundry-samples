@@ -14,11 +14,10 @@ USAGE:
  
     Before running the sample:
  
-    pip install azure-ai-projects azure-identity
+    pip install azure-ai-agents azure-identity
  
     Set these environment variables with your own values:
-    1) PROJECT_CONNECTION_STRING - The project connection string, as found in the overview page of your
-       Azure AI Foundry project.
+    1) PROJECT_ENDPOINT - the Azure AI Agents endpoint.
     2) MODEL_DEPLOYMENT_NAME - The deployment name of the AI model, as found under the "Name" column in 
        the "Models + endpoints" tab in your Azure AI Foundry project.
     3) STORAGE_SERVICE_ENDPONT - the storage service queue endpoint, triggering Azure function.
@@ -26,90 +25,88 @@ USAGE:
        https://learn.microsoft.com/azure/azure-functions/functions-get-started
 """
 
-# <imports>
+# Import necessary modules
 import os
-from azure.ai.projects import AIProjectClient
 from azure.ai.agents.models import AzureFunctionStorageQueue, AzureFunctionTool, MessageRole
 from azure.identity import DefaultAzureCredential
-# </imports>
+from azure.ai.projects import AIProjectClient  # Import AIProjectClient for consistency
 
-# <client_initialization>
-endpoint = os.environ["PROJECT_ENDPOINT"]
-model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
-with AIProjectClient(
-    endpoint=endpoint,
-    credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),
-) as project_client:
-# </client_initialization>
-    storage_service_endpoint = os.environ["STORAGE_SERVICE_ENDPOINT"]
+# Initialize the project endpoint from environment variables
+project_endpoint = os.environ["PROJECT_ENDPOINT"]
+
+# Create an AIProjectClient instance to interact with the Azure AI Agents service
+project_client = AIProjectClient(
+    endpoint=project_endpoint,
+    credential=DefaultAzureCredential(),
+    api_version="latest",  # Use the latest API version
+)
+
+# Use the project client within a context manager to ensure proper resource cleanup
+with project_client:
+    # Retrieve the storage service endpoint from environment variables
+    storage_service_endpoint = os.environ["STORAGE_SERVICE_ENDPONT"]
 
     # [START create_agent_with_azure_function_tool]
-    # <azure_function_tool_setup>
+    # Define an Azure Function Tool with input and output queue configurations
     azure_function_tool = AzureFunctionTool(
-        name="foo",
-        description="Get answers from the foo bot.",
-        parameters={
+        name="foo",  # Name of the tool
+        description="Get answers from the foo bot.",  # Description of the tool's purpose
+        parameters={  # Define the parameters required by the tool
             "type": "object",
             "properties": {
                 "query": {"type": "string", "description": "The question to ask."},
                 "outputqueueuri": {"type": "string", "description": "The full output queue uri."},
             },
         },
-        input_queue=AzureFunctionStorageQueue(
+        input_queue=AzureFunctionStorageQueue(  # Input queue configuration
             queue_name="azure-function-foo-input",
             storage_service_endpoint=storage_service_endpoint,
         ),
-        output_queue=AzureFunctionStorageQueue(
+        output_queue=AzureFunctionStorageQueue(  # Output queue configuration
             queue_name="azure-function-tool-output",
             storage_service_endpoint=storage_service_endpoint,
         ),
     )
-    # </azure_function_tool_setup>
-    # <agent_creation>
+
+    # Create an agent with the Azure Function Tool
     agent = project_client.agents.create_agent(
-        model=os.environ["MODEL_DEPLOYMENT_NAME"],
-        name="azure-function-agent-foo",
-        instructions=f"You are a helpful support agent. Use the provided function any time the prompt contains the string 'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as '{storage_service_endpoint}/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool.",
-        tools=azure_function_tool.definitions,
+        model=os.environ["MODEL_DEPLOYMENT_NAME"],  # Model deployment name from environment variables
+        name="azure-function-agent-foo",  # Name of the agent
+        instructions=(
+            "You are a helpful support agent. Use the provided function any time the prompt contains the string "
+            "'What would foo say?'. When you invoke the function, ALWAYS specify the output queue uri parameter as "
+            f"'{storage_service_endpoint}/azure-function-tool-output'. Always responds with \"Foo says\" and then the response from the tool."
+        ),
+        tools=azure_function_tool.definitions,  # Attach the tool definitions to the agent
     )
     print(f"Created agent, agent ID: {agent.id}")
     # [END create_agent_with_azure_function_tool]
-    # </agent_creation>
 
-    # <thread_management>
-    # Create a thread
-    thread = project_client.agents.create_thread()
+    # Create a new thread for the agent to interact with
+    thread = project_client.agents.threads.create()
     print(f"Created thread, thread ID: {thread.id}")
 
-    # Create a message
-    message = project_client.agents.create_message(
-        thread_id=thread.id,
-        role="user",
-        content="What is the most prevalent element in the universe? What would foo say?",
+    # Create a user message in the thread
+    message = project_client.agents.messages.create(
+        thread_id=thread.id,  # ID of the thread
+        role="user",  # Role of the message sender
+        content="What is the most prevalent element in the universe? What would foo say?",  # Message content
     )
-    print(f"Created message, message ID: {message.id}")
-    # </thread_management>
+    print(f"Created message, message ID: {message['id']}")
 
-    # <message_processing>
-    run = project_client.agents.create_and_process_run(thread_id=thread.id, agent_id=agent.id)
+    # Create and process a run for the agent to handle the message
+    run = project_client.agents.runs.create_and_process(thread_id=thread.id, agent_id=agent.id)
+    print(f"Run finished with status: {run.status}")
+
+    # Check if the run failed and log the error if applicable
     if run.status == "failed":
         print(f"Run failed: {run.last_error}")
 
-    # Get messages from the thread
-    messages = project_client.agents.list_messages(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    # Retrieve and print all messages from the thread
+    messages = project_client.agents.messages.list(thread_id=thread.id)
+    for msg in messages:
+        print(f"Role: {msg['role']}, Content: {msg['content']}")
 
-    # Get the last message from agent
-    last_msg = messages.get_last_text_message_by_role(MessageRole.AGENT)
-    if last_msg:
-        print(f"Last Message: {last_msg.text.value}")
-    # </message_processing>
-
-    # <cleanup>
-    # Delete the agent once done
-    result = project_client.agents.delete_agent(agent.id)
-    if result.deleted:
-        print(f"Deleted agent {result.id}")
-    else:
-        print(f"Failed to delete agent {result.id}")
-    # </cleanup>
+    # Delete the agent after the interaction is complete
+    project_client.agents.delete_agent(agent.id)
+    print(f"Deleted agent {agent.id}")

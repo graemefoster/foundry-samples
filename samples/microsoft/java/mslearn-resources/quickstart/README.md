@@ -61,20 +61,53 @@ AZURE_DEPLOYMENT=your_deployment_name_here
    ```bash
    az login
    ```
-3. Install Maven dependencies:
-   ```bash
-   mvn clean install
-   ```
+3. Add Maven dependencies:
+
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-ai-projects</artifactId>
+            <version>1.0.0-alpha.20250429.2</version>
+        </dependency>
+        
+        <!-- OpenAI Java SDK -->
+        <dependency>
+            <groupId>com.openai</groupId>
+            <artifactId>openai-java</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+        
+        <!-- Azure Identity for authentication -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+        
+        <!-- .env file support -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+    </dependencies>
+```
 
 ## Create a Project and Model Deployment
 
-Run the CreateProject example to create a new project and model deployment:
-
-```bash
-mvn compile exec:java -Dexec.mainClass="com.azure.ai.foundry.samples.CreateProject"
-```
-
-Sample code:
 
 ```java
 // Create a client using your Azure credentials
@@ -88,15 +121,7 @@ Project project = client.createProject("My Sample Project", "A project created u
 System.out.println("Created project: " + project.getName() + " with ID: " + project.getId());
 ```
 
-## Run a Chat Completion
-
-Execute the chat completion example:
-
-```bash
-mvn compile exec:java -Dexec.mainClass="com.azure.ai.foundry.samples.ChatCompletionSample"
-```
-
-Sample code:
+## Chat Completion
 
 ```java
 // Create a Projects client
@@ -125,13 +150,6 @@ System.out.println(completion.getChoices().get(0).getMessage().getContent());
 
 ## Create and Run an Agent
 
-Create and run an agent that can perform tasks:
-
-```bash
-mvn compile exec:java -Dexec.mainClass="com.azure.ai.foundry.samples.AgentSample"
-```
-
-Sample code:
 
 ```java
 // Create a Projects client
@@ -173,12 +191,6 @@ if (assistantMessage != null) {
 ## Add File Search to Agent
 
 Add file search capabilities to your agent:
-
-```bash
-mvn compile exec:java -Dexec.mainClass="com.azure.ai.foundry.samples.FileSearchAgentSample"
-```
-
-Sample code:
 
 ```java
 // Create a Projects client
@@ -226,12 +238,6 @@ if (assistantMessage != null) {
 ## Evaluate Agent Run
 
 Evaluate how well the agent performed on a given task:
-
-```bash
-mvn compile exec:java -Dexec.mainClass="com.azure.ai.foundry.samples.EvaluateAgentSample"
-```
-
-Sample code:
 
 ```java
 // Create a Projects client

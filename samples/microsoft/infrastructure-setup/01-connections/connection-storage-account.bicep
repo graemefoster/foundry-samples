@@ -1,11 +1,9 @@
 /*
 Connections enable your AI applications to access tools and objects managed elsewhere in or outside of Azure.
 
-This example demonstrates how to add an Azure Application Insights connection.
-
-Only one application insights can be set on a project at a time.
+This example demonstrates how to add an Azure Storage connection.
 */
-param aiFoundryName string = '<your-foundry-name>'
+param aiFoundryName string = 'deeikele-9518-resource'
 param connectedResourceName string = 'st${aiFoundryName}'
 param location string = 'westus'
 
@@ -22,12 +20,12 @@ resource aiFoundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' exi
   scope: resourceGroup()
 }
 
-// Conditionally refers your existing Azure AI Search resource
+// Conditionally refers your existing Azure Storage account
 resource existingStorage 'Microsoft.Storage/storageAccounts@2024-01-01' existing = if (newOrExisting == 'existing') {
   name: connectedResourceName
 }
 
-// Conditionally creates a new Azure AI Search resource
+// Conditionally creates a new Azure Storage account
 resource newStorage 'Microsoft.Storage/storageAccounts@2024-01-01' = if (newOrExisting == 'new') {
   name: connectedResourceName
   location: location
@@ -37,7 +35,7 @@ resource newStorage 'Microsoft.Storage/storageAccounts@2024-01-01' = if (newOrEx
   kind: 'StorageV2'
 }
 
-// Creates the Azure Foundry connection to your Azure App Insights resource
+// Creates the Azure Foundry connection to your Azure Storage account
 resource connection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
   name: '${aiFoundryName}-storage'
   parent: aiFoundry

@@ -7,7 +7,6 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
-
 var projectEndpoint = configuration["ProjectEndpoint"];
 var modelDeploymentName = configuration["ModelDeploymentName"];
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
@@ -19,6 +18,7 @@ PersistentAgent agent = await client.Administration.CreateAgentAsync(
     tools: [new CodeInterpreterToolDefinition()]);
 
 PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+
 await client.Messages.CreateMessageAsync(
     thread.Id,
     MessageRole.User,
@@ -49,16 +49,18 @@ while (run.Status == RunStatus.Queued
     || run.Status == RunStatus.RequiresAction);
 
 AsyncPageable<ThreadMessage> messages = client.Messages.GetMessagesAsync(
-    thread.Id,
+    threadId: thread.Id,
     order: ListSortOrder.Ascending);
 
 await foreach (ThreadMessage threadMessage in messages)
 {
-    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    foreach (MessageContent content in threadMessage.ContentItems)
     {
-        if (contentItem is MessageTextContent textItem)
+        switch (content)
         {
-            Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+            case MessageTextContent textItem:
+                Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
         }
     }
 }

@@ -45,11 +45,13 @@ Pageable<ThreadMessage> messages = client.Messages.GetMessages(
 
 foreach (ThreadMessage threadMessage in messages)
 {
-    foreach (MessageContent contentItem in threadMessage.ContentItems)
+    foreach (MessageContent content in threadMessage.ContentItems)
     {
-        if (contentItem is MessageTextContent textItem)
+        switch (content)
         {
-            Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+            case MessageTextContent textItem:
+                Console.WriteLine($"[{threadMessage.Role}]: {textItem.Text}");
+                break;
         }
     }
 }

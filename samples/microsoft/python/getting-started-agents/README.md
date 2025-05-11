@@ -14,15 +14,15 @@ This table tracks the current status of code samples for each supported tool in 
 |                    | Managing files                                   | ❌ Doesn't exist          |                                            |
 | **Azure AI Search**| Using a knowledge store                          | ✅ Exists and works          |                                            |
 | **Fabric**         | Grounding with Fabric data                       | ✅ Exists and works          |                                            |
-| **SharePoint**     | Grounding with SharePoint files                  | ⚠️ Exists and yet to work          |                                            |
-| **TripAdvisor**    | Using licensed TripAdvisor data                  | ⚠️ Exists and doesn't work            |                                            |
-| **Function Calling**| Calling local functions                         | ❌ Doesn't exist          |                                            |
-| **Azure Functions**| Calling durable Azure Functions                  | ❌ Doesn't exist          |                                            |
-| **Logic Apps**     | Calling Logic Apps workflows                     | ❌ Doesn't exist          |                                            |
+| **SharePoint**     | Grounding with SharePoint files                  | ✅ Exists and works           |                                            |
+| **TripAdvisor**    | Using licensed TripAdvisor data                  | ✅ Exists          |                                            |
+| **Function Calling**| Calling local functions                         | ✅ Exists and works  |                                            |
+| **Azure Functions**| Calling durable Azure Functions                  | ⚠️ Exists          |       To be tested                                     |
+| **Logic Apps**     | Calling Logic Apps workflows                     | ⚠️ Exists          |       To be tested                                     |
 | **Code Interpreter**| Using Code Interpreter                          | ❌ Doesn't exist          |                                            |
 | **OpenAPI**        | Calling external APIs with OpenAPI               | ❌ Doesn't exist          |                                            |
-| **Basic Agent**    | Using agent with no tools                        | ❌ Doesn't exist          |                                            |
-| **Quickstart**     | Basic setup and usage example                    | ❌ Doesn't exist          |                                            |
+| **Basic Agent**    | Using agent with no tools                        | ✅ Exists and works        |                                            |
+| **Quickstart**     | Basic setup and usage example                    | ✅ Exists and works        |                                            |
 
 ---
 
