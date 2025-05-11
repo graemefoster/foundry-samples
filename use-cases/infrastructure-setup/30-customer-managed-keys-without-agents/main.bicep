@@ -67,44 +67,5 @@ module encryptionUpdate 'updateEncryption.bicep' = {
   }
 }
 
-/*
-  Developer APIs are exposed via a project, which groups in- and outputs that relate to one use case, including files.
-  Its advisable to create one project right away, so development teams can directly get started.
-  Projects may be granted individual RBAC permissions and identities on top of what account provides.
-*/ 
-// resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
-//   name: 'myproject'
-//   parent: account
-//   location: location
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     displayName: 'myproject'
-//     description: 'mydescription'
-//     isDefault: true //can't be updated after creation; can only be set by one project in the account
-//   }
-// }
-
-/*
-  Optionally deploy a model to use in playground, agents and other tools.
-*/
-// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
-//   parent: account
-//   name: 'gpt-4o-mini'
-//   sku : {
-//     capacity: 1
-//     name: 'GlobalStandard'
-//   }
-//   properties: {
-//     model:{
-//       name: 'gpt-4o'
-//       format: 'OpenAI'
-//       version: '2024-08-06'
-//     }
-//   }
-// }
-
 output accountId string = account.id
 output accountName string = account.name
-//output project string = project.name
