@@ -2,7 +2,7 @@
 
 ## Set up your environment
 
-1. [Install Node.js (LTS is recommended) and the Azure CLI](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/install-cli-sdk?pivots=programming-language-javascript&branch=release-build-ai-foundry).
+1. [Install Node.js (LTS is recommended) and the Azure CLI](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/install-cli-sdk).
 
 1. Make sure to sign in using the CLI az login (or az login --use-device-code) command to authenticate before running your JavaScript scripts.
 
