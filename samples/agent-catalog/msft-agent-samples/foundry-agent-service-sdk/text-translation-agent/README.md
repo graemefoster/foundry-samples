@@ -66,7 +66,7 @@ MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
 
 4. **Run the Agent Script**
 ```bash
- python agent.py
+ python template.py
 ```
 
 ## ⚙️ Configuration Guide
