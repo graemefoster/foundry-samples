@@ -3,6 +3,8 @@
   <img src="./logo.svg" alt="Logo" width="200" height="200">
 </p>
 
+Talk to your HR data and automate workflows with ease.
+
 MiHCM is a global SaaS company that helps organisations embrace the future of work through powerful Digital HR and Work Tech solutions. With a presence in over 20 countries and a growing network of partners across Asia, MiHCM supports 1,000+ companies in industries such as Banking, Finance, Technology, Manufacturing, and Telecommunications. Its Human Capital Management platform simplifies HR processes and enhances workforce engagement across the employee lifecycle. The company’s innovation journey is spearheaded by AI, underscored by its range of AI-powered capabilities, including an Agentic AI Assistant for user support.
 
 The MiHCM OpenAPI tool enables seamless integration with MiHCM's HR functionalities, such as leave management, feedback handling, and work activity tracking. These tools are designed to simplify HR operations and enhance productivity by leveraging MiHCM's robust API ecosystem.
