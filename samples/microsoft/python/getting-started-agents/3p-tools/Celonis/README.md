@@ -1,5 +1,7 @@
 # Celonis
 ## Description
+Celonis delivers Process Intelligence to accelerate enterprise AI at scale.
+
 Search, retrieve, get insights, and act on data stored in the Celonis Process Intelligence Platform.
 
 ## Prerequisites
