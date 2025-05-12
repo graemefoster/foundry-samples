@@ -16,7 +16,7 @@ Legal insights grounded in trusted sources from your jurisdiction.
 1. Select **custom keys** in **other resource types**.
 
 1. Enter the following information to create a connection to store your LEGALFLY key:
-   1. Set **Custom keys** to "key", with the value being your LEGALFLY API key.
+   1. Set **Custom keys** to "x-api-key", with the value being your LEGALFLY API key.
    1. Make sure **is secret** is checked.
    1. Set the connection name to your connection name. You use this connection name in your sample code or Foundry Portal later.
    1. For the **Access** setting, you can choose either _this project only_ or _shared to all projects_. Just make sure in your code, the connection string of the project you entered has access to this connection.
