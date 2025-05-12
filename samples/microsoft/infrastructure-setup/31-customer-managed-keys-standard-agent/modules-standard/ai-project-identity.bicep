@@ -116,7 +116,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
 output projectName string = project.name
 output projectId string = project.id
 output projectPrincipalId string = project.identity.principalId
-output projectWorkspaceId string = project.properties.internalId
+output projectWorkspaceId string = project.properties.amlWorkspace.internalId
 
 // return the BYO connection names
 output cosmosDBConnection string = cosmosDBName

@@ -4,7 +4,7 @@
 param location string = 'eastus'
 
 @description('Name for your AI Services resource.')
-param aiServices string = 'aiservices'
+param aiServices string = 'aifoundrystandardcmk'
 
 @description('Name for your project resource.')
 param firstProjectName string = 'project'
@@ -46,9 +46,9 @@ var accountName = toLower('${aiServices}${uniqueSuffix}')
 var projectName = toLower('${firstProjectName}${uniqueSuffix}')
 
 
-var cosmosDBName = toLower('${uniqueSuffix}cosmosdb')
-var aiSearchName = toLower('${uniqueSuffix}search')
-var azureStorageName = toLower('${uniqueSuffix}storage')
+var cosmosDBName = toLower('${aiServices}${uniqueSuffix}cosmosdb')
+var aiSearchName = toLower('${aiServices}${uniqueSuffix}search')
+var azureStorageName = toLower('${aiServices}${uniqueSuffix}storage')
 
 // Check if existing resources have been passed in
 var storagePassedIn = azureStorageAccountResourceId != ''
@@ -178,7 +178,7 @@ module storageAccountRoleAssignment 'modules-standard/azure-storage-account-role
 
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assignment.bicep' = {
-  name: 'cosmos-account-role-assignments-${uniqueSuffix}-deployment'
+  name: 'cosmos-account-role-assignments-${projectName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
   params: {
     cosmosDBName: aiDependencies.outputs.cosmosDBName
@@ -192,7 +192,7 @@ module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assi
 
 // This role can be assigned before or after the caphost is created
 module aiSearchRoleAssignments 'modules-standard/ai-search-role-assignments.bicep' = {
-  name: 'ai-search-role-assignments-${uniqueSuffix}-deployment'
+  name: 'ai-search-role-assignments-${projectName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(aiSearchServiceSubscriptionId, aiSearchServiceResourceGroupName)
   params: {
     aiSearchName: aiDependencies.outputs.aiSearchName
@@ -204,7 +204,7 @@ module aiSearchRoleAssignments 'modules-standard/ai-search-role-assignments.bice
 }
 
 module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bicep' = {
-  name: 'capabilityHost-configuration-${uniqueSuffix}-deployment'
+  name: 'capabilityHost-configuration-${projectName}-${uniqueSuffix}-deployment'
   params: {
     accountName: aiAccount.outputs.accountName
     projectName: aiProject.outputs.projectName
@@ -220,6 +220,20 @@ module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bi
   ]
 }
 
+module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-assignments.bicep' = {
+  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
+  scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
+  params: {
+    cosmosAccountName: aiDependencies.outputs.cosmosDBName
+    projectWorkspaceId: aiProject.outputs.projectWorkspaceId
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
+  
+  }
+dependsOn: [
+  addProjectCapabilityHost
+  ]
+}
+
 // The Storage Blob Data Owner role must be assigned before the caphost is created
 module storageContainersRoleAssignment 'modules-standard/blob-storage-container-role-assignments.bicep' = {
   name: 'storage-containers-${uniqueSuffix}-deployment'
@@ -231,19 +245,5 @@ module storageContainersRoleAssignment 'modules-standard/blob-storage-container-
   }
   dependsOn: [
     addProjectCapabilityHost
-  ]
-}
-
-module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-assignments.bicep' = {
-  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
-  scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
-  params: {
-    cosmosAccountName: aiDependencies.outputs.cosmosDBName
-    projectWorkspaceId: aiProject.outputs.projectWorkspaceId
-    projectPrincipalId: aiProject.outputs.projectPrincipalId
-  
-  }
-dependsOn: [
-  addProjectCapabilityHost, storageContainersRoleAssignment
   ]
 }
