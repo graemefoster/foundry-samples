@@ -1,4 +1,4 @@
-# Connect with non-Microsoft tools in Azure AI Agent Service
+# Connect with non-Microsoft tools in Azure AI Foundry Agent Service
 
 ## Overview
 To empower your AI agent with grounded data or the capability to take actions and automating workflows, the Foundry Agent service provides a wide range of built-in tools, such as Grounding with Bing Search, Azure AI Search, Azure Logic Apps, as well as third-party parter tools, such as Tripadvisor. This page is designed to provide an overview of tools provided in the AI Agent Service.
@@ -11,7 +11,7 @@ The following tools are authored by **third-party partners**. Use the links belo
 > * Code samples and OpenAPI spec are provided by partners as-is. **need help from CELA to rewrite this**
 
 ## Get Started
-1. Create an Azure AI Agent following the [documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/quickstart)
+1. Create a Foundry Agent following the [documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/quickstart)
 
 1. Select tools provided by our partners for your agent
 
@@ -28,9 +28,9 @@ The following tools are authored by **third-party partners**. Use the links belo
 
 1. I am running into issues with the code sample, how should I troubleshoot?
 
-   If this is an issue with Azure AI Agent service, please refer to your [support plan](https://support.microsoft.com/en-us). If this is an issue with the OpenAPI spec, code sample or authentication, please refer to the `customer support contact` provided by each partner in the README file.
+   If this is an issue with Azure AI Foundry Agent service, please refer to your [support plan](https://support.microsoft.com/en-us). If this is an issue with the OpenAPI spec, code sample or authentication, please refer to the `customer support contact` provided by each partner in the README file.
 
-1. I want to learn more about Azure AI Agent service, where should I go?
+1. I want to learn more about Azure AI Foundry Agent service, where should I go?
 
    Please visit the public documentation [here](https://learn.microsoft.com/en-us/azure/ai-services/agents/)
     
