@@ -23,8 +23,8 @@ The system consists of:
         |                                  
         v                                  
 +-------------------+        invokes        +----------------------------+
-|  Travel Planner | ------------------->  | Bing Grounding Tool (API)  |
-|     (AI Agent)    | ------------------->  | TripAdvisor API (OpenAPI)  |
+|  Travel Planner   | ------------------->  | Bing Grounding Tool (API)  |
+|     (AI Agent)    | <-------------------  | TripAdvisor API (OpenAPI)  |
 +-------------------+        results        +----------------------------+
         |                                  
         v                                  
@@ -92,18 +92,80 @@ You can test the interaction by invoking the agent with prompts like:
 Hey, I’m visiting Mountain View this weekend with my partner. We like nature, good coffee, and local food. Can you suggest things to do?
 
 #### 🤖 Travel Agent:
-Sure! Based on Bing and Tripadvisor, here are a few local highlights:
-- **Shoreline Park**: Great for kayaking, biking, and birdwatching.
-- **Red Rock Coffee** and **Verve Coffee Roasters** are top-rated cafés downtown.
-- For food, **Eureka!** (gourmet burgers) and **Steins Beer Garden** (modern American) are local favorites.
+Here are some tailored suggestions for your weekend visit to Mountain View, California.
 
-Would you like me to find availability for kayaking at Shoreline?
+**Things to Do**
+Shoreline Lake at Shoreline Park:
+A great spot for nature enthusiasts. You can rent kayaks, pedal boats, or simply enjoy walking trails around the lake.
+It's a peaceful, scenic area ideal for couples who love being outdoors.
+Pros: Calm environment and beautiful views.
+Cons: Crowds on weekends and limited parking.
+Computer History Museum:
+A fascinating attraction showcasing a history of Silicon Valley innovation. Check out artifacts and interactive exhibits.
+While this is tech-focused, there are outdoor areas and cafés nearby for a mix of activities.
+Pros: Educational and unique to the area.
+Cons: Might be less engaging if you prefer nature exclusively.
+Stevens Creek Trail:
+This scenic trail is perfect for a leisurely or more active outing. Walk, bike, or jog surrounded by greenery and creek views.
+It's well-maintained and close to downtown Mountain View.
+Pros: Easy access and natural setting.
+Cons: Limited amenities along the trail.
+ 
+
+**Coffee Shops**
+Red Rock Coffee:
+A warm, cozy spot with locally roasted coffee and occasional live music. Ideal for relaxing after a hike or walk.
+Pros: Great atmosphere and high-quality coffee.
+Cons: Sometimes crowded.
+Dana Street Roasting Company:
+Known for their expertly roasted beans and a hip ambiance. You might find occasional local events here.
+Pros: Local favorite with outdoor seating.
+Cons: Noise levels can be high if busy.
+ 
+
+**Restaurants**
+Castronovo's:
+A top Italian spot with farm-to-table ingredients, perfect for a romantic dinner. Seasonal food with an emphasis on local flavors.
+Pros: Pacific ambiance and incredible dishes.
+Cons: Reservations recommended.
+Xanh Bistro:
+Fusion-style Vietnamese food, offering fresh ingredients and a trendy vibe. Don't miss their fresh rolls or craft cocktails.
+Pros: Unique flavors and vegetarian-friendly options.
+Cons: Prices on the higher side.
+Ava's Downtown Market & Deli:
+For the freshest local ingredients, explore their deli. Perfect for grabbing a picnic feast before heading to Shoreline Park.
+Pros: Authentic flavors and affordable prices.
+Cons: Limited seating.
+ 
+
+Weather & Additional Info
+To ensure your comfort, let me confirm Mountain View's weather this weekend and any ongoing events worth visiting.
+
+Would you like me to do this for you?
 
 #### 🧑 User:
-Kayaking sounds fun! Can you check if it's available Saturday morning?
+Yes please.
 
 #### 🤖 Travel Agent:
-Yes — according to Shoreline Lake's site via Bing, kayaking is available starting 10 AM on Saturday. 
+Here’s the latest for Mountain View this weekend, May 17-19:
+
+**Weather Forecast**
+Saturday, May 17: Sunny, highs around 75°F (24°C), light breeze—great for outdoor activities.
+Sunday, May 18: Partly cloudy, highs around 72°F (22°C), similar conditions.
+Recommend carrying light jackets for evening outings as it could feel cooler.
+ 
+
+**Local Events**
+KidStock Family Festival (Saturday, May 17, 10:00 AM - 12:00 PM):
+A lively family-friendly music and arts festival at Civic Center Plaza, 500 Castro St., Mountain View.
+Includes games, crafts, and fun live performances from local bands.
+Free to attend, making it a great cultural outing even without kids.
+Shoreline Amphitheatre Events:
+Check for live concerts or movie screenings here; it could tie in with your visit to Shoreline Park.
+Mountain View Farmers' Market (Sunday, May 18, 9:00 AM - 1:00 PM):
+Browse local produce, artisan goods, and street-food stalls downtown. Ideal for enjoying fresh, local treats.
+
+This mix of good weather, outdoor experiences, and local events should make for an enjoyable weekend! Let me know if you want tips on transportation or booking recommendations.
 
 ## Customization Tips
 - Modify the system instructions in `template.py` to enable the agent to provide the best responses as needed.
