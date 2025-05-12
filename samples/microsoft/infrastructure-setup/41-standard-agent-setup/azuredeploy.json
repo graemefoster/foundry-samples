@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.35.1.17967",
-      "templateHash": "4768679139946314715"
+      "templateHash": "18171785632055590935"
     }
   },
   "parameters": {
@@ -117,9 +117,9 @@
     "uniqueSuffix": "[substring(uniqueString(format('{0}-{1}', resourceGroup().id, parameters('deploymentTimestamp'))), 0, 4)]",
     "accountName": "[toLower(format('{0}{1}', parameters('aiServices'), variables('uniqueSuffix')))]",
     "projectName": "[toLower(format('{0}{1}', parameters('firstProjectName'), variables('uniqueSuffix')))]",
-    "cosmosDBName": "[toLower(format('{0}{1}cosmosdb', parameters('aiServices'), variables('uniqueSuffix')))]",
-    "aiSearchName": "[toLower(format('{0}{1}search', parameters('aiServices'), variables('uniqueSuffix')))]",
-    "azureStorageName": "[toLower(format('{0}{1}storage', parameters('aiServices'), variables('uniqueSuffix')))]",
+    "cosmosDBName": "[toLower(format('{0}cosmosdb', variables('uniqueSuffix')))]",
+    "aiSearchName": "[toLower(format('{0}search', variables('uniqueSuffix')))]",
+    "azureStorageName": "[toLower(format('{0}storage', variables('uniqueSuffix')))]",
     "storagePassedIn": "[not(equals(parameters('azureStorageAccountResourceId'), ''))]",
     "searchPassedIn": "[not(equals(parameters('aiSearchResourceId'), ''))]",
     "cosmosPassedIn": "[not(equals(parameters('azureCosmosDBAccountResourceId'), ''))]",
@@ -692,7 +692,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.35.1.17967",
-              "templateHash": "13099405622055526939"
+              "templateHash": "16395582201733037631"
             }
           },
           "parameters": {
@@ -823,7 +823,7 @@
             },
             "projectWorkspaceId": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('accountName'), parameters('projectName')), '2025-04-01-preview').amlWorkspace.internalId]"
+              "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('accountName'), parameters('projectName')), '2025-04-01-preview').internalId]"
             },
             "cosmosDBConnection": {
               "type": "string",
@@ -1162,6 +1162,84 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
+      "name": "[format('storage-containers-{0}-deployment', variables('uniqueSuffix'))]",
+      "subscriptionId": "[variables('azureStorageSubscriptionId')]",
+      "resourceGroup": "[variables('azureStorageResourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "aiProjectPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+          },
+          "storageName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
+          },
+          "workspaceId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectWorkspaceId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.35.1.17967",
+              "templateHash": "372715190929198794"
+            }
+          },
+          "parameters": {
+            "storageName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the storage account"
+              }
+            },
+            "aiProjectPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Principal ID of the AI Project"
+              }
+            },
+            "workspaceId": {
+              "type": "string",
+              "metadata": {
+                "description": "Workspace Id of the AI Project"
+              }
+            }
+          },
+          "variables": {
+            "conditionStr": "[format('((!(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read''}})  AND  !(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/filter/action''}}) AND  !(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write''}}) ) OR (@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringStartsWithIgnoreCase ''{0}'' AND @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringLikeIgnoreCase ''*-azureml-agent''))', parameters('workspaceId'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('storageName'))]",
+              "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), parameters('aiProjectPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'), parameters('workspaceId'))]",
+              "properties": {
+                "principalId": "[parameters('aiProjectPrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+                "principalType": "ServicePrincipal",
+                "conditionVersion": "2.0",
+                "condition": "[variables('conditionStr')]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('capabilityHost-configuration-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
       "name": "[format('cosmos-role-assignments-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('cosmosDBSubscriptionId')]",
       "resourceGroup": "[variables('cosmosDBResourceGroupName')]",
@@ -1254,85 +1332,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', format('capabilityHost-configuration-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix')))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "[format('storage-containers-{0}-deployment', variables('uniqueSuffix'))]",
-      "subscriptionId": "[variables('azureStorageSubscriptionId')]",
-      "resourceGroup": "[variables('azureStorageResourceGroupName')]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "aiProjectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
-          },
-          "storageName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
-          },
-          "workspaceId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectWorkspaceId.value]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.35.1.17967",
-              "templateHash": "372715190929198794"
-            }
-          },
-          "parameters": {
-            "storageName": {
-              "type": "string",
-              "metadata": {
-                "description": "Name of the storage account"
-              }
-            },
-            "aiProjectPrincipalId": {
-              "type": "string",
-              "metadata": {
-                "description": "Principal ID of the AI Project"
-              }
-            },
-            "workspaceId": {
-              "type": "string",
-              "metadata": {
-                "description": "Workspace Id of the AI Project"
-              }
-            }
-          },
-          "variables": {
-            "conditionStr": "[format('((!(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read''}})  AND  !(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/filter/action''}}) AND  !(ActionMatches{{''Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write''}}) ) OR (@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringStartsWithIgnoreCase ''{0}'' AND @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:name] StringLikeIgnoreCase ''*-azureml-agent''))', parameters('workspaceId'))]"
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('storageName'))]",
-              "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), parameters('aiProjectPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'), parameters('workspaceId'))]",
-              "properties": {
-                "principalId": "[parameters('aiProjectPrincipalId')]",
-                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
-                "principalType": "ServicePrincipal",
-                "conditionVersion": "2.0",
-                "condition": "[variables('conditionStr')]"
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('capabilityHost-configuration-{0}-deployment', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix')))]"
+        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix')))]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('azureStorageSubscriptionId'), variables('azureStorageResourceGroupName')), 'Microsoft.Resources/deployments', format('storage-containers-{0}-deployment', variables('uniqueSuffix')))]"
       ]
     }
   ]
