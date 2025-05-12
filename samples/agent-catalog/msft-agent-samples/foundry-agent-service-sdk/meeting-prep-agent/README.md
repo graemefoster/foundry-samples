@@ -112,16 +112,16 @@ What meetings do I have on 5/12/2025?
 
 #### Meetings and Insights Agent:
 You have the following meetings scheduled for 5/12/2025:
-- **Project Sync**: 10:00 AM - 11:00 AM, Attendees: alice@contoso.com, bob@fabrikam.com
-- **External Partner Call**: 2:00 PM - 3:00 PM, Attendees: jane@external.com
+- **Project Sync**: 10:00 AM - 11:00 AM, Attendees: alice@contoso.com, bob@contoso.com
+- **External Partner Call**: 2:00 PM - 3:00 PM, Attendees: external@externalemail.com
 
 Would you like public insights about any of the attendees?
 
 #### User:
-Yes, tell me about jane@external.com.
+Yes, tell me about external@externalemail.com.
 
 #### Meetings and Insights Agent:
-According to Bing, Jane is a project manager at External Corp, with experience in cloud solutions and digital transformation. (Source: online public sources)
+According to Bing, "external" is a project manager at External Corp, with experience in cloud solutions and digital transformation. (Source: online public sources)
 
 ## Customization Tips
 - Modify the system instructions in `template.py` to tailor the agent’s behavior.
