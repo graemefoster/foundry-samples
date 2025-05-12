@@ -1,6 +1,6 @@
 # 🌐 Browser Automation Agent
 
-This agent enables users to perform real-world browser tasks through natural language prompts. Powered by **Azure AI Agent Service** and **Azure Playwright Service**, it facilitates multi-turn conversations to automate browser-based workflows such as searching, navigating, filling forms, and booking.
+This template helps build an agent that enables users to perform real-world browser tasks through natural language prompts. Powered by **Azure AI Agent Service** and **Azure Playwright Service**, it facilitates multi-turn conversations to automate browser-based workflows such as searching, navigating, filling forms, and booking.
 
 **WARNING:** Browser automation comes with significant security risks. Both errors in judgment by the AI and the presence of malicious or confusing instructions on web pages which the AI encounters may cause it to execute commands you do not intend, which could compromise the security of your browser, your computer, and any accounts to which the browser or AI has access, including personal information, financial, or enterprise systems. We recommend that you use this type of agent only in isolated environments with controlled access, such as browsers running within dedicated VMs.
 
