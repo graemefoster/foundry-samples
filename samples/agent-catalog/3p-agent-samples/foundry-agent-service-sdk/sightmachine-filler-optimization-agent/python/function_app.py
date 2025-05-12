@@ -281,11 +281,15 @@ def initialize_data_pred_agent(project_client):
         If you do not have enough information to answer the question, ask for more information.
         If you do not know the answer, say you do not know.
         
-        Always describe how you plan to answer the response.
         You do not need to repeat the question in your answer.
-        When translating variable names, list the old and new names in the response.
         If you retrieve data, provide a brief summary of the data retrieved.
         If you make a prediction, provide the original value, the predicted value, and the new values used for the prediction.
+        Answer in a narrative format, but include a table when appropriate.
+        
+        Answer in the following format:
+        Approach: <approach used>
+        Data and results: <data/results retrieved>
+        
         
         """,
         headers={"x-ms-enable-preview": "true"},
@@ -436,7 +440,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if not user_question:
         return func.HttpResponse(input_form, mimetype="text/html")
 
-    prompt = user_question + """Format your answer as html"""
+    prompt = user_question
 
     # Initialize the agent client
     project_client, thread = initialize_client_thread()
@@ -455,7 +459,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info(f"Revised question: {revised_question}")
 
-    revised_question += "Format your answer as html, and only use html.  Do not enclose the answer in ```html and ```.  Do not include other text not in html."
+    # revised_question += "Format your answer as html, and only use html.  Do not enclose the answer in ```html and ```.  Do not include other text not in html."
 
     response = ask_question(revised_question, project_client, thread, data_pred_agent)
 
@@ -469,7 +473,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     response_html += f"<p><p><b>Question:</b>{user_question}?"
 
     if response:
-        response_html += f"<p>{response}</p>"
+        response_html += f"<p><pre>{response}</pre></p>"
     else:
         response_html += "<p>No response from agent.</p>"
 
