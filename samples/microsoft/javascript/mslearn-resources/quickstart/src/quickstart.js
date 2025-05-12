@@ -11,11 +11,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function chatCompletion() {
     // <chat_completion>
+    // Get the Azure AI endpoint and deployment name from environment variables
     const endpoint = process.env.INFERENCE_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
-    const project = new AIProjectClient(endpoint, new DefaultAzureCredential());
 
+    // Create an Azure OpenAI Client
+    const project = new AIProjectClient(endpoint, new DefaultAzureCredential());
     const client = project.inference.azureOpenAI();
+
+    // Create a chat completion
     const chatCompletion = await client.chat.completions.create({
         deployment,
         messages: [
@@ -23,7 +27,6 @@ async function chatCompletion() {
             { role: "user", content: "Write me a poem about flowers" },
         ],
     });
-
     console.log("response = ", JSON.stringify(chatCompletion, null, 2));
     // </chat_completion>
 }
