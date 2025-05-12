@@ -1,0 +1,124 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.34.44.8038",
+      "templateHash": "1714052608002840600"
+    }
+  },
+  "parameters": {
+    "accountName": {
+      "type": "string",
+      "defaultValue": "[format('basicaccount{0}', substring(uniqueString(utcNow()), 0, 4))]"
+    },
+    "projectName": {
+      "type": "string",
+      "defaultValue": "project"
+    },
+    "projectDescription": {
+      "type": "string",
+      "defaultValue": "some description"
+    },
+    "projectDisplayName": {
+      "type": "string",
+      "defaultValue": "project_display_name"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "modelName": {
+      "type": "string",
+      "defaultValue": "gpt-4o"
+    },
+    "modelFormat": {
+      "type": "string",
+      "defaultValue": "OpenAI"
+    },
+    "modelVersion": {
+      "type": "string",
+      "defaultValue": "2024-11-20"
+    },
+    "modelSkuName": {
+      "type": "string",
+      "defaultValue": "GlobalStandard"
+    },
+    "modelCapacity": {
+      "type": "int",
+      "defaultValue": 30
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "apiVersion": "2025-04-01-preview",
+      "name": "[parameters('accountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "S0"
+      },
+      "kind": "AIServices",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "allowProjectManagement": true,
+        "customSubDomainName": "[toLower(parameters('accountName'))]",
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "virtualNetworkRules": [],
+          "ipRules": []
+        },
+        "publicNetworkAccess": "Enabled",
+        "disableLocalAuth": true
+      }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/projects",
+      "apiVersion": "2025-04-01-preview",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('projectName'))]",
+      "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "description": "[parameters('projectDescription')]",
+        "displayName": "[parameters('projectDisplayName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2024-10-01",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('modelName'))]",
+      "sku": {
+        "capacity": "[parameters('modelCapacity')]",
+        "name": "[parameters('modelSkuName')]"
+      },
+      "properties": {
+        "model": {
+          "name": "[parameters('modelName')]",
+          "format": "[parameters('modelFormat')]",
+          "version": "[parameters('modelVersion')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "account_name": {
+      "type": "string",
+      "value": "[parameters('accountName')]"
+    },
+    "project_name": {
+      "type": "string",
+      "value": "[parameters('projectName')]"
+    }
+  }
+}

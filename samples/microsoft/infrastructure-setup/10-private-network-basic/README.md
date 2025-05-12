@@ -1,0 +1,1 @@
+# Deploy AI Foundry with a private network configuration

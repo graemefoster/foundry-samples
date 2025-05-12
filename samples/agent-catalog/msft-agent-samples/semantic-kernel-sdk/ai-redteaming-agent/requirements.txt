@@ -1,0 +1,4 @@
+azure-ai-evaluation[redteam]
+semantic-kernel
+python-dotenv
+requests
