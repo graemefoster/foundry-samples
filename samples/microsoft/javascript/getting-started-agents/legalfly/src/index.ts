@@ -53,7 +53,7 @@ async function main() {
   const openApiSpec = await fetchOpenApiSpec();
   const openApiTool = ToolUtility.createOpenApiTool({
     spec: openApiSpec,
-    name: "legalCounsel",
+    name: "getLegalCounsel",
     auth: {
       type: "connection",
       // @ts-ignore
