@@ -1,19 +1,16 @@
-# Contract Analysis Agent
+# Contract Analysis Agent Using Azure AI Agent Service And Semantic Kernel
 
 ## Overview 
 
-The Contract Analysis agent assists in reviewing multiple versions of a contract by evaluating the changes between them. It extracts key fields and clauses from the contracts and generates a detailed report that highlights the differences. The report is formatted in markdown to clearly identify these differences and it mirrors the structure of the contracts to ensure readability and makes it easy for the reviewer to understand all changes.
+The Contract Analysis agent, implemented with Azure AI Agent Service and Semantic Kernel, reviews multiple versions of a contract and generates a detailed and structured report that highlights the differences. The Markdown report mirrors the structure of the contracts to ensure readability and makes it easy for the reviewer to understand the differences.
 
-The agent performs the following: 
+The agent's capabilities include: 
 
-* **Contract Comparison**: Compare two versions of a contract to identify changes in key fields and clauses. Use specialized tools and techniques to extract relevant information from them. 
-* **Report Generation**: Generate a detailed report on the differences between the two versions of the contract. Format reports using markdown to ensure clarity and readability. Organize content with headings, subheadings, bullet points, and numbered lists. 
-* **Communication**: Communicate findings to the reviewer in a clear and concise manner. Identify the next actions for the reviewer. 
+* **Contract Comparison**: Compares two versions of a contract to identify changes in key fields and clauses. Uses specialized tools and techniques to extract relevant information from them. 
+* **Report Generation**: Generates a detailed report on the differences between the two versions of a contract. Formats reports using Markdown to ensure clarity and readability. Organizes content with headings, subheadings, bullet points, and numbered lists. 
+* **Communication**: Communicates findings to the reviewer in a clear and concise manner.
 
-The agent uses the following tools:
-
-* **Azure Content Understanding**: Contract analysis, content extraction, field extraction.
-* **File Search**: Pull user-provided additional documents or brand guides.
+This Azure AI Agent Service agent uses the Azure AI Content Understanding for transcription of PDF contacts to markdown, contract analysis, and content extraction.
 
 ## Sample Data
 
