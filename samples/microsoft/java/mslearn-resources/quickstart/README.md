@@ -49,7 +49,9 @@ You can also use other IDEs such as:
 Rename the `.env.template` file to `.env` and fill in your Azure credentials:
 
 ```properties
-AZURE_API_KEY=your_api_key_here
+AZURE_TENANT_ID=your_tenant_id
+AZURE_CLIENT_ID=your_client_id
+AZURE_CLIENT_SECRET=your_client_secret
 AZURE_ENDPOINT=your_endpoint_here
 AZURE_DEPLOYMENT=your_deployment_name_here
 ```
@@ -63,56 +65,15 @@ AZURE_DEPLOYMENT=your_deployment_name_here
    ```
 3. Add Maven dependencies:
 
-```xml
-    <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-ai-projects</artifactId>
-            <version>1.0.0-alpha.20250429.2</version>
-        </dependency>
-        
-        <!-- OpenAI Java SDK -->
-        <dependency>
-            <groupId>com.openai</groupId>
-            <artifactId>openai-java</artifactId>
-            <version>1.4.1</version>
-        </dependency>
-        
-        <!-- Azure Identity for authentication -->
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-identity</artifactId>
-            <version>1.8.1</version>
-        </dependency>
-        
-        <!-- .env file support -->
-        <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>dotenv-java</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-        
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.7</version>
-        </dependency>
-    </dependencies>
-```
+Download [POM.XML](samples\microsoft\java\mslearn-resources\quickstart\pom.xml) to your Java IDE
 
 ## Create a Project and Model Deployment
 
 
 ```java
-// Create a client using your Azure credentials
+// Create a client using Microsoft Entra ID authentication
 ProjectsClient client = new ProjectsClientBuilder()
-    .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+    .credential(new DefaultAzureCredential())
     .endpoint(System.getenv("AZURE_ENDPOINT"))
     .buildClient();
 
