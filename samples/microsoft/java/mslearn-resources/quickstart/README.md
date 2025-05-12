@@ -71,6 +71,14 @@ Download [POM.XML](samples\microsoft\java\mslearn-resources\quickstart\pom.xml) 
 
 
 ```java
+// Import necessary packages
+import com.azure.ai.projects.ProjectsClient;
+import com.azure.ai.projects.ProjectsClientBuilder;
+import com.azure.ai.projects.models.Project;
+import com.azure.ai.projects.models.deployment.Deployment;
+import com.azure.ai.projects.models.deployment.DeploymentOptions;
+import com.azure.identity.DefaultAzureCredential;
+
 // Create a client using Microsoft Entra ID authentication
 ProjectsClient client = new ProjectsClientBuilder()
     .credential(new DefaultAzureCredential())
@@ -80,6 +88,18 @@ ProjectsClient client = new ProjectsClientBuilder()
 // Create a project with a name and description
 Project project = client.createProject("My Sample Project", "A project created using the Java SDK");
 System.out.println("Created project: " + project.getName() + " with ID: " + project.getId());
+
+// Create a model deployment in the project
+DeploymentOptions deploymentOptions = new DeploymentOptions()
+    .setName("my-deployment")
+    .setModel("gpt-4") // Specify the model to deploy
+    .setDescription("Sample model deployment");
+
+Deployment deployment = client.createDeployment(project.getId(), deploymentOptions);
+System.out.println("Created deployment: " + deployment.getName() + " with ID: " + deployment.getId());
+
+// Store deployment ID for later use
+System.setProperty("DEPLOYMENT_ID", deployment.getId());
 ```
 
 ## Chat Completion
