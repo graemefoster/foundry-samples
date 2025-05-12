@@ -15,7 +15,8 @@ import com.azure.ai.projects.models.evaluation.AgentEvaluation;
 import com.azure.ai.projects.models.evaluation.EvaluationClient;
 import com.azure.ai.projects.models.evaluation.EvaluationMetric;
 import com.azure.ai.projects.models.evaluation.EvaluationOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.util.Map;
 
@@ -25,7 +26,9 @@ import java.util.Map;
 public class EvaluateAgentSample {
     public static void main(String[] args) {
         // Load configuration from .env file
-        String apiKey = ConfigLoader.getAzureApiKey();
+        String tenantId = ConfigLoader.getAzureTenantId();
+        String clientId = ConfigLoader.getAzureClientId();
+        String clientSecret = ConfigLoader.getAzureClientSecret();
         String endpoint = ConfigLoader.getAzureEndpoint();
         String deploymentName = ConfigLoader.getAzureDeployment();
         

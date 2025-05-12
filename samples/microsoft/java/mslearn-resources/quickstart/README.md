@@ -105,9 +105,20 @@ System.setProperty("DEPLOYMENT_ID", deployment.getId());
 ## Chat Completion
 
 ```java
+// Import necessary packages
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
+// Create a Microsoft Entra ID credential
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(System.getenv("AZURE_TENANT_ID"))
+    .clientId(System.getenv("AZURE_CLIENT_ID"))
+    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+    .build();
+
 // Create a Projects client
 ProjectsClient client = new ProjectsClientBuilder()
-    .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+    .credential(credential)
     .endpoint(System.getenv("AZURE_ENDPOINT"))
     .buildClient();
 
@@ -133,9 +144,20 @@ System.out.println(completion.getChoices().get(0).getMessage().getContent());
 
 
 ```java
+// Import necessary packages
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
+// Create a Microsoft Entra ID credential
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(System.getenv("AZURE_TENANT_ID"))
+    .clientId(System.getenv("AZURE_CLIENT_ID"))
+    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+    .build();
+
 // Create a Projects client
 ProjectsClient client = new ProjectsClientBuilder()
-    .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+    .credential(credential)
     .endpoint(System.getenv("AZURE_ENDPOINT"))
     .buildClient();
 
@@ -174,9 +196,20 @@ if (assistantMessage != null) {
 Add file search capabilities to your agent:
 
 ```java
+// Import necessary packages
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
+// Create a Microsoft Entra ID credential
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(System.getenv("AZURE_TENANT_ID"))
+    .clientId(System.getenv("AZURE_CLIENT_ID"))
+    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+    .build();
+
 // Create a Projects client
 ProjectsClient client = new ProjectsClientBuilder()
-    .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+    .credential(credential)
     .endpoint(System.getenv("AZURE_ENDPOINT"))
     .buildClient();
 
@@ -221,9 +254,20 @@ if (assistantMessage != null) {
 Evaluate how well the agent performed on a given task:
 
 ```java
+// Import necessary packages
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
+// Create a Microsoft Entra ID credential
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .tenantId(System.getenv("AZURE_TENANT_ID"))
+    .clientId(System.getenv("AZURE_CLIENT_ID"))
+    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+    .build();
+
 // Create a Projects client
 ProjectsClient client = new ProjectsClientBuilder()
-    .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+    .credential(credential)
     .endpoint(System.getenv("AZURE_ENDPOINT"))
     .buildClient();
 
