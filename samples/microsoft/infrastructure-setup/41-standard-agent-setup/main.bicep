@@ -220,20 +220,6 @@ module addProjectCapabilityHost 'modules-standard/add-project-capability-host.bi
   ]
 }
 
-module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-assignments.bicep' = {
-  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
-  scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
-  params: {
-    cosmosAccountName: aiDependencies.outputs.cosmosDBName
-    projectWorkspaceId: aiProject.outputs.projectWorkspaceId
-    projectPrincipalId: aiProject.outputs.projectPrincipalId
-  
-  }
-dependsOn: [
-  addProjectCapabilityHost
-  ]
-}
-
 // The Storage Blob Data Owner role must be assigned before the caphost is created
 module storageContainersRoleAssignment 'modules-standard/blob-storage-container-role-assignments.bicep' = {
   name: 'storage-containers-${uniqueSuffix}-deployment'
@@ -245,5 +231,19 @@ module storageContainersRoleAssignment 'modules-standard/blob-storage-container-
   }
   dependsOn: [
     addProjectCapabilityHost
+  ]
+}
+
+module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-assignments.bicep' = {
+  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
+  scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
+  params: {
+    cosmosAccountName: aiDependencies.outputs.cosmosDBName
+    projectWorkspaceId: aiProject.outputs.projectWorkspaceId
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
+  
+  }
+dependsOn: [
+  addProjectCapabilityHost, storageContainersRoleAssignment
   ]
 }
