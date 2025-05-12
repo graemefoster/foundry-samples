@@ -2,8 +2,6 @@
 ## Description
 Celonis delivers Process Intelligence to accelerate enterprise AI at scale.
 
-Search, retrieve, get insights, and act on data stored in the Celonis Process Intelligence Platform.
-
 ## Prerequisites
 1. A Celonis account with access to Celonis Studio.
 2. A configured Celonis Space. see: [Creating Celonis Spaces](https://docs.celonis.com/en/creating-and-managing-spaces.html#UUID-f8796acf-97a6-29ab-bd8e-d2fd69290b76_section-idm4516530993352033996293100881).
@@ -41,7 +39,7 @@ Search, retrieve, get insights, and act on data stored in the Celonis Process In
 ## Add your API Key to Azure AI Foundry
 1. Create and save a Celonis API key. See [Creating API Keys](https://docs.celonis.com/en/creating-api-keys.html).
 
-2. As in [Setup](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/licensed-data) in the Azure AI Bring your licensed data tutorial, go to your [Azure AI foundry Portal](https://ai.azure.com/). Go to **Management Center** and select **+new connection**. Select **Custom keys** in **other resource types**.
+2. Go to your [Azure AI foundry Portal](https://ai.azure.com/). Go to **Management Center** and select **+new connection**. Select **Custom keys** in **other resource types**.
 
 
 3. When you get to the **Connect a custom resource** window:
@@ -68,7 +66,10 @@ Search, retrieve, get insights, and act on data stored in the Celonis Process In
 
     2. Define the Schema. Make sure the authentication method is set to **Connection**. For **Choose a connection**, use the connection name of the connection you made [above](#add-your-api-key-to-azure-ai-foundry)
 
-    3. Paste the OpenAPI schema you created in [Create Your Celonis Tools API](#create-your-celonis-tools-api)
+    3. Paste the OpenAPI schema you created in [Create Your Celonis Tools API](#create-your-celonis-tools-api). 
+    
+    *Note*: `tool_api.json` in this repo is just an example. you must use your own OpenAPI spec you got from Celonis.
+
 ![alt text](media/create_custom_tool.png)
 
 4. Finish and start chatting.
@@ -92,7 +93,7 @@ auth= OpenApiConnectionAuthDetails(
     )
 ```
 
-
-
+## Support
+For support see: [customer support](https://docs.celonis.com/en/support.html).
 
 [def]: #add

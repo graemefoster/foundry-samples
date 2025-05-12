@@ -44,9 +44,6 @@ model_name = os.environ["MODEL"]
 # connection id should be in the format "/subscriptions/<sub-id>/resourceGroups/<your-rg-name>/providers/Microsoft.CognitiveServices/accounts/<your-ai-services-name>/projects/<your-project-name>/connections/<your-connection-name>"
 connection_id = os.environ["CONNECTION_ID"]
 
-connection_string = os.environ["CONNECTION_STRING"]
-
-
 # Initialize the project client using the endpoint and default credentials
 with AIProjectClient(
     endpoint=endpoint,
@@ -55,7 +52,7 @@ with AIProjectClient(
     # </initialization>
 
     # Load the OpenAPI specification for the service from a local JSON file using jsonref to handle references
-    with open("./celonis.json", "r") as f:
+    with open("./tool_api.json", "r") as f:
         openapi_spec = jsonref.loads(f.read())
 
     auth = OpenApiConnectionAuthDetails(
@@ -143,5 +140,9 @@ with AIProjectClient(
 
     # Fetch and log all messages exchanged during the conversation thread
     messages = project_client.agents.messages.list(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    for message in messages:
+        print(
+            f"Message ID: {message.id}, Role: {message.role}, Content: {message.content}"
+        )
+
     # </cleanup>
