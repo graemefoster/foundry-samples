@@ -1,7 +1,7 @@
 # Contributing Agent Code Samples to Foundry Agent Catalog
 Thank you for your interest in contributing Agent Code Samples to the Foundry Agent Catalog repository!
 
-**Please note that the agent code samples in the Foundry Agent Catalog is a curated list, Inclusion of a third-party contributed agent is at the discretion of the Agent Service team that will be reviewing and approving the code sample.**
+**Please note that the agent code samples in the Foundry Agent Catalog is a curated list. Inclusion of a third-party contributed agent is at the discretion of the Agent Service team that will be reviewing and approving the code sample.**
 
 ## 🚀 What to Include
 
