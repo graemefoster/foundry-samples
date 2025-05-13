@@ -28,15 +28,31 @@ public class ConfigLoader {
     public static String getVariable(String key, String defaultValue) {
         String value = dotenv.get(key);
         return value != null ? value : defaultValue;
-    }
-
-    /**
-     * Get the Azure API Key
+    }    /**
+     * Get the Azure Tenant ID
      * 
-     * @return The Azure API Key
+     * @return The Azure Tenant ID
      */
-    public static String getAzureApiKey() {
-        return getVariable("AZURE_API_KEY");
+    public static String getAzureTenantId() {
+        return getVariable("AZURE_TENANT_ID");
+    }
+    
+    /**
+     * Get the Azure Client ID
+     * 
+     * @return The Azure Client ID
+     */
+    public static String getAzureClientId() {
+        return getVariable("AZURE_CLIENT_ID");
+    }
+    
+    /**
+     * Get the Azure Client Secret
+     * 
+     * @return The Azure Client Secret
+     */
+    public static String getAzureClientSecret() {
+        return getVariable("AZURE_CLIENT_SECRET");
     }
 
     /**
