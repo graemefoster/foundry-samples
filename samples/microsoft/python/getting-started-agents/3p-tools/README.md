@@ -15,9 +15,14 @@ The following tools are authored by **third-party partners**. Use the links belo
 
 1. Select tools provided by our partners for your agent
 
-|Tool  |Description  |
-|---------|---------|
-| [Tripadvisor](./Tripadvisor/README.md) | This tool lets you access Tripadvisor's useful travel platform that can, for example, provide travel guidance and reviews. |
+   |Tool  |Description  |
+   |---------|---------|
+   | [Celonis](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/Celonis) | Celonis delivers Process Intelligence to accelerate enterprise AI at scale |
+   | [InsureMO Insurance Quotation](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/InsureMO) | Action APIs for insurance quotations for Car, Home, and Travel |
+   | [LEGALFLY](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/legalfly) | Legal insights grounded in trusted sources from your jurisdiction. |
+   | [MiHCM](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/MiHCM) | seamless integration with MiHCM's HR functionalities |
+   | [Morningstar](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/Morningstar) | Access up-to-date analyst research, expert commentary, and essential Morningstar data. |
+   | [Tripadvisor](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/python/getting-started-agents/3p-tools/Tripadvisor) | Get travel data, guidance and reviews |
 
 1. Review the README file provided by the partner and get started!
 
