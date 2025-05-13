@@ -1,7 +1,9 @@
 # Exact Question Answering Agent
 
 ## Summary
-The **Exact Question Answering Agent** is an AI-powered agent built using Azure AI Agent Service, together with Custom Question Answering in Azure AI Language. It provides exact answering, perfect for deterministic question answering with human controls. With it, businesses can have top questions that covers say 90% of their business applications handled by human exact answering, then have LLM RAG solution handle long tails, while routing complex queries to human agents.
+The **Exact Question Answering Agent** supports building agents that answer predefined, high-value questions to ensure consistent and accurate responses. 
+
+Built using Azure AI Agent Service and Custom Question Answering in Azure AI Language, it provides deterministic, exact answers with human control options. Businesses can automate responses to their most common questions—often covering up to 90% of inquiries—using this exact answering approach. For less frequent or more nuanced questions, a fallback to an LLM-powered RAG system can handle the long tail, while truly complex queries are routed to human agents.
 
 ## Use Cases
 1. **Customer Support**: Automate deterministic humnan-controlled responses to frequently asked or high value questions such as “What is your return policy?”, “How do I reset my password?”, or “What’s the warranty coverage?” while routing complex queries to human agents.
