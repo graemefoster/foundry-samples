@@ -13,16 +13,19 @@ This code sample helps create agents that orchestrate a complex, multi-step rese
 
 ---
 
-## 🧩 Tools & Capabilities
+- ## 🧩 Tools & Capabilities
 
-This agent is built with **Azure AI Agent Service** and typically integrates:
+Built with **Azure AI Agent Service**, the ResearchFlow agent coordinates a graph of specialized agents to conduct structured research and synthesis tasks:
 
-- **File Search** to extract and cross-reference details from uploaded PDFs, Markdown, and structured datasets.
-- **Summarizer Agent** to generate section-level summaries from technical or dense input.
-- **Planner Agent** to break large prompts into logical subtasks and route them to specialized sub-agents.
-- **Progress Tracker or Router Agent** to manage task completion and coordination across a multi-agent graph.
+- **Planner Agent (`LedgerPlanner.agent`)** breaks down complex prompts into logical subtasks for targeted execution.
+- **Summarizer Agent (`Summarizer.agent`)** condenses technical or lengthy content into clear summaries tailored to user intent.
+- **File Search Tool** (used within the agent graph) allows agents to locate relevant content from uploaded documents, PDFs, or markdown.
+- **Progress Manager Agent (`progressManager.agent`)** tracks task progression and orchestrates tool execution in multi-step workflows.
+- **User Agent (`user.agent`)** and **Router logic** enable custom routing and user-specific personalization.
+- **Fact Agents (`LedgerFacts.agent`, `LedgerFactsUpdate.agent`)** store and retrieve structured knowledge or annotations.
+- **Plan Update Agent (`LedgerPlanUpdate.agent`)** refines or extends subtask chains as the plan evolves.
 
-The agent orchestration is defined using `.agent` and `.fdl` configuration files.
+All tools and agents are declaratively configured in `.agent` and `.fdl` files.
 
 ---
 
