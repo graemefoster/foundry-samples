@@ -1,6 +1,10 @@
-# InsureMO Insurance Quotation API Sample
+# InsureMO Insurance Quotation
 
-This repository demonstrates how to use the InsureMO Insurance Quotation APIs (Car, Home, and Travel) with Azure AI Agents and OpenAPI tools. It includes a single Python sample agent that can request quotations for all supported insurance products, an OpenAPI specification, and instructions for setup and usage.
+Action APIs for insurance quotations for Car, Home, and Travel.
+
+---
+
+This repository demonstrates how to use the InsureMO Insurance Quotation APIs (Car, Home, and Travel) with Azure AI Foundry Agent Service and OpenAPI tools. It includes a single Python sample agent that can request quotations for all supported insurance products, an OpenAPI specification, and instructions for setup and usage.
 
 ## Table of Contents
 
@@ -21,7 +25,7 @@ This repository demonstrates how to use the InsureMO Insurance Quotation APIs (C
 
 ## Overview
 
-This project provides sample code and OpenAPI specifications for integrating with InsureMO's insurance quotation APIs. The sample shows how to use Azure AI Agents to interact with these APIs using secure API key authentication. All three insurance products (Car, Home, and Travel) are supported in a single script, with the user input determining which quotation is requested.
+This project provides sample code and OpenAPI specifications for integrating with InsureMO's insurance quotation APIs. The sample shows how to use Azure Foundry Agent Service to interact with these APIs using secure API key authentication. All three insurance products (Car, Home, and Travel) are supported in a single script, with the user input determining which quotation is requested.
 
 ---
 
@@ -72,7 +76,7 @@ pip install azure-ai-projects azure-ai-agents azure-identity jsonref python-dote
 1. **Clone the repository** and navigate to the project directory.
 
 2. **Set up Azure AI Project and OpenAPI Connection**:
-   - Follow the instructions at [Azure Agents OpenAPI Tool Authentication](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview#authenticating-with-api-key) to create a custom key connection for the InsureMO APIs.
+   - Follow the instructions at [Foundry Agent Service OpenAPI Tool Authentication](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview#authenticating-with-api-key) to create a custom key connection for the InsureMO APIs.
    - Note your connection name.
 
 3. **Configure Environment Variables**:
@@ -99,7 +103,6 @@ pip install azure-ai-projects azure-ai-agents azure-identity jsonref python-dote
 ## OpenAPI Specifications
 
 - The OpenAPI spec (`insuremo_openapi_spec.json`) covers all three insurance products.
-- All endpoints require the `X-API-KEY` header for authentication.
 - **You can also obtain the latest OpenAPI specifications using the following publicly available GET API:**
   - [Openapi Spec](https://insuremo-insurance-tools.graysand-b1976283.westus2.azurecontainerapps.io/v1/openapi/full)
 
@@ -133,14 +136,6 @@ python insureMO_Quotation.py
 
 ---
 
-## Authentication
-
-- All API requests require the `X-API-KEY` header.
-- The sample agent uses Azure AI Projects' connection management to securely store and use the API key.
-- See [Azure OpenAPI Tool Authentication](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview#authenticating-with-api-key) for setup details.
-
----
-
 ## Best Practices
 
 - Store secrets and connection strings securely (never hard-code in source files).
@@ -157,10 +152,6 @@ python insureMO_Quotation.py
 - [Azure AI Agents Documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/)
 - [Azure OpenAPI Tool](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec)
 - [OpenAPI Specification](https://swagger.io/specification/)
-- [python-dotenv](https://pypi.org/project/python-dotenv/)
-
----
-
-For any issues or questions, please refer to the official documentation or contact your Azure administrator.
+- [Customer Support email](mailto:ms@insuremo.com)
 
 ---
