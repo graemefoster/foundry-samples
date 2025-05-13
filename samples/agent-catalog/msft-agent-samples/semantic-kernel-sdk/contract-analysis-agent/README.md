@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Contract Analysis agent assists in reviewing multiple versions of a contract by evaluating the changes between them. It extracts key fields and clauses from the contracts and generates a detailed report that highlights the differences. The report is formatted in markdown to clearly identify these differences and mirrors the structure of the contracts to ensure readability, making it easy for the reviewer to understand all changes.
+The Contract Analysis agent code sample enables creating agents that compare contract versions by evaluating changes between them. It assists in reviewing multiple versions of a contract by evaluating the changes between them. extracts key fields and clauses from the contracts, highlights differences, and generates a detailed report that highlights the differences. The report is formatted in markdown to clearly identify these differences and mirrors the structure of the contracts to ensure readability, making it easy for the reviewer to understand all changes.
 
 The agent performs the following:
 
