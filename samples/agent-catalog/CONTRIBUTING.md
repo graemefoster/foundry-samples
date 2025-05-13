@@ -76,7 +76,6 @@ Optional Instructions for extending the agent
 **License**
 Specify and include a license in the agent folder
 
-👉 See [`README_TEMPLATE.md`](README_TEMPLATE.md) for a ready-to-copy format.
 
 ## 📤 Submission Process
 - Fork this repository
