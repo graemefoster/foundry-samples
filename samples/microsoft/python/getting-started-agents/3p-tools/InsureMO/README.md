@@ -25,7 +25,7 @@ This repository demonstrates how to use the InsureMO Insurance Quotation APIs (C
 
 ## Overview
 
-This project provides sample code and OpenAPI specifications for integrating with InsureMO's insurance quotation APIs. The sample shows how to use Azure Foundry Agent Service to interact with these APIs using secure API key authentication. All three insurance products (Car, Home, and Travel) are supported in a single script, with the user input determining which quotation is requested.
+This project provides sample code and OpenAPI specifications for integrating with InsureMO's insurance quotation APIs. The sample shows how to use Azure AI Foundry Agent Service to interact with these APIs using secure API key authentication. All three insurance products (Car, Home, and Travel) are supported in a single script, with the user input determining which quotation is requested.
 
 ---
 
@@ -76,7 +76,7 @@ pip install azure-ai-projects azure-ai-agents azure-identity jsonref python-dote
 1. **Clone the repository** and navigate to the project directory.
 
 2. **Set up Azure AI Project and OpenAPI Connection**:
-   - Follow the instructions at [Foundry Agent Service OpenAPI Tool Authentication](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview#authenticating-with-api-key) to create a custom key connection for the InsureMO APIs.
+   - Follow the instructions at [Foundry Agent Service OpenAPI Tool Authentication](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview#authenticating-with-api-key) to create a custom key (with name 'X-API-KEY') connection for the InsureMO APIs.
    - Note your connection name.
 
 3. **Configure Environment Variables**:
