@@ -1,12 +1,10 @@
 # AI News Agent
 
-**Agent Name:** AI News Agent
-
-AI News is an intelligent information summarization agent designed to help executives and decision-makers stay on top of the rapidly evolving world of artificial intelligence. By continuously scanning credible news sources, it identifies and summarizes the most impactful AI developments—especially those relevant to the Microsoft ecosystem, healthcare, and legal industries.
+This code sample enables creating an intelligent information summarization agent designed to help executives and decision-makers stay on top of the rapidly evolving world of artificial intelligence. By continuously scanning credible news sources, it identifies and summarizes the most impactful AI developments—especially those relevant to the Microsoft ecosystem, healthcare, and legal industries.
 
 The agent reduces information overload by prioritizing high-value updates and presenting them in a clear, digestible Markdown table format. Each summary includes a headline, date, key insight, strategic implications, and a verified source link.
 
-AI News is not a replacement for human analysis or legal due diligence. Instead, it augments executive awareness by surfacing credible developments that may require further attention or discussion. All strategic decisions and compliance assessments remain the responsibility of the end user.
+**AI News is not a replacement for human analysis or legal due diligence. Instead, it augments executive awareness by surfacing credible developments that may require further attention or discussion. All strategic decisions and compliance assessments remain the responsibility of the end user.**
 
 
 ## 🎯 Use Cases
@@ -132,11 +130,8 @@ Agent: (returns a Markdown table of up to 10 items)
 - To route output to other targets (e.g., email, Teams), wrap the final table in a notification action.
 - To change the timezone from Pacific, review the # Compute time window (Pacific) section and make the necessary adjustments
 
-## 🖼 Company Logo
-
-![Logo](./assets/marquee_insights_logo.svg)
-
 ## Company
+![Logo](./assets/marquee_insights_logo.svg)
 Marquee Insights is a specialized AI consultancy delivering cutting-edge solutions. Visit [Marquee Insights](https://marqueeinsights.com).
 
 ## Support
