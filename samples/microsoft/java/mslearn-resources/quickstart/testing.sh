@@ -11,6 +11,26 @@ print_color() {
     echo -e "\033[${color_code}m$@\033[0m"
 }
 
+# Function to validate environment variables
+validate_env() {
+    missing_vars=()
+    
+    if [ -z "$AZURE_TENANT_ID" ]; then missing_vars+=("AZURE_TENANT_ID"); fi
+    if [ -z "$AZURE_CLIENT_ID" ]; then missing_vars+=("AZURE_CLIENT_ID"); fi
+    if [ -z "$AZURE_CLIENT_SECRET" ]; then missing_vars+=("AZURE_CLIENT_SECRET"); fi
+    if [ -z "$AZURE_ENDPOINT" ]; then missing_vars+=("AZURE_ENDPOINT"); fi
+    if [ -z "$AZURE_DEPLOYMENT" ]; then missing_vars+=("AZURE_DEPLOYMENT"); fi
+    
+    if [ ${#missing_vars[@]} -ne 0 ]; then
+        print_color "31" "ERROR: Missing required environment variables:"
+        for var in "${missing_vars[@]}"; do
+            print_color "31" "  - $var"
+        done
+        print_color "31" "Please create a .env file with these variables or set them in your environment."
+        exit 1
+    fi
+}
+
 # Function to run a test and track its result
 run_test() {
     sample=$1

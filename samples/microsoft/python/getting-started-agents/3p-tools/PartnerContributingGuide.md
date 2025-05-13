@@ -1,14 +1,14 @@
 # 3p Tool Partner Contributing Guide
 
 ## Who should read this?
-This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Agent Service non-Microsoft tools** so that customers can integrate your APIs with Azure AI Agent service through a tool to retrieve data or integrating with a workflow.
+This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Foundry Agent Service non-Microsoft tools** so that customers can integrate your APIs with Azure AI Foundry Agent service through a tool to retrieve data or integrating with a workflow.
 
 ## Prepare your Pull Request (PR)
 Your PR needs to create a new folder with the tool name and include the following information: 
-- `README.md` (required): follow this [template](./README_template_for_parter.md) as an example and this README file will serve as public documentation for help customers set up and use the tool with your API through Azure AI Agent service
+- `README.md` (required): follow this [template](./README_template_for_parter.md) as an example and this README file will serve as public documentation for help customers set up and use the tool with your API through Azure AI Foundry Agent service
   - The name, logo, and description in this README file will be used in the Azure AI Foundry Portal user experience and marketing materials.
   - It must include how customers set up an account with your API directly and your customer support contact or website.
-  - Customers should be able to follow this README file and successfully use the tool with Azure AI Agent service.
+  - Customers should be able to follow this README file and successfully use the tool with Azure AI Foundry Agent service.
 - `sample code` (required): using at least one of the SDK below
   - (recommended) Python: [Azure AI Projects client library for Python | Microsoft Learn](https://learn.microsoft.com/en-us/python/api/overview/azure/ai-projects-readme?view=azure-python-preview#create-agent-with-openapi)
   - .NET/C#: [Azure AI Projects client library for .NET - Azure for .NET Developers | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/api/overview/azure/ai.projects-readme?view=azure-dotnet-preview)

@@ -14,7 +14,8 @@ import com.azure.ai.projects.models.agent.AgentThread;
 import com.azure.ai.projects.models.agent.FileTool;
 import com.azure.ai.projects.models.file.File;
 import com.azure.ai.projects.models.file.FileClient;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,7 +28,9 @@ import java.util.List;
 public class FileSearchAgentSample {
     public static void main(String[] args) {
         // Load configuration from .env file
-        String apiKey = ConfigLoader.getAzureApiKey();
+        String tenantId = ConfigLoader.getAzureTenantId();
+        String clientId = ConfigLoader.getAzureClientId();
+        String clientSecret = ConfigLoader.getAzureClientSecret();
         String endpoint = ConfigLoader.getAzureEndpoint();
         String deploymentName = ConfigLoader.getAzureDeployment();
         
