@@ -2,7 +2,7 @@
 
 ## Description 
 
-The Saifr Communication Compliance Agent converts potentially noncompliant text to a more compliant, fair, and balanced 
+This code sample for Saifr Communication Compliance Agent converts potentially noncompliant text to a more compliant, fair, and balanced 
 version, helping end users better adhere to relevant regulatory guidelines.
 
 
