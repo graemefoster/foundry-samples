@@ -8,11 +8,6 @@ Accelerate your agent development using code samples and best practices for crea
 
 **With agents you create using these code samples, be sure to assess safety and legal implications, and to comply with all applicable laws and safety standards. [Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note)**
 
-## Prerequisites
-
-- [Azure subscription](https://azure.microsoft.com/free)
-- An [Azure AI Foundry project](../../../ai-foundry/how-to/create-projects.md).
-
 ## Explore the code samples
 
 | Code sample | Description | Author | Type | SDK | Difficulty level | Tools |
