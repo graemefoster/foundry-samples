@@ -1,7 +1,7 @@
 # Exact Question Answering Agent
 
 ## Summary
-The **Exact Question Answering Agent** supports building agents that answer predefined, high-value questions to ensure consistent and accurate responses. 
+The **Exact Question Answering Agent** code sample supports building agents that answer predefined, high-value questions to ensure consistent and accurate responses. 
 
 Built using Azure AI Agent Service and Custom Question Answering in Azure AI Language, it provides deterministic, exact answers with human control options. Businesses can automate responses to their most common questions—often covering up to 90% of inquiries—using this exact answering approach. For less frequent or more nuanced questions, a fallback to an LLM-powered RAG system can handle the long tail, while truly complex queries are routed to human agents.
 
