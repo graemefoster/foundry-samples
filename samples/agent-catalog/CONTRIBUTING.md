@@ -1,6 +1,5 @@
-# Contributing Agent Blueprints to Foundry
-
-Thank you for your interest in contributing Agent Blueprints to the Foundry repository!
+# Contributing Agent Code Samples to Foundry Catalog
+Thank you for your interest in contributing Agent Code Samples to the Foundry Agent Catalog repository!
 
 ## 🚀 What to Include
 
