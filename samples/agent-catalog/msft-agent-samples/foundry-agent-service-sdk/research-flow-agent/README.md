@@ -1,6 +1,6 @@
 # 🧠 ResearchFlow Agent
 
-This code sample helps create agents that orchestrate a complex, multi-step research AI workflows and solve open-ended tasks, helping users gather, synthesize, and structure knowledge from complex sources. Ideal for analysts, strategists, product teams, and technical writers.
+This code sample helps create agents that orchestrate complex, multi-step research workflows, helping users gather, synthesize, and structure knowledge from complex sources. Ideal for analysts, strategists, product teams, and technical writers.
 
 ---
 
