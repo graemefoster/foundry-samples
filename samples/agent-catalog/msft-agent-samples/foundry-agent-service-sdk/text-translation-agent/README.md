@@ -1,7 +1,7 @@
-# Translation Agent
+# Text Translation Agent
 
 ## Summary
-The **Translation Agent** is an AI-powered agent built using Azure AI Agent Service and Azure AI Translator. It helps handle multilingual text processing, including dynamic language detection and bidirectional translation using Azure AI Translator services.
+This code sample helps create agents that handle multilingual text processing, including dynamic language detection and bidirectional translation using Azure AI Translator service. 
 
 ## Use Cases
 1. **Text Translation**: Translate text between multiple languages for seamless communication.
