@@ -4,7 +4,9 @@ import com.azure.ai.foundry.samples.utils.ConfigLoader;
 import com.azure.ai.projects.ProjectsClient;
 import com.azure.ai.projects.ProjectsClientBuilder;
 import com.azure.ai.projects.models.Project;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 /**
  * This sample demonstrates how to create a project using the Azure AI Foundry SDK.
@@ -12,12 +14,21 @@ import com.azure.core.credential.AzureKeyCredential;
 public class CreateProject {
     public static void main(String[] args) {
         // Load configuration from .env file
-        String apiKey = ConfigLoader.getAzureApiKey();
+        String tenantId = ConfigLoader.getAzureTenantId();
+        String clientId = ConfigLoader.getAzureClientId();
+        String clientSecret = ConfigLoader.getAzureClientSecret();
         String endpoint = ConfigLoader.getAzureEndpoint();
+        
+        // Create a credential object using Microsoft Entra ID
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .build();
         
         // Create a projects client
         ProjectsClient client = new ProjectsClientBuilder()
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(credential)
             .endpoint(endpoint)
             .buildClient();
         

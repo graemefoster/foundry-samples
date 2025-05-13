@@ -50,15 +50,16 @@ Before testing, make sure you have:
 1. Java 11 or later installed
 2. Maven installed
 3. An Azure account with access to Azure AI Services
-4. Azure CLI installed and logged in
-5. Configured your `.env` file with valid credentials
+4. Microsoft Entra ID application (service principal) with appropriate permissions
+5. Azure CLI installed and logged in
+6. Configured your `.env` file with valid credentials
 
 ## Setting Up Your Environment for Testing
 
 1. Clone the repository (if you haven't already)
 2. Navigate to the Java samples directory:
    ```bash
-   cd foundry-samples/doc-samples/getting-started/java
+   cd foundry-samples/samples/microsoft/java/mslearn-resources/quickstart
    ```
 3. Copy the `.env.template` file to `.env`:
    ```bash
@@ -66,7 +67,9 @@ Before testing, make sure you have:
    ```
 4. Edit the `.env` file with your actual Azure credentials:
    ```properties
-   AZURE_API_KEY=your_actual_api_key
+   AZURE_TENANT_ID=your_actual_tenant_id
+   AZURE_CLIENT_ID=your_actual_client_id
+   AZURE_CLIENT_SECRET=your_actual_client_secret
    AZURE_ENDPOINT=your_actual_endpoint
    AZURE_DEPLOYMENT=your_deployment_name
    ```
