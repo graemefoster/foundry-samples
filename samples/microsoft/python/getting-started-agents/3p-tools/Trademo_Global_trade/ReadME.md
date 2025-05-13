@@ -1,6 +1,6 @@
 # Trademo Shipments and Tariff Tool
 
-This Python script demonstrates how to use Azure AI Projects to create an agent that queries global trade duties using an OpenAPI specification.
+This Python script demonstrates how to use Azure AI to create an agent that queries global trade duties using an OpenAPI specification.
 
 ## About Tool:
 - Name: Trademo_Shipments_And_Tariff
@@ -26,14 +26,14 @@ This Python script demonstrates how to use Azure AI Projects to create an agent 
 ## Installation
 Install dependencies:
 ```bash
-pip install azure-ai-projects azure-identity jsonref
+pip install azure-ai-projects azure-identity azure-ai-agents jsonref
 ```
 
 
 ## Usage
 Run the script:
 ```bash
-python global_trade.py
+python trademo_and_tariff.py
 ```
 
 Before running the sample:
@@ -46,9 +46,11 @@ Save that connection name as the PROJECT_OPENAPI_CONNECTION_NAME environment var
 
 
 Set this environment variables with your own values:
-PROJECT_CONNECTION_STRING - the Azure AI Project connection string, as found in your Foundry Project.
+PROJECT_ENDPOINT - the Azure AI Project endpoint, as found in your Foundry Project.
 PROJECT_OPENAPI_CONNECTION_NAME - the connection name for the OpenAPI connection authentication
-MODEL_DEPLOYMENT_NAME - name of the model deployment in the project to use Agents against
+MODEL - name of the model deployment in the project to use Agents against
+CONNECTION_ID - The ID of connection(connection id should be in the format "/subscriptions/<sub-id>/resourceGroups/<your-rg-name>/providers/Microsoft.CognitiveServices/accounts/<your-ai-services-name>/projects/<your-project-name>/connections/<your-connection-name>")
+
 
 ## Example queries processed by the tool:
 - "How many GPUs(HS code 847330) were imported to United States from China in February 2025?"
