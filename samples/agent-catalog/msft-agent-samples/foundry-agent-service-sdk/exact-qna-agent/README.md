@@ -45,26 +45,12 @@ The system consists of:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
     3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
+- CQA deployment see [CQA Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/question-answering/overview)
 
 ### Steps
 1. **Clone the Repository**
 
-2. **Set Environment Variables**
-```bash
-PROJECT_ENDPOINT="<your-project-endpoint>" (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
-MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
-```
-
-3. **Deploy Resources Using Bicep**
-```bash
- az deployment group create \
-   --resource-group <your-rg> \
-   --template-file deploy.bicep \
-   --parameters \
-     cqa_project="<cqa_project>" \
-     cqa_deployment= "<cqa_deployment>" \
-     amlWorkspaceResourceName="<AI-Project-Name>"
-```
+2. **Set Config Variables**
 
 4. **Run the Agent Script**
 ```bash
