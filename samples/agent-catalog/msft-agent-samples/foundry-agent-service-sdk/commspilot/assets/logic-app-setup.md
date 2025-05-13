@@ -28,26 +28,25 @@ The schema used in this sample:
 {
   "type": "object",
   "properties": {
-    "start_date": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Start of the date range to filter events (ISO 8601 format)"
+    "email_to": {
+      "type": "string"
     },
-    "end_date": {
-      "type": "string",
-      "format": "date-time",
-      "description": "End of the date range to filter events (ISO 8601 format)"
+    "email_subject": {
+      "type": "string"
+    },
+    "email_body": {
+      "type": "string"
     }
-  },
-  "required": [
-    "start_date",
-    "end_date"
-  ]
+  }
 }
 ```
 Save the workflow. This will generate the REST endpoint for the workflow.
 
 Now, create the next action in the flow - Send an email similar to the following example:
 ![image](https://github.com/user-attachments/assets/6de2e733-a647-4406-a549-a77f92855bf8)
+
+Alternatively, use the pre-built "Send email using Outlook" sample in AI Foundry:
+![image](https://github.com/user-attachments/assets/1995414e-ebbe-4925-8980-e845ed81a172)
+
 
 
