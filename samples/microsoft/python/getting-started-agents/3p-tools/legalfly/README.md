@@ -23,12 +23,12 @@ Legal insights grounded in trusted sources from your jurisdiction.
 
 ## Use LEGALFLY through a code-first experience
 
-1. You can follow the [code sample](./main.py) to use LEGALFLY through Agent SDK.
+1. You can follow the [code sample](./legalfly.py) to use LEGALFLY through Agent SDK.
 1. Before running the sample:
-   1. pip install azure-ai-projects azure-ai-agents azure-identity python-dotenv
+   1. pip install azure-ai-agents azure-identity python-dotenv jsonref
    1. Set these environment variables with your own values:
-   1. PROJECT_CONNECTION_STRING - the Azure AI Agents connection string.
-   1. MODEL_DEPLOYMENT_NAME - The deployment name of the AI model, as found under the "Name" column in the "Models + endpoints" tab in your Azure AI Foundry project.
+   1. PROJECT_ENDPOINT - the Azure AI Agents connection string.
+   1. MODEL - The deployment name of the AI model, as found under the "Name" column in the "Models + endpoints" tab in your Azure AI Foundry project.
    1. LEGALFLY_API_CONNECTION_NAME - The name of the connection for the LegalFly API.
 
 ## Customer Support Contact
