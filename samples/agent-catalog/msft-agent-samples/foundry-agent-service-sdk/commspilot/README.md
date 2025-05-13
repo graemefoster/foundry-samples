@@ -108,6 +108,11 @@ az deployment group create \
 python template.py
 ```
 
+5. Use ai.azure.com and go to the Agents playground to find the above agent.
+   Add the following tools:
+   1. File search (internal documents, FAQs, etc.)
+   2. Add the Logic Apps tool (Instructions in /assets/logic-app-setup.md)
+
 ## ⚙️ Configuration Guide
 
 | Parameter Name         | Description                                                        |
