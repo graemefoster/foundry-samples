@@ -11,7 +11,8 @@ import com.azure.ai.projects.models.agent.AgentRole;
 import com.azure.ai.projects.models.agent.AgentRun;
 import com.azure.ai.projects.models.agent.AgentRunStatus;
 import com.azure.ai.projects.models.agent.AgentThread;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.util.List;
 
@@ -21,13 +22,22 @@ import java.util.List;
 public class AgentSample {
     public static void main(String[] args) {
         // Load configuration from .env file
-        String apiKey = ConfigLoader.getAzureApiKey();
+        String tenantId = ConfigLoader.getAzureTenantId();
+        String clientId = ConfigLoader.getAzureClientId();
+        String clientSecret = ConfigLoader.getAzureClientSecret();
         String endpoint = ConfigLoader.getAzureEndpoint();
         String deploymentName = ConfigLoader.getAzureDeployment();
         
+        // Create a credential object using Microsoft Entra ID
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .build();
+        
         // Create a projects client
         ProjectsClient client = new ProjectsClientBuilder()
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(credential)
             .endpoint(endpoint)
             .buildClient();
         
