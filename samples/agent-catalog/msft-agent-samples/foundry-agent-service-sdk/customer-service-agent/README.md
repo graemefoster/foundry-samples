@@ -1,6 +1,6 @@
 # 💬 Customer Support Agent
 
-The Customer Support Agent is a multi-phase workflow built with Azure AI Agent Service, designed to assist customers with secure authentication and billing inquiries. This agent uses a state-based orchestration to verify customer identity and retrieve billing information, while supporting human-in-the-loop escalation.
+This is a code sample for a multi-phase workflow built with Azure AI Agent Service, designed to assist customers with secure authentication and billing inquiries. It uses a state-based orchestration to verify customer identity and retrieve billing information, while supporting human-in-the-loop escalation.
 
 ---
 
@@ -55,7 +55,7 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
 - Agent files:
   - `CustomerAuthenticator.agent`
   - `CustomerServiceAgent.agent`
-- Declarative graph file (e.g., `customer_support_workflow.fdl` or JSON shown above)
+- Declarative file (e.g., `customer_support_workflow.fdl` or JSON shown above)
 - Supporting documents or mock data (optional):  
   - Customer profiles  
   - Sample
