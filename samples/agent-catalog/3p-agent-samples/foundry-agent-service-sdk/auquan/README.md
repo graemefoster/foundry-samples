@@ -1,6 +1,6 @@
 # AuquanRiskAnalyzer
 
-The Due Diligence Risk Analyst is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The agent processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted reports with visual risk indicators.
+This code sample for the Due Diligence Risk Analyst enables building an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The agent processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted reports with visual risk indicators.
 
 ---
 
