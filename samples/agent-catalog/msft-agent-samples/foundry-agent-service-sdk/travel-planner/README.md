@@ -1,7 +1,7 @@
 # Travel Planner Agent
 
 ## Summary
-The **Travel Planner Agent** is an AI-powered agent built using Azure AI Agent Service. It helps users receive up-to-date travel recommendations by leveraging both the **Bing Grounding Tool** and the **TripAdvisor API**. The agent summarizes relevant information clearly and offers to create a custom itinerary based on the user's travel duration.
+This code sample enables creating an agent to help users receive up-to-date travel recommendations by leveraging both the **Bing Grounding Tool** and the **TripAdvisor API**. The agent summarizes relevant information clearly and offers to create a custom itinerary based on the user's travel duration.
 
 ## Use Cases
 1. **Vacation Planning**: Travelers can get up-to-date suggestions on destinations, hotels, and activities.
