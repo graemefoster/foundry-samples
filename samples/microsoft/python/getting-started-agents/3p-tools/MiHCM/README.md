@@ -48,7 +48,7 @@ Ocp-Apim-Subscription-Key: <your key>
 - Update the `PROJECT_OPENAPI_CONNECTION_NAME` with the connection name you created.
 
 ### Step 3: Run the python script
-- Use the `template_newSDK.py` script to interact with the deployed Azure AI Agent and MiHCM APIs.
+- Use the `template_newSDK.py` script to interact with the Azure AI Foundry Agent Service and MiHCM APIs.
 - Update the `agent_request` value with different requests for the agent.
 
 ## Use Cases 
