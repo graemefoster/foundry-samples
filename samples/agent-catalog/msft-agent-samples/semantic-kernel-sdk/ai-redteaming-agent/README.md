@@ -1,6 +1,6 @@
 # AI Red Teaming Agent
 
-This template enables creating an AI Red Teaming Agent using Azure AI Evaluation and Semantic Kernel. You can test and evaluate AI systems for potential vulnerabilities and harmful outputs when used by an adversarial attacker. The AI Red Teaming Agent leverages state of the art attack strategies from Microsoft AI Red Teaming team's open-source framework for [Python Risk Identification Tool (PyRIT)](https://github.com/Azure/PyRIT).
+This code sample enables creating an AI Red Teaming Agent using Azure AI Evaluation and Semantic Kernel. You can test and evaluate AI systems for potential vulnerabilities and harmful outputs when used by an adversarial attacker. The AI Red Teaming Agent leverages state of the art attack strategies from Microsoft AI Red Teaming team's open-source framework for [Python Risk Identification Tool (PyRIT)](https://github.com/Azure/PyRIT).
 
 ## Overview
 
