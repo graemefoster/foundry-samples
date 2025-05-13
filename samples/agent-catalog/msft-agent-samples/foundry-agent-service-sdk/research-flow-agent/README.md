@@ -1,6 +1,6 @@
 # 🧠 ResearchFlow Agent
 
-This agent orchestrates a multi-step research AI workflow, helping users gather, synthesize, and structure knowledge from complex sources. Ideal for analysts, strategists, product teams, and technical writers.
+This code sample helps create agents that orchestrate a complex, multi-step research AI workflows and solve open-ended tasks, helping users gather, synthesize, and structure knowledge from complex sources. Ideal for analysts, strategists, product teams, and technical writers.
 
 ---
 
@@ -78,7 +78,11 @@ The agent orchestration is defined using `.agent` and `.fdl` configuration files
 - `ResearchFlow.agent` — main orchestration agent
 - `Summarizer.agent` — task-specific summarizer
 - `LedgerPlanner.agent` — planner for prompt decomposition
+- 'LedgerFacts.agent' —
+- 'LedgerFactsUpdate.agent' —
+- 'LedgerPlanUpdate.agent' —
 - `progressManager.agent` — optional tool for managing intermediate steps
+- 'user.agent' —
 - `DeepResearchAgent.fdl` — agent graph and tool configuration
 
 ---
