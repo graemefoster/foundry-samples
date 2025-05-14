@@ -1,7 +1,7 @@
-# Translation Agent
+# Text Translation Agent
 
 ## Summary
-The **Translation Agent** is an AI-powered agent built using Azure AI Agent Service and Azure AI Translator. It helps handle multilingual text processing, including dynamic language detection and bidirectional translation using Azure AI Translator services.
+This code sample helps create agents that handle multilingual text processing, including dynamic language detection and bidirectional translation using Azure AI Translator service. 
 
 ## Use Cases
 1. **Text Translation**: Translate text between multiple languages for seamless communication.
@@ -44,25 +44,12 @@ The system consists of:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
     3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
+- Azure Translator deployment see [Text translation Overview](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview)
 
 ### Steps
 1. **Clone the Repository**
 
-2. **Set Environment Variables**
-```bash
-PROJECT_ENDPOINT="<your-project-endpoint>" (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
-MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
-```
-
-3. **Deploy Resources Using Bicep**
-```bash
- az deployment group create \
-   --resource-group <your-rg> \
-   --template-file deploy.bicep \
-   --parameters \
-    translation_api="<translation-api>"
-     amlWorkspaceResourceName="<AI-Project-Name>"
-```
+2. **Set Config Variables**
 
 4. **Run the Agent Script**
 ```bash

@@ -1,6 +1,6 @@
 # 📊 Sales Analyst Agent
 
-This agent empowers business analysts and sales teams to generate actionable insights from internal sales data, using conversational AI to simplify reporting, aggregation, and trend analysis.
+This code sample enables creating an agent that analyzes sales data. It empowers business analysts and sales teams to generate actionable insights from internal sales data, using conversational AI to simplify reporting, aggregation, and trend analysis.
 
 ---
 
