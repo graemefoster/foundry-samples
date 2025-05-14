@@ -1,7 +1,9 @@
 # 🏠 Home Loan Guide
 
-This agent helps streamlines a customer's mortgage application journey, empowering them to make informed decisions about their home loan options while simplifying the documentation and application process.
+This code sample enables agent creation to provide users with helpful information about mortgage applications at a fictitious company, Cortoso Bank.
+It helps streamlines a customer's mortgage application journey, empowering them to make informed decisions about their home loan options while simplifying the documentation and application process.
 
+Enables 
 ---
 
 ## 💼 Use Cases
