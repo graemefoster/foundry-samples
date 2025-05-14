@@ -73,7 +73,7 @@ with AIProjectClient(
     run_steps = project_client.agents.run_steps.list(thread_id=thread.id, run_id=run.id)
 
     # Loop through each step to display information
-    for step in run_steps.data:
+    for step in run_steps:
         print(f"Step {step['id']} status: {step['status']}")
 
         # Check if there are tool calls recorded in the step details
@@ -100,5 +100,6 @@ with AIProjectClient(
 
     # Fetch and log all messages exchanged during the conversation thread
     messages = project_client.agents.messages.list(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    for message in messages:
+        print(f"Message ID: {message.id}, Role: {message.role}, Content: {message.content}")
     # </cleanup>
