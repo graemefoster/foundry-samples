@@ -36,6 +36,7 @@ This project provides sample code and OpenAPI specifications for integrating wit
 - **Travel Insurance Quotation API**: Obtain travel insurance quotes.
 
 All APIs are hosted on Azure Container Apps and require an API key for authentication.
+To obtain API key, please contact ms@insuremo.com.
 
 ---
 
