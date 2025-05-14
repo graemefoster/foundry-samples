@@ -4,7 +4,7 @@ Thank you for your interest in contributing Agent Code Samples to the Foundry Ag
 > ⚠️ **Important**  
 > When you submit your agent sample(s) to the GitHub "3P-agent-samples” file for availability from the Azure AI Foundry Agent Catalog, you are acknowledging that you are responsible for the submitted content and, as between you and Microsoft, Microsoft is not responsible for any liability that may arise from publication of your agent sample(s) for use by Azure AI Foundry customers.
 
-> The agent code samples in the Foundry Agent Catalog is a curated list. Inclusion of a third-party contributed agent is at the discretion of the Agent Service team that will be reviewing and approving the code sample.**
+> The agent code samples in the Foundry Agent Catalog is a curated list. Inclusion of a third-party contributed agent is at the discretion of the Agent Service team that will be reviewing and approving the code sample.
 
 ## 🚀 What to Include
 
