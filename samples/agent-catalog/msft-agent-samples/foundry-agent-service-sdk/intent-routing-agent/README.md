@@ -1,7 +1,6 @@
 # Intent Routing Agent
 
-## Summary
-The **Intent Routing Agent** is an AI-powered agent built using Azure AI Agent Service, together with Conversational Language Understanding (CLU) and Custom Question Answering (CQA) in Azure AI Language. It detects user intent and provides exact answers, perfect for deterministic intent routing and precise question answering with human controls. With it, businesses can handle top intents and questions that cover, say, 90% of their business applications using human-controlled intent detection and question answering, while leveraging LLM RAG solutions to handle long-tail queries.
+This **Intent Routing Agent** code sample helps create agents that detect user intent and provide exact answering, using Azure AI Agent Service, Conversational Language Understanding (CLU) and Custom Question Answering (CQA) in Azure AI Language. It detects user intent and provides exact answers, perfect for deterministic intent routing and precise question answering with human controls. With it, businesses can handle top intents and questions that cover, say, 90% of their business applications using human-controlled intent detection and question answering, while leveraging LLM RAG solutions to handle long-tail queries. Perfect for deterministically intent routing and exact question answering with human controls. 
 
 ## Use Cases
 1. **Customer Support**: Identify user intent (e.g., "cancel my order" vs. "where is my package") to eanble routing to deterministic workflows accordingly. Forfrequently asked or high value questions (e.g., return policy, warranty info), provide precise answers from a verified knowledge base.  
@@ -48,29 +47,14 @@ The system consists of:
   - The above creates:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
-    3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
+    3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments)
+- CQA deployment see [CQA Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/question-answering/overview)
+- CLU deployment see [CLU Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/conversational-language-understanding/overview)
 
 ### Steps
 1. **Clone the Repository**
 
-2. **Set Environment Variables**
-```bash
-PROJECT_ENDPOINT="<your-project-endpoint>" (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
-MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
-```
-
-3. **Deploy Resources Using Bicep**
-```bash
- az deployment group create \
-   --resource-group <your-rg> \
-   --template-file deploy.bicep \
-   --parameters \
-     clu_project="<clu_project>" \
-     clu_deployment= "<clu_deployment>" \
-     cqa_project="<cqa_project>" \
-     cqa_deployment= "<cqa_deployment>" \
-     amlWorkspaceResourceName="<AI-Project-Name>"
-```
+2. **Set Config Variables**
 
 4. **Run the Agent Script**
 ```bash

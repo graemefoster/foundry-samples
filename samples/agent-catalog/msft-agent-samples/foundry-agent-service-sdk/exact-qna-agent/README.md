@@ -1,7 +1,8 @@
 # Exact Question Answering Agent
 
-## Summary
-The **Exact Question Answering Agent** is an AI-powered agent built using Azure AI Agent Service, together with Custom Question Answering in Azure AI Language. It provides exact answering, perfect for deterministic question answering with human controls. With it, businesses can have top questions that covers say 90% of their business applications handled by human exact answering, then have LLM RAG solution handle long tails, while routing complex queries to human agents.
+The **Exact Question Answering Agent** code sample supports building agents that answer predefined, high-value questions to ensure consistent and accurate responses. 
+
+Built using Azure AI Agent Service and Custom Question Answering in Azure AI Language, it provides deterministic, exact answers with human control options. Businesses can automate responses to their most common questions—often covering up to 90% of inquiries—using this exact answering approach. For less frequent or more nuanced questions, a fallback to an LLM-powered RAG system can handle the long tail, while truly complex queries are routed to human agents.
 
 ## Use Cases
 1. **Customer Support**: Automate deterministic humnan-controlled responses to frequently asked or high value questions such as “What is your return policy?”, “How do I reset my password?”, or “What’s the warranty coverage?” while routing complex queries to human agents.
@@ -45,26 +46,12 @@ The system consists of:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
     3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
+- CQA deployment see [CQA Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/question-answering/overview)
 
 ### Steps
 1. **Clone the Repository**
 
-2. **Set Environment Variables**
-```bash
-PROJECT_ENDPOINT="<your-project-endpoint>" (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
-MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
-```
-
-3. **Deploy Resources Using Bicep**
-```bash
- az deployment group create \
-   --resource-group <your-rg> \
-   --template-file deploy.bicep \
-   --parameters \
-     cqa_project="<cqa_project>" \
-     cqa_deployment= "<cqa_deployment>" \
-     amlWorkspaceResourceName="<AI-Project-Name>"
-```
+2. **Set Config Variables**
 
 4. **Run the Agent Script**
 ```bash

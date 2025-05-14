@@ -32,34 +32,40 @@ This use case can be adapted to similar document-heavy scenarios.
 
 ### Quickstart
 
-#### (Optional) Step 1: Create Azure AI Agent Service Agent
+### Step 1: Create Deployment Model
+
+[Follow the official documentation](https://learn.microsoft.com/azure/ai-foundry/quickstarts/get-started-playground#deploy-a-chat-model) to create an Azure AI Foundry model deployment.
+
+#### (Optional) Step 2: Create Azure AI Agent Service Agent
 
 *This step is optional. If you don't create an Azure AI Agent, the program will create one for you automatically.*
 
 1. Follow the official [Azure AI Agent Service documentation](https://learn.microsoft.com/azure/ai-services/agents/quickstart?pivots=ai-foundry-portal) to create the claims analysis agent (a chat completion agent). 
 2. In the **Instructions** box, paste the contents of [claims_analysis_agent_instructions.md file](other_assets/claims_analysis_agent_instructions.md).
 
-#### Step 2: Create Azure AI Document Intelligence Resource
+#### Step 3: Create Azure AI Document Intelligence Resource
 
 1. Follow the official [Azure AI Document Intelligence documentation](https://learn.microsoft.com/azure/ai-services/document-intelligence/how-to-guides/create-document-intelligence-resource) to create your resource.
 2. Optionally, test the resource in the AI Foundry portal.
 
-#### Step 3: Configure Application
+#### Step 4: Configure Application
 
 1. Provide the required secrets in the [src/config/config_secrets.py file](src/config/config_secrets.py). You can retrieve them from your resources or from AI Foundry portal.
 1. Setup the configuration variables in the [src/config/config.py file](src/config/config.py). You can retrieve them from your resources or from AI Foundry portal (e.g., in the *Agents* page for your Azure AI Agent Service agent).
     1. Initially, the application defaults to mocked agents. Mock agents don't call the backend AI services; instead they operate on hardcoded data. This allows you to save the cost or reduce the latency when debugging. To remove mocking, set respective (or, all) mocking configuration variables `MOCK_*_STEP` to `False`.
 
-#### Step 4: Install Required Modules
+#### Step 5: Install Required Modules
 
 Run the following command to install modules used by the application:
+
 ```sh
 pip install -r requirements.txt
 ```
 
-#### Step 5: Run Application
+#### Step 6: Run Application
 
 Execute the application:
+
 ```sh
 python src/template.py
 ```

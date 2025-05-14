@@ -1,7 +1,7 @@
 # CommsPilot Agent
 
 ## Summary
-The CommsPilot Agent is an AI-powered communications assistant built using Azure AI Agent Service. It helps enterprise users compose high-quality, personalized, and professional emails by combining internal knowledge, real-time context, and publicly grounded data via Bing. The agent streamlines enterprise communication by handling formatting, tone, and relevant context with minimal input from the user.
+The CommsPilot Agent code sample enables agent creation for personalized outbound sales emails and outreach logging. Built using Azure AI Agent Service, it helps enterprise users compose high-quality, personalized, and professional emails by combining internal knowledge, real-time context, and publicly grounded data via Bing. The agent streamlines enterprise communication by handling formatting, tone, and relevant context with minimal input from the user.
 
 ## Use Cases
 1. Context-Aware Email Drafting: Generate customer-ready responses using internal tools and documentation.

@@ -1,7 +1,7 @@
 # Meeting Prep Agent
 
 ## Summary
-The **Meetings and Insights Agent** is built using Azure AI Agent Service. It helps users retrieve meeting and call details, attendee lists, and differentiate between internal and external participants by integrating with Azure Logic Apps. The agent also leverages the **Bing Grounding Tool** to provide relevant, publicly available insights about meeting participants.
+This code sample helps build an agent that helps with meetings by researching attendees and generating contextual summaries. Built using Azure AI Agent Service, it helps users retrieve meeting and call details, attendee lists, and differentiate between internal and external participants by integrating with Azure Logic Apps. The agent also leverages the **Bing Grounding Tool** to provide relevant, publicly available insights about meeting participants.
 
 ## Use Cases
 1. **Meeting Preparation**: Retrieve upcoming meetings, calls, and attendee lists for a user.

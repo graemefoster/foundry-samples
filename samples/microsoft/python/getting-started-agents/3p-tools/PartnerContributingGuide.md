@@ -1,5 +1,8 @@
 # 3p Tool Partner Contributing Guide
 
+> [!IMPORTANT]
+> When you submit your tool code sample(s) to the GitHub "3P-tools" file for availability in Azure AI Foundry, you are acknowledging that you are responsible for the submitted content and, as between you and Microsoft, Microsoft is not responsible for any liability that may arise from availability of your code sample(s) for use by Azure AI Foundry customers.
+
 ## Who should read this?
 This contributing guide is designed for partners who want to bring their APIs as part of the **Azure AI Foundry Agent Service non-Microsoft tools** so that customers can integrate your APIs with Azure AI Foundry Agent service through a tool to retrieve data or integrating with a workflow.
 
