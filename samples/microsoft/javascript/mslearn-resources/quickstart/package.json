@@ -15,7 +15,7 @@
   "type": "module",
   "main": "src/quickstart.js",
   "scripts": {
-    "start": "node src/quickstart.js"
+    "start": "node --no-deprecation src/quickstart.js"
   },
   "dependencies": {
     "@azure/ai-projects": "1.0.0-alpha.20250512.4",
