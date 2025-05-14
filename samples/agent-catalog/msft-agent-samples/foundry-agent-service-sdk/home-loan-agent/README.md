@@ -10,7 +10,6 @@ It helps streamlines a customer's mortgage application journey, empowering them 
 - **Consumer Loan Advisory**: Help individuals evaluate loan options, understand documentation requirements, and compare payment terms.
 - **Pre-Approval & Application Readiness**: Guide users through the loan readiness process with tailored documentation and eligibility support.
 
----
 
 ## 🧩 Tools
 
