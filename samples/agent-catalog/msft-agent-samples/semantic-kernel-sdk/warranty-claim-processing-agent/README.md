@@ -1,6 +1,6 @@
 # Semantic Kernel Agent for Warranty Claim Processing Using Azure AI Agent Service
 
-This is a code sample for warranty claim processing AI agent implemented with Azure AI Agent Service and Semantic Kernel. The workflow between Azure AI Agent Service agent and tools is orchestrated using the Semantic Kernel Process Framework. This demo showcases the capabilities of Azure in automating complex document-centric workflows.
+This is a code sample that enables creating a warranty claim processing AI agent implemented with Azure AI Agent Service and Semantic Kernel. The workflow between Azure AI Agent Service agent and tools is orchestrated using the Semantic Kernel Process Framework. This demo showcases the capabilities of Azure in automating complex document-centric workflows.
 
 ## Scenario Overview
 
