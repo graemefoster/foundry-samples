@@ -3,9 +3,6 @@
 @description('Azure region of the deployment')
 param location string
 
-// @description('The name of the Key Vault')
-// param keyvaultName string
-
 @description('The name of the AI Search resource')
 param aiSearchName string
 
@@ -61,74 +58,6 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2024-11-15' = if(!cosmo
     databaseAccountOfferType: 'Standard'
   }
 }
-
-
-// resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-//   name: keyvaultName
-//   location: location
-//   tags: tags
-//   properties: {
-//     createMode: 'default'
-//     enabledForDeployment: false
-//     enabledForDiskEncryption: false
-//     enabledForTemplateDeployment: false
-//     enableSoftDelete: true
-//     enableRbacAuthorization: true
-//     enablePurgeProtection: true
-//     networkAcls: {
-//       bypass: 'AzureServices'
-//       defaultAction: 'Deny'
-//     }
-//     sku: {
-//       family: 'A'
-//       name: 'standard'
-//     }
-//     softDeleteRetentionInDays: 7
-//     tenantId: subscription().tenantId
-//   }
-// }
-
-
-// var aiServiceParts = split(aiServiceAccountResourceId, '/')
-
-// resource existingAIServiceAccount 'Microsoft.CognitiveServices/accounts@2024-10-01' existing = if (aiServiceExists) {
-//   name: aiServiceParts[8]
-//   scope: resourceGroup(aiServiceParts[2], aiServiceParts[4])
-// }
-
-// resource aiServices 'Microsoft.CognitiveServices/accounts@2024-10-01' = if(!aiServiceExists) {
-//   name: aiServicesName
-//   location: modelLocation
-//   sku: {
-//     name: 'S0'
-//   }
-//   kind: 'AIServices' // or 'OpenAI'
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     customSubDomainName: toLower('${(aiServicesName)}')
-//     apiProperties: {
-//       statisticsEnabled: false
-//     }
-//     publicNetworkAccess: 'Enabled'
-//   }
-// }
-// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= if(!aiServiceExists){
-//   parent: aiServices
-//   name: modelName
-//   sku : {
-//     capacity: modelCapacity
-//     name: modelSkuName
-//   }
-//   properties: {
-//     model:{
-//       name: modelName
-//       format: modelFormat
-//       version: modelVersion
-//     }
-//   }
-// }
 
 var acsParts = split(aiSearchResourceId, '/')
 
@@ -188,12 +117,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = if(!azureStora
   }
 }
 
-// output aiServicesName string =  aiServiceExists ? existingAIServiceAccount.name : aiServicesName
-// output aiservicesID string = aiServiceExists ? existingAIServiceAccount.id : aiServices.id
-// output aiservicesTarget string = aiServiceExists ? existingAIServiceAccount.properties.endpoint : aiServices.properties.endpoint
-// output aiServiceAccountResourceGroupName string = aiServiceExists ? aiServiceParts[4] : resourceGroup().name
-// output aiServiceAccountSubscriptionId string = aiServiceExists ? aiServiceParts[2] : subscription().subscriptionId
-
 output aiSearchName string = aiSearchExists ? existingSearchService.name : aiSearch.name
 output aiSearchID string = aiSearchExists ? existingSearchService.id : aiSearch.id
 output aiSearchServiceResourceGroupName string = aiSearchExists ? acsParts[4] : resourceGroup().name
@@ -208,5 +131,3 @@ output cosmosDBName string = cosmosDBExists ? existingCosmosDB.name : cosmosDB.n
 output cosmosDBId string = cosmosDBExists ? existingCosmosDB.id : cosmosDB.id
 output cosmosDBResourceGroupName string = cosmosDBExists ? cosmosParts[4] : resourceGroup().name
 output cosmosDBSubscriptionId string = cosmosDBExists ? cosmosParts[2] : subscription().subscriptionId
-
-// output keyvaultId string = keyVault.id

@@ -6,7 +6,7 @@ This code sample helps create agents that orchestrate complex, multi-step resear
 
 ## 💼 Use Cases
 
-- **Market & Competitive Research**: Automate the collection and summarization of competitor data, trends, and product insights.
+- **Market & Competitive Research**: Automate the collection and summarization of publicly available competitive data, or your own competitive data, trends, and product insights.
 - **Technical Literature Review**: Extract structured summaries from technical documents and API documentation.
 - **Customer Deep Dives**: Combine customer feedback, CRM notes, and meeting transcripts into coherent insight packs.
 - **Strategic Briefing Packs**: Generate polished summaries, outlines, and visual insights for leadership-ready deliverables.
