@@ -99,17 +99,17 @@ template.py
 ---
 ## 💬 Example Agent Interactions
 
-- "Do a risk analysis for Microsoft"
+- "Do a risk analysis for Darktrace"
 
-- "What are the critical risks identified for Microsoft?"
+- "What are the critical risks identified for Openai"
 
-- "Generate a sustainability analysis for Microsoft"
+- "Generate a sustainability analysis for ClimatePartner"
 
-- "Create a table indicating risks for Microsoft showing all categories and severity"
+- "What is the overall risk range of Zoom?"
 
-- "What is the overall risk range of Microsoft?"
+- "What are the recent themes around Coursera and what are their impacts?"
 
-- "What are the recent themes around Microsoft and what are their impacts?"
+- "What are the recent risks for Autodesk ?"
 
  
 ## 🛠 Customization Tips
@@ -122,3 +122,7 @@ template.py
 
 - **Connect with local files**  
   Add your local files to include your data in risk-analysis
+
+
+## Note : 
+If you encounter a "rate limit exceeded" error, navigate to the "Models + Endpoints" tab in the Foundry Portal and increase the TPM (tokens per minute) limit for your model. We recommend setting it to around 100,000 to start with.
