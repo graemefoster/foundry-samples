@@ -2,8 +2,6 @@
 
 Welcome to the Foundry Agent Catalog!
 
-# Get started with the Agent Catalog
-
 Accelerate your agent development using code samples and best practices for creating agents. Each agent sample below links to a GitHub Repository, where you can browse the agent's configuration files, setup instructions and source code to start integrating them into your own project in code. Our goal is to make it easy for you to explore, customize, and deploy agents that solve real-world business problems. 
 
 **With agents you create using these code samples, be sure to assess safety and legal implications, and to comply with all applicable laws and safety standards. [Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note)**
