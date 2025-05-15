@@ -99,6 +99,8 @@ PROJECT_ENDPOINT="<your-project-endpoint>" # (https://<your-ai-services-account-
 MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
 OPENAPI_CONNECTION_ID="<your-Auquantool-connection-id>"
 
+---
+
 3. **Deploy Resources**
 
 4. **Run the Agent Script**
