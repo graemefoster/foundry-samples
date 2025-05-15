@@ -76,20 +76,46 @@ The agent is configured via a `template.py` file and deployable with Bicep for e
 ## ⚙️ Setup Instructions
 
 ### Prerequisites
-Obtain an API key for your Auquan Risk Agent.
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+5. An API key for your Auquan Risk Agent
 
+---
+
+### Steps
+1. **Clone the Repository**
+
+2. **Set Environment Variables**
+```bash
+PROJECT_ENDPOINT="<your-project-endpoint>" # (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
+MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
+
+3. **Deploy Resources**
+
+4. **Run the Agent Script**
+```bash
+template.py
+```
 ---
 ## 💬 Example Agent Interactions
 
-- "Do a risk analysis for Total energies"
+- "Do a risk analysis for Microsoft"
 
-- "What are the critical risks identified for TotalEnergies?"
+- "What are the critical risks identified for Microsoft?"
 
-- "Generate a sustainability analysis for TotalEnergies"
+- "Generate a sustainability analysis for Microsoft"
 
-- "Create a table indicating risks for TotalEnergies showing all categories and severity"
+- "Create a table indicating risks for Microsoft showing all categories and severity"
 
-- "What is the overall risk range of TotalEnergies?"
+- "What is the overall risk range of Microsoft?"
 
 - "What are the recent themes around TotalEnergies and what are their impacts?"
 
