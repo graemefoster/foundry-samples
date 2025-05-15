@@ -5,7 +5,6 @@ param cosmosDBName string
 @description('Principal ID of the AI project')
 param projectPrincipalId string
 
-
 resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2024-12-01-preview' existing = {
   name: cosmosDBName
   scope: resourceGroup()

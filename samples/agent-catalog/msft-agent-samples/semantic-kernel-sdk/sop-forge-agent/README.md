@@ -2,7 +2,7 @@
 
 ## Overview 
 
-SOP Forge agent converts any short demonstration video into a clean, production‑ready Standard Operating Procedure. 
+This code sample enables creation of a SOP Forge agent that converts any short demonstration video into a clean, production‑ready Standard Operating Procedure. 
 
 It automatically transcribes the footage, detects each procedural step, selects clear images, and fills your preferred Markdown template, delivering a numbered, well‑formatted document that's ready for training and shop‑floor distribution.
 
