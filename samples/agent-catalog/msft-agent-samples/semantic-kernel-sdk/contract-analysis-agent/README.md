@@ -2,7 +2,7 @@
 
 ## Overview 
 
-The Contract Analysis agent, implemented with Azure AI Agent Service and Semantic Kernel, reviews multiple versions of a contract and generates a detailed and structured report that highlights the differences. The Markdown report mirrors the structure of the contracts to ensure readability and makes it easy for the reviewer to understand the differences.
+This code sample enables created of a contract analysis agent, implemented with Azure AI Agent Service and Semantic Kernel, which reviews multiple versions of a contract and generates a detailed and structured report that highlights the differences. The markdown report mirrors the structure of the contracts to ensure readability and makes it easy for the reviewer to understand the differences.
 
 The agent's capabilities include: 
 
