@@ -5,9 +5,9 @@ The **Exact Question Answering Agent** code sample supports building agents that
 Built using Azure AI Agent Service and Custom Question Answering in Azure AI Language, it provides deterministic, exact answers with human control options. Businesses can automate responses to their most common questions—often covering up to 90% of inquiries—using this exact answering approach. For less frequent or more nuanced questions, a fallback to an LLM-powered RAG system can handle the long tail, while truly complex queries are routed to human agents.
 
 ## Use Cases
-1. **Customer Support**: Automate deterministic humnan-controlled responses to frequently asked or high value questions such as “What is your return policy?”, “How do I reset my password?”, or “What’s the warranty coverage?” while routing complex queries to human agents.
-2. **IT Support**: Provide percise answers like “What is the VPN setup process?”, “Where do I download the latest security patch?”, or “How do I enroll in 2FA?” faithful to technical documentation and internal IT knowledge bases.
-3. **Education and Student Help**: Respond with percise and human-controlled answers to questions like “What’s the deadline to drop a course?”, “Where do I submit my financial aid application?”, or “What’s the grading policy for AP credits?” faithful to school and academic documentation.
+1. **Customer Support**: Automate deterministic human-controlled responses to frequently asked or high value questions such as “What is your return policy?”, “How do I reset my password?”, or “What’s the warranty coverage?” while routing complex queries to human agents.
+2. **IT Support**: Provide precise answers like “What is the VPN setup process?”, “Where do I download the latest security patch?”, or “How do I enroll in 2FA?” faithful to technical documentation and internal IT knowledge bases.
+3. **Education and Student Help**: Respond with precise and human-controlled answers to questions like “What’s the deadline to drop a course?”, “Where do I submit my financial aid application?”, or “What’s the grading policy for AP credits?” faithful to school and academic documentation.
 
 ## Architecture Overview
 The system consists of:
@@ -122,7 +122,7 @@ Both options offer excellent features for casual climbing and hiking.
 ## Customization Tips
 - Modify the system instructions in `agent.py` to your needs or preferences (e.g., style of answering).
 - Extend the agent with other useful tools or APIs (using OpenAPI spec).
-- Fine-tuning the associated CQA deployment, e.g. adding/modify/delete question-answer paires, or finetune questions, etc.
+- Fine-tuning the associated CQA deployment, e.g. adding/modify/delete question-answer pairs, or finetune questions, etc.
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
