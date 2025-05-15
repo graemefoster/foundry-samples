@@ -6,22 +6,11 @@ This code sample for the Due Diligence Risk Analyst enables building an expert s
 
 ## 💼 Use Cases
 1. Comprehensive Risk Analysis
-   - "Do a risk analysis for Total energies"
-
 2. Specific Risk Assessment
-   - "What are the critical risks identified for TotalEnergies?"
-
 3. Sustainability Analysis
-   - "Generate a sustainability analysis for TotalEnergies"
-
 4. Risk Table Creation
-   - "Create a table indicating risks for TotalEnergies showing all categories and severity"
-
 5. Overall Risk Rating Analysis
-   - "What is the overall risk range of TotalEnergies?"
-
 6. Recent Theme Analysis
-   - "What are the recent themes around TotalEnergies and what are their impacts?"
 
 ---
 
