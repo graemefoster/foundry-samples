@@ -35,13 +35,22 @@ All tools and agents are declaratively configured in `.agent` and `.fdl` files.
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
-- An Azure AI Project with Agent Service enabled
-- Azure AI Agent SDK and required packages (see `requirements.txt`)
-- Project files for: `ResearchFlow.agent`, `Summarizer.agent`, `LedgerPlanner.agent`, etc.
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+5. Azure AI Agent SDK and required packages (see `requirements.txt`)
+6. Project files for: `ResearchFlow.agent`, `Summarizer.agent`, `LedgerPlanner.agent`, etc.
 
 ---
 
