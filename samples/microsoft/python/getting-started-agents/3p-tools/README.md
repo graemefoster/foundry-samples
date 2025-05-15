@@ -17,7 +17,7 @@ The following tools are authored by **third-party partners**. Use the links belo
 
    |Tool  |Description  |
    |---------|---------|
-   | [Auquan](./auquan) | Utilize Auquan agents to perform your financial data crunching |
+   | [Auquan](./auquan) | AI-powered workflow automation for institutional finance |
    | [Celonis](./Celonis) | Celonis delivers Process Intelligence to accelerate enterprise AI at scale |
    | [InsureMO](./InsureMO) | Action APIs for insurance quotations for Car, Home, and Travel |
    | [LEGALFLY](./legalfly) | Legal insights grounded in trusted sources from your jurisdiction. |
