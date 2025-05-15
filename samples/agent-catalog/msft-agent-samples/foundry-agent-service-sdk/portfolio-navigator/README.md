@@ -39,14 +39,23 @@ Built with **Azure AI Agent Service**, the Portfolio Navigator Agent uses:
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
-- Azure AI Agent Service-enabled project
-- Azure AI Agent SDK installed (`requirements.txt`)
-- External API access credentials for Morningstar and Bing (where applicable)
-- Sample dataset: `trusty_link_dataset.xlsx`
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+5. Azure AI Agent SDK installed (`requirements.txt`)
+6. External API access credentials for Morningstar and Bing (where applicable)
+7. Sample dataset: `trusty_link_dataset.xlsx`
 
 ---
 
