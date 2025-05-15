@@ -1,17 +1,17 @@
 # AI Foundry Agent Definition
-name: ActionRouterAgent
-description: Agent which routes to right agent based on deep research progress.
+name: FinalStepAgent
+description: Summarizer
 model: gpt-4o
 instructions: |-
-  Here are the teams available to you
+  We are working on the following task:
+  {{task}}
 
-  {{team}}
+  We have completed the task.
 
-  {{systemAgents}}
+  The above messages contain the conversation that took place to complete the task.
 
-  Determine the next step based on the conversation history. 
-  Based on the next step, determine the targetAgent from the available teams and memorize it.
-  You MUST always select an agent from the team.
+  Based on the information gathered, provide the final answer to the original request.
+  The answer should be phrased as if you were speaking to the user.
 top_p: 0
 temperature: 0
 tools: []
@@ -19,17 +19,9 @@ tool_resources: {}
 events: []
 inputs:
   - type: llm
-    name: team
-    description: team
-  - type: llm
-    name: systemAgents
-    description: systemAgents
-outputs:
-  - type: llm
-    schema:
-      type: string
-    name: targetAgent
-    description: The agent name of the next speaker.
+    name: task
+    description: The task that was completed.
+outputs: []
 system_prompts: {}
 response_format: auto
-id: asst_XDeaWgGCxUD6xVaQenvjWIYU
+id: asst_tNOYoCBajtxKcfgWJQfpDbAy
