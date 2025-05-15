@@ -97,6 +97,7 @@ The agent is configured via a `template.py` file and deployable with Bicep for e
 ```bash
 PROJECT_ENDPOINT="<your-project-endpoint>" # (https://<your-ai-services-account-name>.services.ai.azure.com/api/projects/<your-project-name>)
 MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
+OPENAPI_CONNECTION_ID="<your-Auquantool-connection-id>"
 
 3. **Deploy Resources**
 
@@ -117,7 +118,7 @@ template.py
 
 - "What is the overall risk range of Microsoft?"
 
-- "What are the recent themes around TotalEnergies and what are their impacts?"
+- "What are the recent themes around Microsoft and what are their impacts?"
 
  
 ## 🛠 Customization Tips
