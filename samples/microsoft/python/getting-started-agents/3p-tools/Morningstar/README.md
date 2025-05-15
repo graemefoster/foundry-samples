@@ -1,11 +1,11 @@
 # Morningstar
 
 ## Description
-The Morningstar tool connects your generative AI applications to Morningstar's trusted content with ease - no custom consumption pipelines required. Simply connect, query, and rely on the same continually-improving engine that powers Morningstar's in-product generative AI capabilities. You can access up-to-date analyst research, expert commentary, and essential Morningstar data.
+The Morningstar tool connects your generative AI applications to Morningstar's trusted content with ease - no custom consumption pipelines required. Simply connect, query, and rely on the same continually-improving engine that powers Morningstar's in-product generative AI capabilities. Access up-to-date investment research and data such as analyst research, expert commentary, and essential Morningstar data.
 
 ## Prerequisites
 
-* Create a Morningstar if you don't already have one.
+* Create a Morningstar account, if you don't already have one.
     For access request please email us at iep-dev@morningstar.com using the subject line:
     Subject: Morningstar Agent Access Request
     In the body of the email, include the following:
