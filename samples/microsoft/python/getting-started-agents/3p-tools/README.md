@@ -23,7 +23,7 @@ The following tools are authored by **third-party partners**. Use the links belo
    | [LEGALFLY](./legalfly) | Legal insights grounded in trusted sources from your jurisdiction. |
    | [LexisNexis](./LexisNexis) | Seamless access to LexisNexis content. |
    | [MiHCM](./MiHCM) | seamless integration with MiHCM's HR functionalities |
-   | [Morningstar](./Morningstar) | Access up-to-date analyst research, expert commentary, and essential Morningstar data. |
+   | [Morningstar](./Morningstar) | Access up-to-date investment research and data such as analyst research, expert commentary, and essential Morningstar data. |
    | [Trademo](./Trademo_Glocal_trade) | Provide latest duties and past shipment data for trade between multiple countries |
    | [Tripadvisor](./Tripadvisor) | Get travel data, guidance and reviews |
 
