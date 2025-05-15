@@ -47,9 +47,14 @@ The system consists of:
   - The above creates:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
-    3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments)
-- CQA deployment see [CQA Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/question-answering/overview)
-- CLU deployment see [CLU Overview](https://learn.microsoft.com/en-us/azure/ai-services/language-service/conversational-language-understanding/overview)
+    3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments). Recommended model version: gpt-4o (at least 2024-11-20).
+- Custom Question Answering (CQA) deployment, see [CQA Overview](https://learn.microsoft.com/azure/ai-services/language-service/question-answering/overview)
+- Conversational Language Understanding (CLU) deployment, see [CLU Overview](https://learn.microsoft.com/azure/ai-services/language-service/conversational-language-understanding/overview)
+- A connection of the resource used by your CLU and CQA projects are added to the project of your Agent. 
+  - If CLU and CQA projects are created on an Azure AI Foundry resource or AI hub resource, choose "Azure AI foundry" connection. 
+  - If they are created on an Azure AI Language resource, use "Azure AI Lanaguage" connection or "Custom keys" connection. 
+  - To add a "Custom keys" connection, add a key value pair with Ocp-Apim-Subscription-Key as the key name, and the Azure AI Language resource key as the value. 
+  - For more info to create a connection, see [Create a connection](https://learn.microsoft.com/azure/ai-foundry/how-to/connections-add)
 
 ### Steps
 1. **Clone the Repository**
@@ -62,24 +67,28 @@ The system consists of:
 ```
 
 ## ⚙️ Configuration Guide
-| Parameter Name                         | Description                                                       |
-|----------------------------------------|-------------------------------------------------------------------|
-| `language_resource_url`                | Endpoint for the language resource                                |
-| `language_resource_connection_name`    | Connection name for the language resource in the AI Foundry       |
-| `cqa_project_name`                     | Unique name for the CQA project this agent is using               |
-| `cqa_deployment_name`                  | Unique name for the CQA deployment this agent is using            |
-| `clu_project_name`                     | Unique name for the CLU project this agent is using               |
-| `clu_deployment_name`                  | Unique name for the deployed CLU model under the clu_project      |
-| `project_endpoint`                     | Endpoint for the project this agent is using                      |
-| `model_name`                           | Name of the model to be used for the Agent                        |
-| `connection_id`                        | Connection ID for the language resource in the AI Foundry         |
-| `amlWorkspaceResourceName`             | Name of the AI Project or the AML workspace                       |
+| Parameter Name                         | Description                                                                       |
+|----------------------------------------|-----------------------------------------------------------------------------------|
+| `project_endpoint`                     | Endpoint for the project this agent is using                                      |
+| `model_name`                           | Name of the model deployment to be used for the Agent                             |
+| `language_resource_url`                | Endpoint for the language resource where your CLU and CQA projects are created    |                                       |
+| `language_resource_connection_name`    | Name of the language resource connection added in the agent project               |
+| `connection_id`                        | Connection ID for the language resource connection added in the agent project     |
+| `cqa_project_name`                     | Name of the CQA project this agent will use                                       |
+| `cqa_deployment_name`                  | Name of the deployment in the CQA project this agent will use                     |
+| `clu_project_name`                     | Name of the CLU project this agent will use                                       |
+| `clu_deployment_name`                  | Name of the model deployment in the CLU project this agent will use               |
+
 
 ## Sample Data Instructions
 This repo contains a `sample_data/` directory with:
-- Product knowledge base of a fictional outdoor retail company, Contoso Outdoor.
+- clu_import.json: A CLU project file with sample intent-utterance pairs that you can use to create a CLU project. 
+- cqa_import.json: A CQA project file with sample question-answer pairs that you can use to create a CQA project.
 
-You can test the interaction by invoking the agent with prompts like:
+The sample data are made up based on a fictional outdoor retail company, Contoso Outdoor.
+
+You can also use the sample data and test the interaction by invoking the agent with prompts as listed in next section.
+
 ## Example Agent Interaction
 
 ### User: 
@@ -114,7 +123,7 @@ The return request is made within 30 days of receiving the item.
 Certain items, such as personalized, clearance, or final sale products, may not be eligible for return. To start a return or exchange, visit our Returns & Exchanges page and follow the step-by-step instructions. We may provide a prepaid return label, but shipping fees for returns may apply.
 
 ## Customization Tips
-- Modify the system instructions in `agent.py` to your needs (e.g., style of responding).
+- Modify the system instructions in `template.py` to your needs (e.g., style of responding).
 - Fine-tuning the associated CLU deployment, e.g. adding/modify/delete intents or entities etc
 - Fine-tuning the associated CQA deployment, e.g. adding/modify/delete question-answer paires, or finetune questions, etc
 - Extend the agent with other useful tools or APIs (using OpenAPI spec).
