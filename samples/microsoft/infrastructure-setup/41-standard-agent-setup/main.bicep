@@ -1,5 +1,4 @@
 // Standard agent setup 
-
 @description('The region to deploy your AI Services resource and project')
 param location string = 'eastus'
 
@@ -18,23 +17,28 @@ param displayName string = 'project'
 // Model deployment parameters
 @description('The name of the model you want to deploy')
 param modelName string = 'gpt-4o'
+
 @description('The provider of your model')
 param modelFormat string = 'OpenAI'
+
 @description('The version of your model')
 param modelVersion string = '2024-05-13'
+
 @description('The sku of your model deployment')
 param modelSkuName string = 'GlobalStandard'
+
 @description('The tokens per minute (TPM) of your model deployment')
 param modelCapacity int = 1
 
+// Optionally bring existing resources
 @description('The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param aiSearchResourceId string = ''
 
 @description('The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param azureStorageAccountResourceId string = ''
+
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
 param azureCosmosDBAccountResourceId string = ''
-
 
 param projectCapHost string = 'caphostproj'
 param accountCapHost string = 'caphostacc'
@@ -91,12 +95,6 @@ module aiDependencies 'modules-standard/standard-dependent-resources.bicep' = {
     aiSearchName: aiSearchName
     cosmosDBName: cosmosDBName
 
-    //keyvaultName: 'kv-${name}-${uniqueSuffix}'
-
-    //  // AI Services account parameters
-    //  aiServiceAccountResourceId: aiServiceAccountResourceId
-    //  aiServiceExists: validateExistingResources.outputs.aiServiceExists
-    
     // AI Search Service parameters
     aiSearchResourceId: aiSearchResourceId
     aiSearchExists: validateExistingResources.outputs.aiSearchExists
@@ -117,7 +115,6 @@ module aiDependencies 'modules-standard/standard-dependent-resources.bicep' = {
 module aiAccount 'modules-standard/ai-account-identity.bicep' = {
   name: 'ai-${accountName}-${uniqueSuffix}-deployment'
   params: {
-    // workspace organization
     accountName: accountName
     location: location
 
@@ -138,7 +135,6 @@ module aiAccount 'modules-standard/ai-account-identity.bicep' = {
 module aiProject 'modules-standard/ai-project-identity.bicep' = {
   name: 'ai-${projectName}-${uniqueSuffix}-deployment'
   params: {
-    // workspace organization
     projectName: projectName
     projectDescription: projectDescription
     displayName: displayName
@@ -155,7 +151,7 @@ module aiProject 'modules-standard/ai-project-identity.bicep' = {
     azureStorageName: aiDependencies.outputs.azureStorageName
     azureStorageSubscriptionId: aiDependencies.outputs.azureStorageSubscriptionId
     azureStorageResourceGroupName: aiDependencies.outputs.azureStorageResourceGroupName
-    // dependent resources
+    
     accountName: aiAccount.outputs.accountName
   }
 }
@@ -187,7 +183,6 @@ module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assi
   dependsOn: [
     storageAccountRoleAssignment
   ]
-
 }
 
 // This role can be assigned before or after the caphost is created
