@@ -64,14 +64,19 @@ CommsPilot Agent uses Azure AI Agent Service and is equipped with two main knowl
 ## Setup Instructions
 
 ### Prerequisites
-- Python 3.8+
-- Azure CLI
-- Azure subscription
-- Agent setup: deploy the latest agent setup using ([this custom deployment](https://github.com/azure-ai-foundry/foundry-samples/tree/main/use-cases/agents/setup/basic-setup)).
-  - The above creates:
-    1. AI Services resource
-    2. AI Project
-    3. Model deployment 
+
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+   
+### Template specific requirements:
 - Bing Grounding resource
 - Logic App for sending email
 

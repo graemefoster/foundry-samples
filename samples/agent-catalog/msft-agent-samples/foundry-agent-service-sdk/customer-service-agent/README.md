@@ -51,7 +51,17 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
 
 ### Prerequisites
 
-- Azure AI Agent Service enabled in your project
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+   
 - Agent files:
   - `CustomerAuthenticator.agent`
   - `CustomerServiceAgent.agent`

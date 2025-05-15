@@ -4,11 +4,23 @@ The Voice Live API Enables real-time speech interaction for seamless voice-based
 
 A live demo (<https://aka.ms/voice-agent/demo>) is also available to experience the Voice Live API. WebSocket messages can be observed through the browser developer tools.
 
-## Resource and authentication
+## Setup Instructions
 
-An Azure AI Services resource is required to access the Voice Live API. To learn how to create an Azure AI Services resource, please see: <https://learn.microsoft.com/azure/ai-services/multi-service-resource>.
+### Prerequisites
 
-Note: The resource must be in the `eastus2` or `swedencentral` regions at this time. Other regions are not supported.
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+   
+- An Azure AI Services resource is required to access the Voice Live API. To learn how to create an Azure AI Services resource, please see: <https://learn.microsoft.com/azure/ai-services/multi-service-resource>.
+- Note: The resource must be in the `eastus2` or `swedencentral` regions at this time. Other regions are not supported.
 
 ### Regional endpoints
 
