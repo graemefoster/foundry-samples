@@ -6,12 +6,11 @@ param cosmosAccountName string
 @description('Project name')
 param projectPrincipalId string
 
-param projectWorkspaceId string
+param projectId string
 
-
-var userThreadName = '${projectWorkspaceId}-thread-message-store'
-var systemThreadName = '${projectWorkspaceId}-system-thread-message-store'
-var entityStoreName = '${projectWorkspaceId}-agent-entity-store'
+var userThreadName = '${projectId}-thread-message-store'
+var systemThreadName = '${projectId}-system-thread-message-store'
+var entityStoreName = '${projectId}-agent-entity-store'
 
 
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2024-12-01-preview' existing = {
@@ -55,30 +54,39 @@ var scopeEntityContainer = '/subscriptions/${subscription().subscriptionId}/reso
 
 resource containerRoleAssignmentUserContainer 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-05-15' = {
   parent: cosmosAccount
-  name: guid(projectWorkspaceId, containerUserMessageStore.id, roleDefinitionId, projectPrincipalId)
+  name: guid(projectId, containerUserMessageStore.id, roleDefinitionId, projectPrincipalId)
   properties: {
     principalId: projectPrincipalId
     roleDefinitionId: roleDefinitionId
     scope: scopeUserContainer
   }
+  dependsOn: [
+    containerUserMessageStore
+  ]
 }
 
 resource containerRoleAssignmentSystemContainer 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-05-15' = {
   parent: cosmosAccount
-  name: guid(projectWorkspaceId, containerSystemMessageStore.id, roleDefinitionId, projectPrincipalId)
+  name: guid(projectId, containerSystemMessageStore.id, roleDefinitionId, projectPrincipalId)
   properties: {
     principalId: projectPrincipalId
     roleDefinitionId: roleDefinitionId
     scope: scopeSystemContainer
   }
+  dependsOn: [
+    containerSystemMessageStore
+  ]
 }
   
   resource containerRoleAssignmentEntityContainer 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-05-15' = {
     parent: cosmosAccount
-    name: guid(projectWorkspaceId, containerEntityStore.id, roleDefinitionId, projectPrincipalId)
+    name: guid(projectId, containerEntityStore.id, roleDefinitionId, projectPrincipalId)
     properties: {
       principalId: projectPrincipalId
       roleDefinitionId: roleDefinitionId
       scope: scopeEntityContainer
     }
+    dependsOn: [
+      containerEntityStore
+    ]
   }

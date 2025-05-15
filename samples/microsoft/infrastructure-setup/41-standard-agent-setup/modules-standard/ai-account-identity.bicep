@@ -28,27 +28,27 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
     }
     publicNetworkAccess: 'Enabled'
 
-    // true is not supported today
+    // API-key based auth is not supported for the Agent service
     disableLocalAuth: false
   }
 }
 
-#disable-next-line BCP081
-resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview'=  {
-  parent: account
-  name: modelName
-  sku : {
-    capacity: modelCapacity
-    name: modelSkuName
-  }
-  properties: {
-    model:{
-      name: modelName
-      format: modelFormat
-      version: modelVersion
-    }
-  }
-}
+// #disable-next-line BCP081
+// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-04-01-preview'=  {
+//   parent: account
+//   name: modelName
+//   sku : {
+//     capacity: modelCapacity
+//     name: modelSkuName
+//   }
+//   properties: {
+//     model:{
+//       name: modelName
+//       format: modelFormat
+//       version: modelVersion
+//     }
+//   }
+// }
 
 output accountName string = account.name
 output accountID string = account.id

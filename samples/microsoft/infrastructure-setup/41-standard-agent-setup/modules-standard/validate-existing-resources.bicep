@@ -10,10 +10,6 @@ param azureStorageAccountResourceId string
 @description('ResourceId of Cosmos DB Account')
 param azureCosmosDBAccountResourceId string
 
-// var aiServiceParts = split(aiServiceAccountResourceId, '/')
-// var aiServiceAccountSubscriptionId = aiServicesPassedIn ? aiServiceParts[2] : subscription().subscriptionId
-// var aiServiceAccountResourceGroupName = aiServicesPassedIn ? aiServiceParts[4] : resourceGroup().name
-
 // Check if existing resources have been passed in
 var storagePassedIn = azureStorageAccountResourceId != ''
 var searchPassedIn = aiSearchResourceId != ''
@@ -59,9 +55,6 @@ output aiSearchServiceResourceGroupName string = aiSearchServiceResourceGroupNam
 
 output cosmosDBSubscriptionId string = cosmosDBSubscriptionId
 output cosmosDBResourceGroupName string = cosmosDBResourceGroupName
-
-// output aiServiceAccountSubscriptionId string = aiServiceAccountSubscriptionId
-// output aiServiceAccountResourceGroupName string = aiServiceAccountResourceGroupName
 
 output azureStorageSubscriptionId string = azureStorageSubscriptionId
 output azureStorageResourceGroupName string = azureStorageResourceGroupName

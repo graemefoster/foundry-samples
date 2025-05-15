@@ -1,4 +1,4 @@
-param aiFoundryName string = 'dentestlocalauth'
+param aiFoundryName string = 'uniquename'
 param aiProjectName string = '${aiFoundryName}-proj'
 param location string = 'eastus2'
 
@@ -38,27 +38,23 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-pre
   identity: {
     type: 'SystemAssigned'
   }
-  properties: {
-    // displayName: 'test'
-    // description: 'test2'
-    // isDefault: true
-  }
+  properties: {}
 }
 
 /*
   Optionally deploy a model to use in playground, agents and other tools.
 */
-// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
-//   parent: aiFoundry
-//   name: 'gpt-4o'
-//   sku : {
-//     capacity: 1
-//     name: 'GlobalStandard'
-//   }
-//   properties: {
-//     model:{
-//       name: 'gpt-4o'
-//       format: 'OpenAI'
-//     }
-//   }
-// }
+resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+  parent: aiFoundry
+  name: 'gpt-4o'
+  sku : {
+    capacity: 1
+    name: 'GlobalStandard'
+  }
+  properties: {
+    model:{
+      name: 'gpt-4o'
+      format: 'OpenAI'
+    }
+  }
+}

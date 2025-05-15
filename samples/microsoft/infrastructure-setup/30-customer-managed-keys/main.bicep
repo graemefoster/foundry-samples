@@ -42,7 +42,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   }
   properties: {
     // Networking
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
 
     // Set to use with AI Foundry
     allowProjectManagement: true
