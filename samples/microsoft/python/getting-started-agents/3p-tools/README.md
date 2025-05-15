@@ -6,9 +6,8 @@ To empower your AI agent with grounded data or the capability to take actions an
 The following tools are authored by **third-party partners**. Use the links below to view the documentation and code samples.
 
 > [!IMPORTANT]
-> * Your use of connected non-Microsoft services is subject to the terms between you and the service provider. By connecting to a non-Microsoft service, you acknowledge that some of your data, such as prompt content, is passed to the non-Microsoft service, and/or your application might receive data from the non-Microsoft service. You're responsible for your use of non-Microsoft data. 
-> * Using tools from non-Microsoft tools may incur usage with tool providers, review the pricing plan with your selected tool data providers.
-> * Code samples and OpenAPI spec are provided by partners as-is. **need help from CELA to rewrite this**
+> * Your use of connected non-Microsoft services is subject to the terms between you and the service provider. By connecting to a non-Microsoft service, you acknowledge that some of your data, such as prompt content, is passed to the non-Microsoft service, and/or your application might receive data from the non-Microsoft service. You are responsible for your use (and any charges associated with your use) of non-Microsoft services and data.
+> * The code in this 3p-tools file were created by third parties, not Microsoft, and have not been tested or verified by Microsoft. Your use of the code samples is subject to the terms provided by the relevant third party. By using any third-party sample in this file, you are acknowledging that Microsoft has no responsibility to you or others with respect to these samples.
 
 ## Get Started
 1. Create a Foundry Agent following the [documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/quickstart)
