@@ -75,7 +75,7 @@ The agent is configured via a `template.py` file and deployable with Bicep for e
       - Model deployment
 3. Python 3.8+
 4. Azure CLI
-5. An API key for your Auquan Risk Agent
+5. An API key for your Auquan Risk Agent. Please contact support@auquan.com to request an API key based on your desired usage.
 
 ---
 
