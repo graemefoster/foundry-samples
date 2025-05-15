@@ -18,6 +18,17 @@ You can contact us via this page : https://www.auquan.com/cta
 7. Set the connection name to your connection name. You use this connection name in your sample code or Foundry Portal later.
 8. For the Access setting, you can choose either this project only or shared to all projects. Just make sure in your code, the connection string of the project you entered has access to this connection.
 
+**Sample Queries**
+
+- "Do a risk analysis for Darktrace"
+- "What are the critical risks identified for Openai"
+- "Generate a sustainability analysis for ClimatePartner"
+- "What is the overall risk range of Zoom?"
+- "What are the recent themes around Coursera and what are their impacts?"
+- "What are the recent risks for Autodesk ?"
+
+**Note** 
+If you encounter a "rate limit exceeded" error, navigate to the "Models + Endpoints" tab in the Foundry Portal and increase the TPM (tokens per minute) limit for your model. We recommend setting it to around 100,000 to start with.
 
 
 **Customer Support Contact**
