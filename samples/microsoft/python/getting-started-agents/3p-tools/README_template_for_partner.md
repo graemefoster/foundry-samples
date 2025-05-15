@@ -6,7 +6,7 @@ Requirement:
 - Must be unique and distinguishable from any existing tool/agent template.
 - Should be the name of your product or organization.
 - Can't be longer than 30 characters.
-- Can't contain the words *API*, *Tool*, *Azure AI Agent Service*, *Azure AI*, *Agent*, or any of our other Azure AI Foundry product names (for example, Document Intelligence).
+- Can't contain the words *API*, *Tool*, *Azure AI Foundry Agent Service*, *Azure AI*, *Agent*, or any of our other Azure AI Foundry product names (for example, Document Intelligence).
 - Can't end in a nonalphanumeric character, including carriage return, new line, or blank space.
 - Good example: Tripadvisor
 - Bad example: Tripadvisor Tool 
@@ -21,7 +21,7 @@ Requirement:
 - Must exist and be written in English. 
 - Must be free of grammatical and spelling errors. 
 - Length should be within 1 sentence, under 10 words 
-- Cannot contain *Azure AI Agent Service* or other Azure AI Foundry product names (such as Document Intelligence) 
+- Cannot contain *Azure AI Foundry Agent Service* or other Azure AI Foundry product names (such as Document Intelligence) 
 - If your tool includes multiple operations, the description should cover all operations.
 
 ## Prerequisites
@@ -45,4 +45,4 @@ Requirement:
 ## Customer Support Contact
 <your_customer_support_contact_or_website>
 
-By providing this customer support contact or website, customers will reach out to you directly if they run into issues with the OpenAPI spec, code sample, authentication etc. Customers will reach out to Microsoft if they run into issues with Azure AI Agent service.
+By providing this customer support contact or website, customers will reach out to you directly if they run into issues with the OpenAPI spec, code sample, authentication etc. Customers will reach out to Microsoft if they run into issues with Azure AI Foundry Agent service.

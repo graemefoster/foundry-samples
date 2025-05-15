@@ -4,14 +4,14 @@
 # ------------------------------------
 
 """
-FILE: create_agent_sample.py
+FILE: basic_agent.py
 
 DESCRIPTION:
     This sample demonstrates how to create an agent using the Azure AI Agents service
     with an authenticated AIProjectClient.
 
 USAGE:
-    python create_agent_sample.py
+    python basic_agent.py
 
     Before running the sample:
 

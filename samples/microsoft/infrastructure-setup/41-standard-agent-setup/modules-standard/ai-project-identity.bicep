@@ -98,9 +98,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
 output projectName string = project.name
 output projectId string = project.id
 output projectPrincipalId string = project.identity.principalId
-
-var raw = project.properties.internalId
-output projectWorkspaceId string = '${substring(raw, 0, 8)}-${substring(raw, 8, 4)}-${substring(raw, 12, 4)}-${substring(raw, 16, 4)}-${substring(raw, 20, 12)}'
+output projectWorkspaceId string = project.properties.internalId
 
 // return the BYO connection names
 output cosmosDBConnection string = cosmosDBName

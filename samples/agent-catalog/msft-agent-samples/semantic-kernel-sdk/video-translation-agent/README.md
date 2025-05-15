@@ -2,7 +2,7 @@
 
 ## Summary
 
-The Video Translation Agent is an AI-powered agent that enables users to translate videos between languages with customizable speech and subtitle options. It leverages Azure AI Foundry, Azure AI Cognitive Services, and Azure Blob Storage to provide high-quality video translations.
+This code sample supports building agents for multilingual video localization with translation, subtitles, and speech generation. It leverages Azure AI Foundry, Azure AI Cognitive Services, and Azure Blob Storage to provide high-quality video translations between languages with customizable speech and subtitle options.
 
 ## Demo
 

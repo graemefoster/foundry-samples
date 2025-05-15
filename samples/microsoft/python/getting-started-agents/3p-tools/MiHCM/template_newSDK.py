@@ -75,7 +75,7 @@ with open('./mihcmExternalAPI.json', 'r') as f:
 auth = OpenApiConnectionAuthDetails(security_scheme=OpenApiConnectionSecurityScheme(connection_id=connection.id))
 
 # Initialize agent OpenAPI tool using the read in OpenAPI spec
-openapi = OpenApiTool(name="MiHCMAgent", spec=openapi_spec, description="Lets communicate with MiHCM agent to execute different tasks", auth=auth)
+openapi = OpenApiTool(name="MiHCM", spec=openapi_spec, description="Lets communicate with MiHCM agent to execute different tasks", auth=auth)
 
 #Agent instructions 
 instructions = f"""You are a helpful assistant.
@@ -127,7 +127,7 @@ with project_client:
     run_steps = project_client.agents.run_steps.list(thread_id=thread.id, run_id=run.id)
 
     # Loop through each step to display information
-    for step in run_steps.data:
+    for step in run_steps:
         print(f"Step {step['id']} status: {step['status']}")
 
         # Check if there are tool calls recorded in the step details
@@ -154,5 +154,9 @@ with project_client:
 
     # Fetch and log all messages exchanged during the conversation thread
     messages = project_client.agents.messages.list(thread_id=thread.id)
-    print(f"Messages: {messages}")
+    # Format and print the messages
+    for message in messages:
+      print(f"Message ID: {message.id}, Role: {message.role}, Content: {message.content}")
+    
+    # print(f"Messages: {messages}")
     # </cleanup>

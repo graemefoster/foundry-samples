@@ -37,6 +37,49 @@ if not exist .env (
     )
 )
 
+REM Check for required environment variables
+call :print_color 36 "Validating environment variables..."
+set "missing_vars="
+
+for /f "tokens=1* delims==" %%a in (.env) do (
+    set "var_name=%%a"
+    set "var_name=!var_name: =!"
+    
+    if "!var_name!"=="AZURE_TENANT_ID" (
+        if "%%b"=="your_tenant_id_here" (
+            set "missing_vars=!missing_vars! AZURE_TENANT_ID"
+        )
+    )
+    if "!var_name!"=="AZURE_CLIENT_ID" (
+        if "%%b"=="your_client_id_here" (
+            set "missing_vars=!missing_vars! AZURE_CLIENT_ID"
+        )
+    )
+    if "!var_name!"=="AZURE_CLIENT_SECRET" (
+        if "%%b"=="your_client_secret_here" (
+            set "missing_vars=!missing_vars! AZURE_CLIENT_SECRET"
+        )
+    )
+    if "!var_name!"=="AZURE_ENDPOINT" (
+        if "%%b"=="your_endpoint_here" (
+            set "missing_vars=!missing_vars! AZURE_ENDPOINT"
+        )
+    )
+    if "!var_name!"=="AZURE_DEPLOYMENT" (
+        if "%%b"=="your_deployment_name_here" (
+            set "missing_vars=!missing_vars! AZURE_DEPLOYMENT"
+        )
+    )
+)
+
+if not "!missing_vars!"=="" (
+    call :print_color 31 "Error: The following environment variables need to be updated in .env file:!missing_vars!"
+    call :print_color 31 "Please edit the .env file with your actual credentials before running tests."
+    exit /b 1
+) else (
+    call :print_color 32 "Environment variables validation passed."
+)
+
 REM Build the project first
 call :print_color 36 "=============================================================="
 call :print_color 36 "   BUILDING PROJECT"

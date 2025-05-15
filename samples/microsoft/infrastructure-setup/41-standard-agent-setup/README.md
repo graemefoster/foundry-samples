@@ -18,3 +18,9 @@ See Instructions: https://microsoft-my.sharepoint.com/:w:/p/fosteramanda/ES-0A2W
 ```bash
     az deployment group create --resource-group <new-rg-name> --template-file main.bicep
 ```
+
+## Use exitsing resources
+
+**Azure Cosmos DB**
+- Ensure your exitsing Cosmos DB resource has a total Total throughput limit of at least 60000 RU/s
+    - 3 containers will be provisioned in your existing Cosmos DB account and each need 20,000 RU/s
