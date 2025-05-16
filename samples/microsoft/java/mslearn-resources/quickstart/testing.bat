@@ -11,6 +11,7 @@ set "message=%~2"
 echo [%color%m%message%[0m
 exit /b
 
+
 REM Check for Java and Maven
 where java >nul 2>&1
 if %ERRORLEVEL% neq 0 (
@@ -29,12 +30,22 @@ if not exist .env (
     call :print_color 33 "Warning: .env file not found. Creating from template..."
     if exist .env.template (
         copy .env.template .env
-        call :print_color 33 "Created .env file from template. Please edit it with your actual credentials before running tests."
+        call :print_color 33 "Created .env file from template. Please edit it with your actual configuration values before running tests."
         exit /b 1
     ) else (
         call :print_color 31 "Error: .env.template file not found. Cannot create .env file."
         exit /b 1
     )
+)
+
+REM Check if user is logged in with Azure CLI
+call :print_color 36 "Checking Azure CLI login status..."
+az account show >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    call :print_color 31 "Error: You are not logged in with the Azure CLI. Please run 'az login' first."
+    exit /b 1
+) else (
+    call :print_color 32 "Azure CLI login validated."
 )
 
 REM Check for required environment variables
@@ -45,21 +56,6 @@ for /f "tokens=1* delims==" %%a in (.env) do (
     set "var_name=%%a"
     set "var_name=!var_name: =!"
     
-    if "!var_name!"=="AZURE_TENANT_ID" (
-        if "%%b"=="your_tenant_id_here" (
-            set "missing_vars=!missing_vars! AZURE_TENANT_ID"
-        )
-    )
-    if "!var_name!"=="AZURE_CLIENT_ID" (
-        if "%%b"=="your_client_id_here" (
-            set "missing_vars=!missing_vars! AZURE_CLIENT_ID"
-        )
-    )
-    if "!var_name!"=="AZURE_CLIENT_SECRET" (
-        if "%%b"=="your_client_secret_here" (
-            set "missing_vars=!missing_vars! AZURE_CLIENT_SECRET"
-        )
-    )
     if "!var_name!"=="AZURE_ENDPOINT" (
         if "%%b"=="your_endpoint_here" (
             set "missing_vars=!missing_vars! AZURE_ENDPOINT"
@@ -70,6 +66,7 @@ for /f "tokens=1* delims==" %%a in (.env) do (
             set "missing_vars=!missing_vars! AZURE_DEPLOYMENT"
         )
     )
+)
 )
 
 if not "!missing_vars!"=="" (
