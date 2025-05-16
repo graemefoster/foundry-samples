@@ -4,6 +4,10 @@ The **Exact Question Answering Agent** code sample supports building agents that
 
 Built using Azure AI Agent Service and Custom Question Answering in Azure AI Language, it provides deterministic, exact answers with human control options. Businesses can automate responses to their most common questions—often covering up to 90% of inquiries—using this exact answering approach. For less frequent or more nuanced questions, a fallback to an LLM-powered RAG system can handle the long tail, while truly complex queries are routed to human agents.
 
+**IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
+
+Certain Agent offerings may be subject to legal and regulatory requirements, may require licenses, or may not be suitable for all industries, scenarios, or use cases. By using any sample, you are acknowledging that Agents or other output created using that sample are solely your responsibility, and that you will comply with all applicable laws, regulations, and relevant safety standards, terms of service, and codes of conduct.  
+
 ## Use Cases
 1. **Customer Support**: Automate deterministic human-controlled responses to frequently asked or high value questions such as “What is your return policy?”, “How do I reset my password?”, or “What’s the warranty coverage?” while routing complex queries to human agents.
 2. **IT Support**: Provide precise answers like “What is the VPN setup process?”, “Where do I download the latest security patch?”, or “How do I enroll in 2FA?” faithful to technical documentation and internal IT knowledge bases.
