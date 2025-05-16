@@ -7,6 +7,10 @@ It helps streamlines a customer's mortgage application journey, empowering them 
 
 Certain Agent offerings may be subject to legal and regulatory requirements, may require licenses, or may not be suitable for all industries, scenarios, or use cases. By using any sample, you are acknowledging that Agents or other output created using that sample are solely your responsibility, and that you will comply with all applicable laws, regulations, and relevant safety standards, terms of service, and codes of conduct.  
 
+**WARNING:**  The Home Loan Guide code sample is intended to help you create an agent that will be used for informational purposes only. Any information produced by an agent you create using the Home Loan Guide agent code sample is not intended to be used to assess an end-user consumer’s eligibility for any form of credit or insurance, employment purposes, or otherwise be used in connection with a credit transaction or business transaction of the end-user consumer. Any information developed by such an agent should only be shared with the relevant end-user consumer strictly for the end-user consumer’s informational purposes.   
+By using the Home Loan Guide agent code sample, you are agreeing not to furnish to, or otherwise share with, third parties any consumer information accessed or acquired using an agent created with the Home Loan Guide code sample. Customer also agrees not to use or collect any information through an agent created with Home Loan Guide code sample to determine an end-user consumer’s eligibility for any form of credit or insurance, employment purposes, or otherwise use the information in connection with an end-user consumer credit transaction or business transaction.  
+
+
 
 ## 💼 Use Cases
 
