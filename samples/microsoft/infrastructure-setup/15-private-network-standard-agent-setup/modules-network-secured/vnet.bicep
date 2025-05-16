@@ -20,7 +20,7 @@ param location string
 param vnetName string = 'agents-vnet-test'
 
 @description('The name of Agents Subnet')
-param agentSubnetName string = 'default'
+param agentSubnetName string = 'agent-subnet'
 
 @description('The name of Hub subnet')
 param peSubnetName string = 'pe-subnet'
