@@ -14,7 +14,6 @@ By using the Home Loan Guide agent code sample, you are agreeing not to furnish 
 
 ## 💼 Use Cases
 
-- **Corporate Lending Support**: Assist financial institutions in automating and scaling mortgage consultations.
 - **Consumer Loan Advisory**: Help individuals evaluate loan options, understand documentation requirements, and compare payment terms.
 - **Pre-Approval & Application Readiness**: Guide users through the loan readiness process with tailored documentation and eligibility support.
 
