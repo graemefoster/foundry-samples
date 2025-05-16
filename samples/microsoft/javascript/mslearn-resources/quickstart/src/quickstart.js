@@ -12,12 +12,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 async function chatCompletion() {
     // <chat_completion>
     // Get the Azure AI endpoint and deployment name from environment variables
-    const endpoint = process.env.INFERENCE_ENDPOINT;
+    const endpoint = process.env.PROJECT_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
 
     // Create an Azure OpenAI Client
     const project = new AIProjectClient(endpoint, new DefaultAzureCredential());
-    const client = project.inference.azureOpenAI();
+    const client = await project.inference.azureOpenAI({
+        // The API version should match the version of the Azure OpenAI resource
+        apiVersion: "2024-12-01-preview"
+    });
 
     // Create a chat completion
     const chatCompletion = await client.chat.completions.create({
@@ -31,7 +34,7 @@ async function chatCompletion() {
     // </chat_completion>
 }
 
-// chatCompletion().catch(console.error);
+chatCompletion().catch(console.error);
 
 async function runAgents() {
     // <create_and_run_agent>
@@ -172,7 +175,7 @@ async function runAgents() {
     // </create_filesearch_agent>
 }
 
-runAgents().catch(console.error);
+// runAgents().catch(console.error);
 
 // Helper function to print assistant message content nicely (handles nested text.value)
 function printAssistantMessage(message) {
