@@ -61,7 +61,7 @@ A live demo (<https://aka.ms/voice-agent/demo>) is also available to experience 
 
 ### Prerequisites
 
-**Set up an agent**. Follow the templates provided in agent-catalog/azure-ai-agent-service-blueprints at main · microsoft/agent-catalog to create your agent.
+**Set up an agent**. Follow [the templates](../) to create an agent using the Azure AI Agent Service.
 
 **Resource and authentication**. An Azure AI Services resource is required to access the Voice Live API. To learn how to create an Azure AI Services resource, please see: <https://learn.microsoft.com/azure/ai-services/multi-service-resource>.
 
