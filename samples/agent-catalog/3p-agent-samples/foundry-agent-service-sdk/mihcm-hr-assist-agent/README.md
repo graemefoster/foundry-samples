@@ -2,6 +2,8 @@
 
 This repository provides a template for deploying and managing an Azure AI Agent for MiHCM. The project leverages Azure Bicep for infrastructure deployment and Python for interacting with Azure AI services and APIs.
 
+**IMPORTANT NOTE FROM MICROSOFT:  **The sample below was created by a third party, not Microsoft, and has not been tested or verified by Microsoft. Your use is subject to the terms provided by the relevant third party.  By using the third-party sample in this file, you are acknowledging that Microsoft has no responsibility to you or others with respect to this sample.  
+
 ## Features
 
 - **Azure AI Agent Deployment**: Automates the deployment of Azure AI resources, including AI Hubs, AI Projects, and dependent resources.
