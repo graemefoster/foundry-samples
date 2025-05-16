@@ -35,7 +35,7 @@ async function chatCompletion() {
     // </chat_completion>
 }
 
-// chatCompletion().catch(console.error);
+chatCompletion().catch(console.error);
 
 async function runAgents() {
     // <create_and_run_agent>
