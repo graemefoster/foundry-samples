@@ -1,6 +1,6 @@
-## Agent Catalog - 3P Agent Samples for Azure AI Foundry Agent Service SDK
+## Agent Catalog - 3P Agent Samples
 
-This folder contains Microsoft-authored Agent code samples for the Agent Service SDK
+This folder contains Third-Party Agent code samples for the Azure AI Foundry Agent Service SDK
 
 **IMPORTANT NOTE:**  Starter templates, instructions, code samples and resources in this 3P-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn more](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
 
