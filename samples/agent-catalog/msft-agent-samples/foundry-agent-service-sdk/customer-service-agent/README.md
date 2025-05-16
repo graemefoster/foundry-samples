@@ -65,16 +65,18 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
       - Model deployment
 3. Azure CLI
 4. Install VS Code
-5. Download and install VSCode Extension (Early acccess) from this link https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/agent-catalog/vscode_ext_early_access
+5. Download VSCode Extension (Early acccess) from this link https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/agent-catalog/vscode_ext_early_access
+6. Install the early_access extension using the VSIX package
+![image](https://github.com/user-attachments/assets/59709d9d-a68b-491d-b8c9-938f3ae46b33)
+7. Clone this repo or download the customer_service_agent directory only
 
 
 ### VSCode extension (early access) setup
 
 WARNING: This extension is an experimental version and is not recommended for us in production environments. The official version of the Azure AI Foundry VS Code Extension will be supporting multi-agent workflows in the near future.
 
-
-### Easy Setup (optional)
-
+1. In shell, run the 'Easy Setup' script below to deploy all the agents and workflows
+   
 ```
 set -eu
 export CONNECTION_STRING= "<host>;<subscription_id>;<resource_group>;<project_name>"
@@ -89,10 +91,13 @@ FILE_PATH="./workflows/CustomerSupport.fdl"  ./src/scripts/deploy.sh
 
 ```
 
-### Agent files:
-  - `CustomerAuthenticator.agent`
-  - `CustomerServiceAgent.agent`
-- Declarative file (e.g., `customer_support_workflow.fdl` or JSON shown above)
-- Supporting documents or mock data (optional):  
-  - Customer profiles  
-  - Sample
+2. Open the 'samples' directory in VS Code
+3. Open the customer_support.fdl file in (add path here). You will see the workflows visualizer appear.
+![image](https://github.com/user-attachments/assets/5d2e1d3f-9f83-4359-bb59-66b3324cfeb9)
+4. Click on 'run' to open the chatbot and interact with the workflow
+![image](https://github.com/user-attachments/assets/ae5737e9-a82e-40ff-a6aa-2b80344fb0b5)
+
+
+
+### Example Prompts
+  - s
