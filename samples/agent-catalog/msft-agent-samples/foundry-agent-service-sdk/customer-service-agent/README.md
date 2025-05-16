@@ -65,10 +65,9 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
       - Model deployment
 3. Python 3.8+
 4. Azure CLI
+5. yq and jq command line tools (deploy.sh script automatically installs these)
 
 ### Deployment Steps
-
-5. Use this deploy script to automatic install yq and jq 
 
 ```
 set -eu
@@ -84,10 +83,7 @@ FILE_PATH="./workflows/CustomerSupport.fdl"  ./src/scripts/deploy.sh
 
 ```
 
-
-
-
-- Agent files:
+### Agent files:
   - `CustomerAuthenticator.agent`
   - `CustomerServiceAgent.agent`
 - Declarative file (e.g., `customer_support_workflow.fdl` or JSON shown above)
