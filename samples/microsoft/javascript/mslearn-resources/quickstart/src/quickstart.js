@@ -24,21 +24,21 @@ async function chatCompletion() {
 
     // Create a chat completion
     const chatCompletion = await client.chat.completions.create({
-        deployment,
+        model: deployment,
         messages: [
             { role: "system", content: "You are a helpful writing assistant" },
             { role: "user", content: "Write me a poem about flowers" },
         ],
     });
-    console.log("response = ", JSON.stringify(chatCompletion, null, 2));
+    console.log(`\n==================== 🌷 COMPLETIONS POEM ====================`);
+    console.log(chatCompletion.choices[0].message.content);
     // </chat_completion>
 }
 
-chatCompletion().catch(console.error);
+// chatCompletion().catch(console.error);
 
 async function runAgents() {
     // <create_and_run_agent>
-
     // Create an Azure AI Foundry Client
     const endpoint = process.env.PROJECT_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
@@ -86,18 +86,16 @@ async function runAgents() {
     // Delete the Agent
     await client.agents.deleteAgent(agent.id);
     console.log(`Deleted Agent, Agent ID: ${agent.id}`);
-
     // </create_and_run_agent>
 
     // <create_filesearch_agent> 
-
     // Upload a file named product_info_1.md
     console.log(`\n==================== 🕵️  FILE AGENT ====================`);
-    const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
-    const fileStream = fs.createReadStream(filePath);
-    const file = await client.agents.files.upload(fileStream, 'assistants', {
-        fileName: 'product_info_1.md'
-    });
+const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
+const fileStream = fs.createReadStream(filePath);
+const file = await client.agents.files.upload(fileStream, 'assistants', {
+    fileName: 'product_info_1.md'
+});
     console.log(`Uploaded file, ID: ${file.id}`);
     const vectorStore = await client.agents.vectorStores.create({
         fileIds: [file.id],
@@ -171,11 +169,10 @@ async function runAgents() {
     client.agents.files.delete(file.id);
     client.agents.deleteAgent(fileAgent.id);
     console.log(`\n🧹 Deleted VectorStore, File, and FileAgent. FileAgent ID: ${fileAgent.id}`);
-
     // </create_filesearch_agent>
 }
 
-// runAgents().catch(console.error);
+runAgents().catch(console.error);
 
 // Helper function to print assistant message content nicely (handles nested text.value)
 function printAssistantMessage(message) {
