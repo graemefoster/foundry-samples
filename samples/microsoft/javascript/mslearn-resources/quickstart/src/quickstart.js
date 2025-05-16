@@ -91,11 +91,11 @@ async function runAgents() {
     // <create_filesearch_agent> 
     // Upload a file named product_info_1.md
     console.log(`\n==================== 🕵️  FILE AGENT ====================`);
-const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
-const fileStream = fs.createReadStream(filePath);
-const file = await client.agents.files.upload(fileStream, 'assistants', {
-    fileName: 'product_info_1.md'
-});
+    const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
+    const fileStream = fs.createReadStream(filePath);
+    const file = await client.agents.files.upload(fileStream, 'assistants', {
+        fileName: 'product_info_1.md'
+    });
     console.log(`Uploaded file, ID: ${file.id}`);
     const vectorStore = await client.agents.vectorStores.create({
         fileIds: [file.id],
