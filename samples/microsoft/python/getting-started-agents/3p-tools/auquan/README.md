@@ -6,7 +6,8 @@
 ## Auquan
 
 **Tool Description:**
-Utilize Auquan agents to perform your financial data crunching. The Auquan Risk Agent is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The tool processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted json responses.
+AI-powered workflow automation for institutional finance. 
+The Auquan Risk Agent is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The tool processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted json responses.
 
 **Prerequisites**
 Obtain an API key for your Auquan Risk Agent by contacting us.
