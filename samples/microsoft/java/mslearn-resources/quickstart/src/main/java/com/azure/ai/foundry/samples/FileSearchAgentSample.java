@@ -14,8 +14,7 @@ import com.azure.ai.projects.models.agent.AgentThread;
 import com.azure.ai.projects.models.agent.FileTool;
 import com.azure.ai.projects.models.file.File;
 import com.azure.ai.projects.models.file.FileClient;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,30 +23,60 @@ import java.util.List;
 
 /**
  * This sample demonstrates how to create an agent with file search capability using the Azure AI Foundry SDK.
+ * 
+ * File search agents can analyze and extract information from documents, allowing users to ask
+ * questions about the content of those documents. This extends the capabilities of regular agents
+ * by giving them access to specific information contained in files.
+ *  
+ * This sample shows:
+ * 1. How to authenticate with Azure AI Foundry using DefaultAzureCredential
+ * 2. How to create and upload a sample document
+ * 3. How to create an agent with file search capabilities
+ * 4. How to configure the agent with access to specific files
+ * 5. How to run the agent and ask questions about the document content
+ * 6. How to retrieve and display the agent's responses
+ * 
+ * Use cases for file search agents include:
+ * - Document analysis and summarization
+ * - Question answering from technical documentation
+ * - Data extraction from structured files
+ * - Research assistance across multiple documents
+ * 
+ * Prerequisites:
+ * - An Azure account with access to Azure AI Foundry
+ * - Azure CLI installed and logged in ('az login')
+ * - Environment variables set in .env file (AZURE_ENDPOINT, AZURE_DEPLOYMENT)
  */
 public class FileSearchAgentSample {
     public static void main(String[] args) {
-        // Load configuration from .env file
-        String tenantId = ConfigLoader.getAzureTenantId();
-        String clientId = ConfigLoader.getAzureClientId();
-        String clientSecret = ConfigLoader.getAzureClientSecret();
+        // Load configuration values from the .env file
+        // These include the service endpoint and the deployment name of the model to use
         String endpoint = ConfigLoader.getAzureEndpoint();
         String deploymentName = ConfigLoader.getAzureDeployment();
         
-        // Create a projects client
+        // Get DefaultAzureCredential for authentication
+        // This uses the most appropriate authentication method based on the environment
+        // For local development, it will use your Azure CLI login credentials
+        DefaultAzureCredential credential = ConfigLoader.getDefaultCredential();
+        
+        // Create a projects client to interact with Azure AI Foundry services
+        // The client requires an authentication credential and an endpoint
         ProjectsClient client = new ProjectsClientBuilder()
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(credential)
             .endpoint(endpoint)
             .buildClient();
         
         try {
-            // Create a sample document with cloud computing information
+            // Create a sample document containing information about cloud computing
+            // In a real application, you would use your own existing documents
             Path tempFile = createSampleDocument();
             
-            // Get a file client
+            // Get a file client to handle file operations
+            // This is used to upload files that the agent will search through
             FileClient fileClient = client.getFileClient();
             
-            // Upload the file
+            // Upload the file to Azure AI Foundry
+            // The uploaded file will be available for the agent to search and analyze
             System.out.println("Uploading file: " + tempFile);
             File uploadedFile = fileClient.uploadFile(tempFile.toString());
             System.out.println("File uploaded with ID: " + uploadedFile.getId());
