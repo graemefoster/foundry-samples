@@ -131,7 +131,3 @@ Certain items, such as personalized, clearance, or final sale products, may not 
 - Fine-tuning the associated CLU deployment, e.g. adding/modify/delete intents or entities etc
 - Fine-tuning the associated CQA deployment, e.g. adding/modify/delete question-answer paires, or finetune questions, etc
 - Extend the agent with other useful tools or APIs (using OpenAPI spec).
-
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
