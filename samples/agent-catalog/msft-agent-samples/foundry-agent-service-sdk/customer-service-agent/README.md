@@ -63,7 +63,7 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
       - AI Services resource
       - AI Project
       - Model deployment
-3. Python 3.8+
+3. Python 3.8+ 
 4. Azure CLI
 5. yq and jq command line tools (deploy.sh script automatically installs these)
 
