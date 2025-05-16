@@ -45,7 +45,8 @@ project_client = AIProjectClient(
 
 with project_client:
     # Initialize the Bing Grounding tool with the connection ID
-    bing = BingGroundingTool(connection_id=conn_id)
+    # freshness, count, set_lang and market are optional parameters
+    bing = BingGroundingTool(connection_id=conn_id, freshness="day", count=5, set_lang="en", market="us")
 
     # Create an agent with the specified model, name, instructions, and tools
     agent = project_client.agents.create_agent(
