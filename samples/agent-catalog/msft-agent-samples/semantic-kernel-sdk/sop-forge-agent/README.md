@@ -1,5 +1,4 @@
-# Standard Operating Procedure (SOP) Forge Agent Using Azure AI Agent Service And Semantic Kernel
-
+# Standard Operating Procedure (SOP) Forge Agent
 ## Overview 
 
 This code sample enables creation of a SOP Forge agent that can convert short demonstration video into a clean Standard Operating Procedure. 
