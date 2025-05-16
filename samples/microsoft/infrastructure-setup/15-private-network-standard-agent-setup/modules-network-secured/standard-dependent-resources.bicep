@@ -127,34 +127,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = if(!azureStora
   }
 }
 
-//KeyVault deployment is disabled for now, as it is not used in the current setup. Uncomment the code below to enable KeyVault deployment.
-
-// resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-//   name: keyvaultName
-//   location: location
-//   tags: tags
-//   properties: {
-//     createMode: 'default'
-//     enabledForDeployment: false
-//     enabledForDiskEncryption: false
-//     enabledForTemplateDeployment: false
-//     enableSoftDelete: true
-//     enableRbacAuthorization: true
-//     enablePurgeProtection: true
-//     networkAcls: {
-//       bypass: 'AzureServices'
-//       defaultAction: 'Deny'
-//     }
-//     sku: {
-//       family: 'A'
-//       name: 'standard'
-//     }
-//     softDeleteRetentionInDays: 7
-//     tenantId: subscription().tenantId
-//   }
-// }
-
-
 output aiSearchName string = aiSearchExists ? existingSearchService.name : aiSearch.name
 output aiSearchID string = aiSearchExists ? existingSearchService.id : aiSearch.id
 output aiSearchServiceResourceGroupName string = aiSearchExists ? acsParts[4] : resourceGroup().name

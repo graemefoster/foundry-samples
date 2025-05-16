@@ -10,7 +10,7 @@
 1. Create new (or use existing) resource group:
 
 ```bash
-    az group create --name <new-rg-name> --location westus
+    az group create --name <new-rg-name> --location eastus
 ```
 
 2. Deploy the main-create.bicep

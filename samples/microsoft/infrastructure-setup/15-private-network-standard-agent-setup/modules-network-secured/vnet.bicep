@@ -59,16 +59,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
     ]
   }
 }
-
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
-  parent: virtualNetwork
-  name: agentSubnetName
-  properties: {
-    addressPrefix: '192.168.0.0/24'
-  }
-}
 // Output variables
 output peSubnetName string = peSubnetName
 output agentSubnetName string = agentSubnetName
-output subnetId string = subnet.id
+output subnetId string = '${virtualNetwork.id}/subnets/${agentSubnetName}'
 output virtualNetworkName string = virtualNetwork.name
