@@ -63,11 +63,17 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
       - AI Services resource
       - AI Project
       - Model deployment
-3. Python 3.8+ 
-4. Azure CLI
-5. yq and jq command line tools (deploy.sh script automatically installs these)
+3. Azure CLI
+4. Install VS Code
+5. Download and install VSCode Extension (Early acccess) from this link https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/agent-catalog/vscode_ext_early_access
 
-### Deployment Steps
+
+### VSCode extension (early access) setup
+
+WARNING: This extension is an experimental version and is not recommended for us in production environments. The official version of the Azure AI Foundry VS Code Extension will be supporting multi-agent workflows in the near future.
+
+
+### Easy Setup (optional)
 
 ```
 set -eu
