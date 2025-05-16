@@ -18,7 +18,6 @@ This repository provides templates for deploying and running the Sight Machine F
 
 **WARNING**: Full functionality of this agent, including advanced features, requires a subscription to Sight Machine. However, basic example data allows users to test and explore the core functionality of the agent.
 
-**IMPORTANT NOTE FROM MICROSOFT:**  The sample below was created by a third party, not Microsoft, and has not been tested or verified by Microsoft. Your use is subject to the terms provided by the relevant third party.  By using the third-party sample in this file, you are acknowledging that Microsoft has no responsibility to you or others with respect to this sample.  
 
 ## Use Cases
 
