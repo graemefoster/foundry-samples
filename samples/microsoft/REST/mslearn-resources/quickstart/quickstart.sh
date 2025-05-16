@@ -67,6 +67,12 @@ curl --request DELETE --url 'https://YOUR-FOUNDRY-RESOURCE-NAME.services.ai.azur
 
 
 # <create_filesearch_agent>
+#Upload the file
+curl --request POST --url 'https://YOUR-FOUNDRY-RESOURCE-NAME.services.ai.azure.com/api/projects/YOUR-PROJECT-NAME/files?api-version=v1' \ 
+    -h 'authorization: Bearer $AZURE_AI_AUTH_TOKEN' \ 
+    -f purpose="assistant" \
+    -f file="@product_info_1.md" #File object (not file name) to be uploaded.
+#Lets say file ID created is assistant-123456789. Use this in the next step
 
 # create vector store
 curl --request POST --url 'https://YOUR-FOUNDRY-RESOURCE-NAME.services.ai.azure.com/api/projects/YOUR-PROJECT-NAME/vector_stores?api-version=v1' \ 
