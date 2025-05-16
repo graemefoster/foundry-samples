@@ -1,7 +1,7 @@
 # Healthcare Agent Orchestrator
 Healthcare Agent Orchestrator is a multi-agent accelerator that coordinates modular specialized agents across diverse data types and tools like M365 and Teams to assist multi-disciplinary healthcare workflows—such as cancer care.
 
-Click [here](https://aka.ms/healthcare-multi-agent) to browse this agent code sample.
+**Click [here](https://aka.ms/healthcare-multi-agent) to browse this agent code sample.**
 
 **IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
 
