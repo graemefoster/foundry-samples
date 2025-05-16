@@ -51,11 +51,11 @@ param displayName string = 'project'
 
 //Existing standard Agent required resources
 @description('The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param aiSearchResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.Search/searchServices/aiservicesgckssearch'
+param aiSearchResourceId string = ''
 @description('The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureStorageAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.Storage/storageAccounts/aiservicesgcksstorage'
+param azureStorageAccountResourceId string = ''
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureCosmosDBAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.DocumentDB/databaseAccounts/aiservicesgckscosmosdb'
+param azureCosmosDBAccountResourceId string = ''
 
 var projectName = toLower('${firstProjectName}${uniqueSuffix}')
 var cosmosDBName = toLower('${aiServices}${uniqueSuffix}cosmosdb')
