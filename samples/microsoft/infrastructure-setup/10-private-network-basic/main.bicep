@@ -13,8 +13,6 @@ param location string = 'eastus'
 
 @description('Name of the first project')
 param defaultProjectName string = '${aiFoundryName}-proj'
-param defaultProjectDisplayName string = 'Project'
-param defaultProjectDescription string = 'Describe what your project is about.'
 
 /*
   Step 1: Create a Cognitive Services Account 
@@ -70,16 +68,10 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   name: defaultProjectName
   parent: account
   location: location
-  
   identity: {
     type: 'SystemAssigned'
   }
-  
-  properties: {
-    displayName: defaultProjectDisplayName
-    description: defaultProjectDescription
-    isDefault: true // can't be updated after creation; can only be set by one project in the account, the first project created.
-  }
+  properties: {}
 }
 
 output accountId string = account.id

@@ -1,7 +1,10 @@
 # Text Translation Agent
 
-## Summary
 This code sample helps create agents that handle multilingual text processing, including dynamic language detection and bidirectional translation using Azure AI Translator service. 
+
+**IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
+
+Certain Agent offerings may be subject to legal and regulatory requirements, may require licenses, or may not be suitable for all industries, scenarios, or use cases. By using any sample, you are acknowledging that Agents or other output created using that sample are solely your responsibility, and that you will comply with all applicable laws, regulations, and relevant safety standards, terms of service, and codes of conduct.  
 
 ## Use Cases
 1. **Text Translation**: Translate text between multiple languages for seamless communication.
@@ -44,7 +47,12 @@ The system consists of:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
     3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
-- Azure Translator deployment see [Text translation Overview](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview)
+- A connection of the resource that supports Azure AI Translator service is added to the project of your Agent. 
+  - To use the translator service with Azure AI Foundry resource or AI hub resource, choose "Azure AI foundry" connection. 
+  - To use the translator service with Azure AI Translator resource, use "Azure AI Translator" connection or "Custom keys" connection. 
+  - To add a "Custom keys" connection, add a key value pair with Ocp-Apim-Subscription-Key as the key name, and the Azure AI Translator resource key as the value. 
+  - For more info to create a connection, see [Create a connection](https://learn.microsoft.com/azure/ai-foundry/how-to/connections-add)
+  - For more info about Azure AI Translator service, see [Text translation Overview](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview)
 
 ### Steps
 1. **Clone the Repository**
@@ -57,20 +65,16 @@ The system consists of:
 ```
 
 ## ⚙️ Configuration Guide
-| Parameter Name                         | Description                                                     |
-|----------------------------------------|-----------------------------------------------------------------|
-| `amlWorkspaceResourceName`             | Name of the AI Project or the AML workspace                     |
-| `translator_resource_connection_name`  | API endpoint to call translation service                        |
-| `project_endpoint`                     | Endpoint for the project this agent is using                    |
-| `model_name`                           | Name of the model to be used for the Agent                      |
-| `connection_id`                        | Connection ID for the translation resource in the AI Foundry    |
+| Parameter Name                         | Description                                                                       |
+|----------------------------------------|-----------------------------------------------------------------------------------|
+| `project_endpoint`                     | Endpoint for the project this agent is using                                      |
+| `model_name`                           | Name of the model deployment to be used for the Agent                             |
+| `translator_resource_connection_name`  | Name of the translator resource connection added in the agent project             |
+| `connection_id`                        | Connection ID for the translator resource connection added in the agent project   |
 
 ## Sample Data Instructions
-This repo contains a `sample_data/` directory with:
-- Sample user translation queries
-- However, you are welcome to translate your own text
+You can try the sample user messages and test the interaction by invoking the agent with prompts as listed in the next section.
 
-You can test the interaction by invoking the agent with prompts like:
 ## Example Agent Interaction
 ### User: 
 Translate this Chinese poem to English: 白日依山尽，黄河入海流
@@ -98,7 +102,7 @@ Japanese: エージェントは、入力テキストのソース言語を検出�
 German: Der Agent kann die Ausgangssprache für den Eingabetext erkennen, es sei denn, die Ausgangssprache ist in der Benutzermeldung definiert.
 
 ## Customization Tips
-- Modify the system instructions in `agent.py` to your specif needs (e.g., special handling on some terminologies).
+- Modify the system instructions in `template.py` to your specif needs (e.g., special handling on some terminologies).
 - Extend the agent with other useful tools or APIs (using OpenAPI spec).
 
 ## License

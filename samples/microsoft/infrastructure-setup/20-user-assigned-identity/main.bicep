@@ -66,21 +66,21 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
 /*
   Step 3: Deploy gpt-4o model
 */
-// resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
-//   parent: account
-//   name: 'gpt-4o'
-//   sku : {
-//     capacity: 1
-//     name: 'GlobalStandard'
-//   }
-//   properties: {
-//     model:{
-//       name: 'gpt-4o'
-//       format: 'OpenAI'
-//       version: '2024-08-06'
-//     }
-//   }
-// }
+resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+  parent: account
+  name: 'gpt-4o'
+  sku : {
+    capacity: 1
+    name: 'GlobalStandard'
+  }
+  properties: {
+    model:{
+      name: 'gpt-4o'
+      format: 'OpenAI'
+      version: '2024-08-06'
+    }
+  }
+}
 
 /*
   Step 4: Create a Project
@@ -97,17 +97,8 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
     }
   }
   
-  properties: {
-    displayName: defaultProjectDisplayName
-    description: defaultProjectDescription
-    isDefault: true // can't be updated after creation; can only be set by one project in the account, the first project created.
-  }
+  properties: {}
 }
-
-/* Step 5:
- Grant managed identity 'Azure AI Administrator' role on account if not existant
- @TODO
-*/
 
 output accountId string = account.id
 output accountName string = account.name

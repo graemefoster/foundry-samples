@@ -1,7 +1,10 @@
 # Travel Planner Agent
 
-## Summary
 This code sample enables creating an agent to help users receive up-to-date travel recommendations by leveraging both the **Bing Grounding Tool** and the **TripAdvisor API**. The agent summarizes relevant information clearly and offers to create a custom itinerary based on the user's travel duration.
+
+**IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
+
+Certain Agent offerings may be subject to legal and regulatory requirements, may require licenses, or may not be suitable for all industries, scenarios, or use cases. By using any sample, you are acknowledging that Agents or other output created using that sample are solely your responsibility, and that you will comply with all applicable laws, regulations, and relevant safety standards, terms of service, and codes of conduct.  
 
 ## Use Cases
 1. **Vacation Planning**: Travelers can get up-to-date suggestions on destinations, hotels, and activities.
@@ -37,16 +40,21 @@ The system consists of:
 ## Setup Instructions
 
 ### Prerequisites
-- Python 3.8+
-- Azure CLI
-- Azure subscription
-- Agent setup: deploy the latest agent setup using ([this custom deployment](https://github.com/azure-ai-foundry/foundry-samples/tree/main/use-cases/agents/setup/basic-setup)).
-  - The above creates:
-    1. AI Services resource
-    2. AI Project
-    3. Model deployment 
-- Bing Grounding resource
-- TripAdvisor API connection (via OpenAPI)
+
+1. Azure subscription with the following permissions
+   - Contributor or Cognitive Services Contributor role (for resource deployment)
+   - Azure AI Developer and Cognitive Services user role (for agent creation)
+2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://www.aka.ms/basic-agent-deployment)).
+   - The above creates:
+      - AI Services resource
+      - AI Project
+      - Model deployment
+3. Python 3.8+
+4. Azure CLI
+   
+### Template specific requirements:
+5. Bing Grounding resource ([Documentation](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/bing-grounding?tabs=python&pivots=overview))
+6. TripAdvisor API connection (via OpenAPI) (For setup and API key: ([Tripadviser documentation](https://tripadvisor-content-api.readme.io/reference/overview))
 
 ### Steps
 1. **Clone the Repository**

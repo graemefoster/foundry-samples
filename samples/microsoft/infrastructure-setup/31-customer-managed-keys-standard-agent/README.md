@@ -11,7 +11,7 @@ languages:
 ---
 # Set up Azure AI Foundry using Customer Managed Keys for encryption
 
-This Azure AI Foundry template is built on Azure Cognitive Services as a resource provider. This template deploys an Azure AI Foundry account and project.
+This Azure AI Foundry template demonstrates how to deploy AI Foundry with Agents standard setup and customer-managed keys for encryption.
 
 Run the command for BICEP:
 
@@ -36,11 +36,3 @@ If you are new to template deployment, see:
 - [Azure AI services quickstart article](https://learn.microsoft.com/azure/cognitive-services/resource-manager-template)
 
 `Tags: Microsoft.CognitiveServices/accounts/projects`
-
-
-# Give CosmosDB appID access to your key vault
-appid: a232010e-820c-4083-83bb-3ace5fc29d0b;
-az cosmosdb update --name "<your-account>" --resource-group "<your-rgp>" --key-uri "https://<your-account>>.vault.azure.net/keys/<key>" --subscription "<subscription>"
-
-# Enable encryption on Azure Search
-az search service update --name "<your-search>" --resource-group "<your-rgp>" --encryption-key-uri "https://<your-account>.vault.azure.net/keys/<key>"
