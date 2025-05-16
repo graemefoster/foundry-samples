@@ -1,3 +1,0 @@
-openai
-azure-ai-projects
-azure-identity

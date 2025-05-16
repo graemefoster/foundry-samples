@@ -1,1 +1,0 @@
-# Deploy AI Foundry connections

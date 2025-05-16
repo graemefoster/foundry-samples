@@ -1,0 +1,5 @@
+azure_storage==0.37.0
+Pillow==11.2.1
+python-dotenv==1.1.0
+Requests==2.32.3
+semantic_kernel==1.29.0
