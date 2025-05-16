@@ -40,6 +40,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
         name: agentSubnetName
         properties: {
           addressPrefix: '192.168.0.0/24'
+          delegations: [
+            {
+              name: 'Microsoft.app/environments'
+              properties: {
+                serviceName: 'Microsoft.App/environments'
+              }
+            }
+          ]
         }
       }
       {
@@ -57,16 +65,6 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
   name: agentSubnetName
   properties: {
     addressPrefix: '192.168.0.0/24'
-	delegations: [
-      {
-        id: '${virtualNetwork.id}/subnets/${agentSubnetName}'
-        name: 'Microsoft.App/environments'
-        properties: {
-          serviceName: 'Microsoft.App/environments'
-        }
-        type: 'Microsoft.Network/virtualNetworks/subnets/delegations'
-      }
-    ]
   }
 }
 // Output variables
