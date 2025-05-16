@@ -1,6 +1,6 @@
-## Agent Catalog - Microsoft-authored Agent Samples for Semantic Kernel SDK
+## Agent Catalog - Microsoft-authored Agent Samples
 
-This folder contains Microsoft-authored Agent code samples for the Semantic Kernel SDK
+This folder contains Microsoft-authored Agent code samples for the Azure AI Agent Service SDK and the Semantic Kernel SDK.
 
 **IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
 
