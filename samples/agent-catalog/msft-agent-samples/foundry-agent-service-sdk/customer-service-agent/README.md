@@ -65,7 +65,28 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
       - Model deployment
 3. Python 3.8+
 4. Azure CLI
-   
+
+### Deployment Steps
+
+5. Use this deploy script to automatic install yq and jq 
+
+```
+set -eu
+export CONNECTION_STRING= "<host>;<subscription_id>;<resource_group>;<project_name>"
+
+FILE_PATH="./core/HumanEscalationAgent.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./core/RoutingAgent.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./core/SelfServiceAgent.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./core/TicketCreationAgent.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./core/TicketResolutionAgent.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./core/WindowsSupport.agent"  ./src/scripts/deploy.sh
+FILE_PATH="./workflows/CustomerSupport.fdl"  ./src/scripts/deploy.sh
+
+```
+
+
+
+
 - Agent files:
   - `CustomerAuthenticator.agent`
   - `CustomerServiceAgent.agent`
