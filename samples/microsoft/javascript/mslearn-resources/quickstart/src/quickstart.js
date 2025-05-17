@@ -2,12 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { DefaultAzureCredential } from '@azure/identity';
-import { ToolUtility, DoneEvent, ErrorEvent, RunStreamEvent, MessageStreamEvent } from '@azure/ai-agents';
+import { ToolUtility, DoneEvent, ErrorEvent, isOutputOfType } from '@azure/ai-agents';
 import { AIProjectClient } from '@azure/ai-projects';
 import { config } from 'dotenv';
 config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Run Azure AI Foundry chat completion using the Azure OpenAI model
+await chatCompletion().catch(console.error);
+// Run Azure AI Foundry agents (poem agent and file agent)
+await runAgents().catch(console.error);
 
 async function chatCompletion() {
     // <chat_completion>
@@ -30,16 +33,13 @@ async function chatCompletion() {
             { role: "user", content: "Write me a poem about flowers" },
         ],
     });
-    console.log(`\n==================== 🌷 COMPLETIONS POEM ====================`);
+    console.log(`\n==================== 🌷 COMPLETIONS POEM ====================\n`);
     console.log(chatCompletion.choices[0].message.content);
     // </chat_completion>
 }
 
-chatCompletion().catch(console.error);
-
 async function runAgents() {
     // <create_and_run_agent>
-    // Create an Azure AI Foundry Client
     const endpoint = process.env.PROJECT_ENDPOINT;
     const deployment = process.env.MODEL_DEPLOYMENT_NAME || 'gpt-4o';
     const client = new AIProjectClient(endpoint, new DefaultAzureCredential());
@@ -73,17 +73,12 @@ async function runAgents() {
     console.table([run.usage]);
 
     const messagesIterator = await client.agents.messages.list(thread.id);
-    let assistantMessage = null;
-    for await (const m of messagesIterator) {
-        if (m.role === 'assistant') {
-            assistantMessage = m;
-            break;
-        }
-    }
+    const assistantMessage = await getAssistantMessage(messagesIterator);
     console.log('\n---------------- 💬 Response ----------------');
     printAssistantMessage(assistantMessage);
 
-    // Delete the Agent
+    // Clean up
+    console.log(`\n---------------- 🧹 Clean Up Poem Agent ----------------`);
     await client.agents.deleteAgent(agent.id);
     console.log(`Deleted Agent, Agent ID: ${agent.id}`);
     // </create_and_run_agent>
@@ -91,8 +86,12 @@ async function runAgents() {
     // <create_filesearch_agent> 
     // Upload a file named product_info_1.md
     console.log(`\n==================== 🕵️  FILE AGENT ====================`);
-    const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const filePath = path.join(__dirname, '../data/product_info_1.md');
     const fileStream = fs.createReadStream(filePath);
+    fileStream.on('data', (chunk) => {
+        console.log(`Read ${chunk.length} bytes of data.`);
+    });
     const file = await client.agents.files.upload(fileStream, 'assistants', {
         fileName: 'product_info_1.md'
     });
@@ -129,52 +128,39 @@ async function runAgents() {
     let fileSearchRun = await client.agents.runs.create(fileSearchThread.id, fileAgent.id).stream();
 
     for await (const eventMessage of fileSearchRun) {
-        switch (eventMessage.event) {
-            case RunStreamEvent.ThreadRunCreated:
-                break;
-            case MessageStreamEvent.ThreadMessageDelta:
-                {
-                    const messageDelta = eventMessage.data;
-                    messageDelta.delta.content.forEach((contentPart) => {
-                        if (contentPart.type === "text") {
-                            const textContent = contentPart;
-                            const textValue = textContent.text?.value || "No text";
-                        }
-                    });
-                }
-                break;
-
-            case RunStreamEvent.ThreadRunCompleted:
-                break;
-            case ErrorEvent.Error:
-                console.log(`An error occurred. Data ${eventMessage.data}`);
-                break;
-            case DoneEvent.Done:
-                break;
+        if (eventMessage.event === DoneEvent.Done) {
+            console.log(`Run completed: ${eventMessage.data}`);
+        }
+        if (eventMessage.event === ErrorEvent.Error) {
+            console.log(`An error occurred. ${eventMessage.data}`);
         }
     }
 
     const fileSearchMessagesIterator = await client.agents.messages.list(fileSearchThread.id);
-    let fileAssistantMessage = null;
-    for await (const m of fileSearchMessagesIterator) {
-        if (m.role === 'assistant') {
-            fileAssistantMessage = m;
-            break;
-        }
-    }
+    const fileAssistantMessage = await getAssistantMessage(fileSearchMessagesIterator);
     console.log(`\n---------------- 💬 Response ---------------- \n`);
     printAssistantMessage(fileAssistantMessage);
 
+    // Clean up
+    console.log(`\n---------------- 🧹 Clean Up File Agent ----------------`);
     client.agents.vectorStores.delete(vectorStore.id);
     client.agents.files.delete(file.id);
     client.agents.deleteAgent(fileAgent.id);
-    console.log(`\n🧹 Deleted VectorStore, File, and FileAgent. FileAgent ID: ${fileAgent.id}`);
+    console.log(`Deleted VectorStore, File, and FileAgent. FileAgent ID: ${fileAgent.id}`);
     // </create_filesearch_agent>
 }
 
-runAgents().catch(console.error);
+// Helper functions
+async function getAssistantMessage(messagesIterator) {
+    for await (const m of messagesIterator) {
+        if (m.role === 'assistant') {
+            return m;
+        }
+    }
+    return null;
+}
 
-// Helper function to print assistant message content nicely (handles nested text.value)
+// Print assistant message content nicely
 function printAssistantMessage(message) {
     if (!message || !Array.isArray(message.content)) {
         console.log('No assistant message found or content is not in expected format.');
@@ -195,3 +181,4 @@ function printAssistantMessage(message) {
     }
     output.split('\n').forEach(line => console.log(line));
 }
+
