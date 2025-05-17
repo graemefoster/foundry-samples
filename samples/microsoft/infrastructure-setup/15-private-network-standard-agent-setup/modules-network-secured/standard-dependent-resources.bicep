@@ -90,6 +90,10 @@ resource aiSearch 'Microsoft.Search/searchServices@2024-06-01-preview' = if(!aiS
     publicNetworkAccess: 'disabled'
     replicaCount: 1
     semanticSearch: 'disabled'
+    networkRuleSet: {
+      bypass: 'None'
+      ipRules: []
+    }
   }
   sku: {
     name: 'standard'

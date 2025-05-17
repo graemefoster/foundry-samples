@@ -5,7 +5,7 @@ param location string
 // param modelVersion string 
 // param modelSkuName string 
 // param modelCapacity int
-param subnetId string
+param agentSubnetId string
 param networkInjection string = 'true'
 
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
@@ -30,7 +30,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
     networkInjections:((networkInjection == 'true') ? [
       {
         scenario: 'agent'
-        subnetArmId: subnetId
+        subnetArmId: agentSubnetId
         useMicrosoftManagedNetwork: false
       }
       ] : null )

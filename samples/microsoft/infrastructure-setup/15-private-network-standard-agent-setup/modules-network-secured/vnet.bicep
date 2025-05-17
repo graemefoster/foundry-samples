@@ -3,14 +3,14 @@ Virtual Network Module
 This module deploys the core network infrastructure with security controls:
 
 1. Address Space:
-   - VNet CIDR: 172.16.0.0/16
-   - Hub Subnet: 172.16.0.0/24 (private endpoints)
-   - Agents Subnet: 172.16.101.0/24 (container apps)
+   - VNet CIDR: 172.16.0.0/16 OR 192.168.0.0/16
+   - Agents Subnet: 172.16.0.0/24 OR 192.168.0.0/24
+   - Private Endpoint Subnet: 172.16.101.0/24 OR 192.168.1.0/24
 
 2. Security Features:
-   - Service endpoints
    - Network isolation
    - Subnet delegation
+   - Private endpoint subnet 
 */
 
 @description('Azure region for the deployment')
@@ -62,5 +62,5 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
 // Output variables
 output peSubnetName string = peSubnetName
 output agentSubnetName string = agentSubnetName
-output subnetId string = '${virtualNetwork.id}/subnets/${agentSubnetName}'
+output agentSubnetId string = '${virtualNetwork.id}/subnets/${agentSubnetName}'
 output virtualNetworkName string = virtualNetwork.name

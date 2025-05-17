@@ -102,7 +102,7 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
     // modelVersion: modelVersion
     // modelSkuName: modelSkuName
     // modelCapacity: modelCapacity
-    subnetId: vnet.outputs.subnetId
+    agentSubnetId: vnet.outputs.agentSubnetId
   }
 }
 /*
@@ -198,7 +198,6 @@ module storageAccountRoleAssignment 'modules-network-secured/azure-storage-accou
   name: 'storage-${azureStorageName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
   params: { 
-    accountPrincipalId: aiAccount.outputs.accountPrincipalId
     azureStorageName: aiDependencies.outputs.azureStorageName
     projectPrincipalId: aiProject.outputs.projectPrincipalId
   }
