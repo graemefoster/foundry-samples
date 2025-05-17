@@ -2,17 +2,26 @@
 
 This guide provides instructions on how to test the Java samples in this repository to ensure they work correctly with the Azure AI Foundry SDK.
 
+## Authentication Setup
+
+These samples use `DefaultAzureCredential` for authentication. Before testing, ensure you are logged in with the Azure CLI:
+
+```bash
+az login
+```
+
 ## Automated Testing Scripts
 
 For your convenience, this repository includes testing scripts that automate the execution of all the samples. You can run the appropriate script for your environment to test all samples in sequence.
 
-### On Linux/macOS/WSL:
+### On Linux/macOS/WSL: 
 
 To use the testing script on Linux, macOS, or Windows Subsystem for Linux (WSL):
 
-1. Make sure you've set up your `.env` file with valid credentials
-2. Open a terminal in the Java samples directory
-3. Run the script:
+1. Make sure you've set up your `.env` file with the required configuration
+2. Ensure you are logged in with the Azure CLI (run `az login`)
+3. Open a terminal in the Java samples directory
+4. Run the script:
 
 ```bash
 # Make the script executable

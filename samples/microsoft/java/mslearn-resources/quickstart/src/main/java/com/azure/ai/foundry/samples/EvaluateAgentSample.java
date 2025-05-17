@@ -15,41 +15,70 @@ import com.azure.ai.projects.models.evaluation.AgentEvaluation;
 import com.azure.ai.projects.models.evaluation.EvaluationClient;
 import com.azure.ai.projects.models.evaluation.EvaluationMetric;
 import com.azure.ai.projects.models.evaluation.EvaluationOptions;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
 
 import java.util.Map;
 
 /**
  * This sample demonstrates how to evaluate an agent run using the Azure AI Foundry SDK.
+ * 
+ * Evaluation in Azure AI Foundry allows you to assess the performance and quality of AI agents
+ * using standardized metrics. This helps identify areas for improvement and ensures the agent
+ * meets specific quality standards before deployment.
+ * 
+ * This sample shows:
+ * 1. How to authenticate with Azure AI Foundry using DefaultAzureCredential
+ * 2. How to create an agent and generate a run for evaluation
+ * 3. How to use the evaluation client to assess the agent's performance
+ * 4. How to select and apply appropriate evaluation metrics
+ * 5. How to interpret evaluation results and scores
+ * 
+ * Key evaluation metrics include:
+ * - Helpfulness: Measures how well the agent assists users with their requests
+ * - Accuracy: Assesses the factual correctness of the agent's responses
+ * - Safety: Evaluates if the agent follows appropriate content guidelines
+ * - Quality: Measures overall response quality and relevance
+ *  
+ * Prerequisites:
+ * - An Azure account with access to Azure AI Foundry
+ * - Azure CLI installed and logged in ('az login')
+ * - Environment variables set in .env file (AZURE_ENDPOINT, AZURE_DEPLOYMENT)
  */
 public class EvaluateAgentSample {
     public static void main(String[] args) {
-        // Load configuration from .env file
-        String tenantId = ConfigLoader.getAzureTenantId();
-        String clientId = ConfigLoader.getAzureClientId();
-        String clientSecret = ConfigLoader.getAzureClientSecret();
+        // Load configuration values from the .env file
+        // These include the service endpoint and the deployment name of the model to use
         String endpoint = ConfigLoader.getAzureEndpoint();
         String deploymentName = ConfigLoader.getAzureDeployment();
         
-        // Create a projects client
+        // Get DefaultAzureCredential for authentication
+        // This uses the most appropriate authentication method based on the environment
+        // For local development, it will use your Azure CLI login credentials
+        DefaultAzureCredential credential = ConfigLoader.getDefaultCredential();
+        
+        // Create a projects client to interact with Azure AI Foundry services
+        // The client requires an authentication credential and an endpoint
         ProjectsClient client = new ProjectsClientBuilder()
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(credential)
             .endpoint(endpoint)
             .buildClient();
         
-        // Get an agent client
+        // Get an agent client to work with AI agents
+        // This will be used to create and run the agent we're going to evaluate
         AgentClient agentClient = client.getAgentClient();
         
         // First, create and run an agent to generate a run for evaluation
+        // We need an agent run to evaluate, so we'll create one as part of this sample
         System.out.println("Creating and running an agent to generate a run for evaluation...");
         
-        // Create an agent
+        // Create an agent with a specific purpose and capabilities
+        // For evaluation, it's important to create an agent with clear instructions
+        // that align with the metrics you'll be evaluating
         Agent agent = agentClient.createAgent(new AgentOptions()
-            .setName("Weather Assistant")
-            .setDescription("An agent that provides weather information")
-            .setInstructions("You are a weather assistant. Provide accurate and helpful information about weather conditions.")
-            .setModel(deploymentName));
+            .setName("Weather Assistant")                     // Descriptive name
+            .setDescription("An agent that provides weather information")  // Brief description
+            .setInstructions("You are a weather assistant. Provide accurate and helpful information about weather conditions.")  // Detailed instructions
+            .setModel(deploymentName));                       // The underlying AI model
         
         // Create a thread
         AgentThread thread = agentClient.createThread();
