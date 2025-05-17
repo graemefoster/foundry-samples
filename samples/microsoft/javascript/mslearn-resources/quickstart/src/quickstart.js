@@ -7,7 +7,10 @@ import { AIProjectClient } from '@azure/ai-projects';
 import { config } from 'dotenv';
 config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Run Azure AI Foundry chat completion using the Azure OpenAI model
+await chatCompletion().catch(console.error);
+// Run Azure AI Foundry agents (poem agent and file agent)
+await runAgents().catch(console.error);
 
 async function chatCompletion() {
     // <chat_completion>
@@ -30,12 +33,10 @@ async function chatCompletion() {
             { role: "user", content: "Write me a poem about flowers" },
         ],
     });
-    console.log(`\n==================== 🌷 COMPLETIONS POEM ====================`);
+    console.log(`\n==================== 🌷 COMPLETIONS POEM ====================\n`);
     console.log(chatCompletion.choices[0].message.content);
     // </chat_completion>
 }
-
-chatCompletion().catch(console.error);
 
 async function runAgents() {
     // <create_and_run_agent>
@@ -91,8 +92,12 @@ async function runAgents() {
     // <create_filesearch_agent> 
     // Upload a file named product_info_1.md
     console.log(`\n==================== 🕵️  FILE AGENT ====================`);
-    const filePath = path.join(__dirname, '../../../../data/product_info_1.md');
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const filePath = path.join(__dirname, '../data/product_info_1.md');
     const fileStream = fs.createReadStream(filePath);
+    fileStream.on('data', (chunk) => {
+        console.log(`Read ${chunk.length} bytes of data.`);
+    });
     const file = await client.agents.files.upload(fileStream, 'assistants', {
         fileName: 'product_info_1.md'
     });
@@ -129,28 +134,11 @@ async function runAgents() {
     let fileSearchRun = await client.agents.runs.create(fileSearchThread.id, fileAgent.id).stream();
 
     for await (const eventMessage of fileSearchRun) {
-        switch (eventMessage.event) {
-            case RunStreamEvent.ThreadRunCreated:
-                break;
-            case MessageStreamEvent.ThreadMessageDelta:
-                {
-                    const messageDelta = eventMessage.data;
-                    messageDelta.delta.content.forEach((contentPart) => {
-                        if (contentPart.type === "text") {
-                            const textContent = contentPart;
-                            const textValue = textContent.text?.value || "No text";
-                        }
-                    });
-                }
-                break;
-
-            case RunStreamEvent.ThreadRunCompleted:
-                break;
-            case ErrorEvent.Error:
-                console.log(`An error occurred. Data ${eventMessage.data}`);
-                break;
-            case DoneEvent.Done:
-                break;
+        if (eventMessage.event === DoneEvent.Done) {
+            console.log(`Run completed: ${eventMessage.data}`);
+        }
+        if (eventMessage.event === ErrorEvent.Error) {
+            console.log(`An error occurred. ${eventMessage.data}`);
         }
     }
 
@@ -171,8 +159,6 @@ async function runAgents() {
     console.log(`\n🧹 Deleted VectorStore, File, and FileAgent. FileAgent ID: ${fileAgent.id}`);
     // </create_filesearch_agent>
 }
-
-runAgents().catch(console.error);
 
 // Helper function to print assistant message content nicely (handles nested text.value)
 function printAssistantMessage(message) {
