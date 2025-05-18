@@ -1,5 +1,6 @@
 pytest
 openai
 azure-ai-projects
+azure-ai-agents
 azure-identity
 dotenv

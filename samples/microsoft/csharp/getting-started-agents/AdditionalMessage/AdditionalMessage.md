@@ -37,7 +37,7 @@ PersistentAgent agent = await client.Administration.CreateAgentAsync(
     tools: [new CodeInterpreterToolDefinition()]);
 ```
 
-2. Create the thread and add an initial message to it.
+1. Create the thread and add an initial message to it.
 
 Synchronous sample:
 
@@ -61,7 +61,7 @@ await client.Messages.CreateMessageAsync(
     "What is the impedance formula?");
 ```
 
-3. Create the run with additional messages and poll for completion.
+1. Create the run with additional messages and poll for completion.
    In this example we add two extra messages to the thread when creating the run: one with the `MessageRole.Agent` role and another with the `MessageRole.User` role.
 
 Synchronous sample:
@@ -120,7 +120,7 @@ while (run.Status == RunStatus.Queued
     || run.Status == RunStatus.RequiresAction);
 ```
 
-4. Print out all the messages to the console.
+1. Print out all the messages to the console.
 
 Synchronous sample:
 
@@ -164,7 +164,7 @@ await foreach (ThreadMessage threadMessage in messages)
 }
 ```
 
-5. Finally, clean up resources (delete the thread and agent).
+1. Finally, clean up resources (delete the thread and agent).
 
 Synchronous sample:
 
