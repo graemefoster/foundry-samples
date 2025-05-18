@@ -25,15 +25,15 @@ param aiServices string = 'aiservices'
 
 // Model deployment parameters
 @description('The name of the model you want to deploy')
-param modelName string = 'gpt-4o'
-@description('The provider of your model')
-param modelFormat string = 'OpenAI'
-@description('The version of your model')
-param modelVersion string = '2024-05-13'
-@description('The sku of your model deployment')
-param modelSkuName string = 'GlobalStandard'
-@description('The tokens per minute (TPM) of your model deployment')
-param modelCapacity int = 1
+// param modelName string = 'gpt-4o'
+// @description('The provider of your model')
+// param modelFormat string = 'OpenAI'
+// @description('The version of your model')
+// param modelVersion string = '2024-05-13'
+// @description('The sku of your model deployment')
+// param modelSkuName string = 'GlobalStandard'
+// @description('The tokens per minute (TPM) of your model deployment')
+// param modelCapacity int = 1
 
 // Create a short, unique suffix, that will be unique to each resource group
 param deploymentTimestamp string = utcNow('yyyyMMddHHmmss')
@@ -51,11 +51,11 @@ param displayName string = 'project'
 
 //Existing standard Agent required resources
 @description('The AI Search Service full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param aiSearchResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.Search/searchServices/aiservicesgckssearch'
+param aiSearchResourceId string = ''
 @description('The AI Storage Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureStorageAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.Storage/storageAccounts/aiservicesgcksstorage'
+param azureStorageAccountResourceId string = ''
 @description('The Cosmos DB Account full ARM Resource ID. This is an optional field, and if not provided, the resource will be created.')
-param azureCosmosDBAccountResourceId string = '/subscriptions/562da9fc-fd6e-4f24-a6aa-99827a7f6f91/resourceGroups/rg-vpn-fdp-ni-eus/providers/Microsoft.DocumentDB/databaseAccounts/aiservicesgckscosmosdb'
+param azureCosmosDBAccountResourceId string = ''
 
 var projectName = toLower('${firstProjectName}${uniqueSuffix}')
 var cosmosDBName = toLower('${aiServices}${uniqueSuffix}cosmosdb')
@@ -97,12 +97,12 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
     // workspace organization
     accountName: accountName
     location: location
-    modelName: modelName
-    modelFormat: modelFormat
-    modelVersion: modelVersion
-    modelSkuName: modelSkuName
-    modelCapacity: modelCapacity
-    subnetId: vnet.outputs.subnetId
+    // modelName: modelName
+    // modelFormat: modelFormat
+    // modelVersion: modelVersion
+    // modelSkuName: modelSkuName
+    // modelCapacity: modelCapacity
+    agentSubnetId: vnet.outputs.agentSubnetId
   }
 }
 /*
@@ -198,7 +198,6 @@ module storageAccountRoleAssignment 'modules-network-secured/azure-storage-accou
   name: 'storage-${azureStorageName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
   params: { 
-    accountPrincipalId: aiAccount.outputs.accountPrincipalId
     azureStorageName: aiDependencies.outputs.azureStorageName
     projectPrincipalId: aiProject.outputs.projectPrincipalId
   }
@@ -241,13 +240,6 @@ output projectPrincipalId string = aiProject.outputs.projectPrincipalId
 output aiSearchConnection string = aiProject.outputs.aiSearchConnection
 output azureStorageConnection string = aiProject.outputs.azureStorageConnection
 output cosmosDBConnection string = aiProject.outputs.cosmosDBConnection
-output cosmosDBSubscriptionId string = aiDependencies.outputs.cosmosDBSubscriptionId
-output cosmosDBResourceGroupName string = aiDependencies.outputs.cosmosDBResourceGroupName
-output aiSearchServiceSubscriptionId string = aiDependencies.outputs.aiSearchServiceSubscriptionId
-output aiSearchServiceResourceGroupName string = aiDependencies.outputs.aiSearchServiceResourceGroupName
-output azureStorageSubscriptionId string = aiDependencies.outputs.azureStorageSubscriptionId
-output azureStorageResourceGroupName string = aiDependencies.outputs.azureStorageResourceGroupName
-
 output subscriptionID string = subscription().subscriptionId
 output resourceGroupName string = resourceGroup().name
 output suffix string = uniqueSuffix
