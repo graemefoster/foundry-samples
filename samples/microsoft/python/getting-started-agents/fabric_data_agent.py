@@ -14,7 +14,7 @@ USAGE:
 
     Before running the sample:
 
-    pip install azure-ai-projects azure-identity
+    pip install azure-ai-projects azure-identity azure-ai-agents==1.0.0b1
 
     Set these environment variables with your own values:
     PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in your AI Studio Project.
@@ -27,9 +27,6 @@ from azure.identity import DefaultAzureCredential  # For authentication
 from azure.ai.projects import AIProjectClient  # Client to interact with Azure AI Projects
 from azure.ai.agents.models import FabricTool  # Tool for interacting with Fabric resources
 
-# Define the path to the asset file (replace with your actual file path)
-asset_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets/product_info_1.md"))
-
 # Retrieve the endpoint, model deployment name, and Fabric connection ID from environment variables
 project_endpoint = os.environ["PROJECT_ENDPOINT"]  # Ensure the PROJECT_ENDPOINT environment variable is set
 model_deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]  # Ensure the MODEL_DEPLOYMENT_NAME environment variable is set
@@ -39,7 +36,6 @@ conn_id = os.environ["FABRIC_CONNECTION_ID"]  # Ensure the FABRIC_CONNECTION_ID 
 project_client = AIProjectClient(
     endpoint=project_endpoint,
     credential=DefaultAzureCredential(exclude_interactive_browser_credential=False),  # Use Azure Default Credential for authentication
-    api_version="latest",
 )
 
 with project_client:
@@ -52,7 +48,6 @@ with project_client:
         name="my-agent",  # Name of the agent
         instructions="You are a helpful agent",  # Instructions for the agent
         tools=fabric.definitions,  # Tools available to the agent
-        headers={"x-ms-enable-preview": "true"},  # Enable preview features
     )
     print(f"Created Agent, ID: {agent.id}")
 
@@ -78,7 +73,7 @@ with project_client:
 
     # Fetch and log all messages from the thread
     messages = project_client.agents.messages.list(thread_id=thread.id)
-    for message in messages.data:
+    for message in messages:
         print(f"Role: {message.role}, Content: {message.content}")
 
     # Delete the agent after use
