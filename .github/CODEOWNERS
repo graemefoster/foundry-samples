@@ -1,0 +1,21 @@
+# See for instructions on this file https://help.github.com/articles/about-codeowners/
+
+#### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################
+/samples/microsoft/java/mslearn-resources/quickstart/.env.template  @Azure/AI-Platform-Docs
+/samples/microsoft/javascript/mslearn-resources/quickstart/.env.template  @Azure/AI-Platform-Docs
+/samples/microsoft/csharp/mslearn-resources/quickstart/Samples/.env.example  @Azure/AI-Platform-Docs
+/samples/microsoft/python/mslearn-resources/quickstart/quickstart.py  @Azure/AI-Platform-Docs
+/samples/microsoft/java/mslearn-resources/quickstart/src/main/java/com/azure/ai/foundry/samples/ChatCompletionSample.java  @Azure/AI-Platform-Docs
+/samples/microsoft/javascript/mslearn-resources/quickstart/src/quickstart.js  @Azure/AI-Platform-Docs
+/samples/microsoft/csharp/mslearn-resources/quickstart/Samples/SimpleInference.cs  @Azure/AI-Platform-Docs
+/samples/microsoft/REST/mslearn-resources/quickstart/quickstart.sh  @Azure/AI-Platform-Docs
+/samples/microsoft/python/mslearn-resources/quickstart/quickstart.py  @Azure/AI-Platform-Docs
+/samples/microsoft/java/mslearn-resources/quickstart/src/main/java/com/azure/ai/foundry/samples/AgentSample.java  @Azure/AI-Platform-Docs
+/samples/microsoft/javascript/mslearn-resources/quickstart/src/quickstart.js  @Azure/AI-Platform-Docs
+/samples/microsoft/csharp/mslearn-resources/quickstart/Samples/AgentService.cs  @Azure/AI-Platform-Docs
+/samples/microsoft/REST/mslearn-resources/quickstart/quickstart.sh  @Azure/AI-Platform-Docs
+/samples/microsoft/python/mslearn-resources/quickstart/quickstart.py 
+/samples/microsoft/java/mslearn-resources/quickstart/src/main/java/com/azure/ai/foundry/samples/FileSearchAgentSample.java  @Azure/AI-Platform-Docs
+/samples/microsoft/javascript/mslearn-resources/quickstart/src/quickstart.js  @Azure/AI-Platform-Docs
+/samples/microsoft/csharp/mslearn-resources/quickstart/Samples/AgentFileSearch.cs  @Azure/AI-Platform-Docs
+/samples/microsoft/REST/mslearn-resources/quickstart/quickstart.sh  @Azure/AI-Platform-Docs
