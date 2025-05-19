@@ -4,8 +4,8 @@ using Azure.Identity;
 using Azure.AI.Agents.Persistent;
 
 // Creating the Client for agents
-var projectEndpoint = Evironment.GetEnvironmentVariable("AZURE_AI_ENDPOINT");
-var modelDeploymentName = Evironment.GetEnvironmentVariable("AZURE_AI_MODEL");
+var projectEndpoint = System.Environment.GetEnvironmentVariable("AZURE_AI_ENDPOINT");
+var modelDeploymentName = System.Environment.GetEnvironmentVariable("AZURE_AI_MODEL");
 PersistentAgentsClient client = new(projectEndpoint, new DefaultAzureCredential());
 
 // Create an Agent with toolResources and process Agent run
