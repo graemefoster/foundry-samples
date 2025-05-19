@@ -41,16 +41,6 @@ This agent is orchestrated using **Azure AI Agent Service** with the following s
 
 ---
 
-### 🧭 Workflow Overview
-
-| State            | Description                            | Agent                | Transition Event       |
-|------------------|----------------------------------------|----------------------|------------------------|
-| Authentication   | Validates customer identity            | `CustomerAuthenticator` | `CustomerValidated`    |
-| Billing          | Provides billing information           | `CustomerServiceAgent`   | `ConversationEnd`      |
-| End              | Terminates conversation                | *None*               | —                      |
-
----
-
 ## ⚙️ Setup Instructions
 
 ### Prerequisites
@@ -100,4 +90,41 @@ FILE_PATH="./workflows/CustomerSupport.fdl"  ./src/scripts/deploy.sh
 
 
 ### Example Prompts
-  - s
+  - User: I am having trouble launching apps on Windows
+  - SelfServiceAgent: The uploaded file contains troubleshooting steps for Windows license activation issues, but it does not address problems related to launching apps on Windows. Let me provide general troubleshooting steps for your issue:
+
+Restart Your Computer: Sometimes, a simple restart can resolve app launch issues.
+
+Check for Windows Updates:
+
+Go to Settings > Update & Security > Windows Update.
+Click Check for updates and install any pending updates.
+Run the App Troubleshooter:
+
+Open Settings > Update & Security > Troubleshoot.
+Select Additional troubleshooters and choose Windows Store Apps.
+Run the troubleshooter to detect and fix issues.
+Reset the Problematic App:
+
+Go to Settings > Apps > Apps & features.
+Select the app that is not launching and click Advanced options.
+Click Reset to restore the app to its default state.
+Check for Corrupted System Files:
+
+Open Command Prompt as Administrator.
+Run the following command:
+cmd
+sfc /scannow
+This will scan and repair corrupted system files.
+Reinstall the App:
+
+Uninstall the problematic app and reinstall it from the Microsoft Store or its official website.
+Check for Compatibility Issues:
+
+Ensure the app is compatible with your version of Windows. Check the app's system requirements.
+Update Graphics Drivers:
+
+Outdated graphics drivers can cause apps to fail. Update your drivers through Device Manager or the manufacturer's website.
+Please try these steps and let me know if the issue is resolved or persists. If the problem continues, I will escalate the issue for further assistance.
+![image](https://github.com/user-attachments/assets/2d8c5db5-bedd-489e-848d-7f690e84b780)
+
