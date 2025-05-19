@@ -11,7 +11,6 @@
 
    - `MODEL_DEPLOYMENT_NAME`: Your deployed Azure OpenAI model. Defaults to `gpt-4o`.
    - `PROJECT_ENDPOINT`: The endpoint for your AI Foundry project. 
-   - `INFERENCE_ENDPOINT`: The inference endpoint for your Azure OpenAI resource.
 
 1. Download [`package.json`](https://github.com/azure-ai-foundry/foundry-samples/blob/main/samples/microsoft/javascript/mslearn-resources/quickstart/package.json).
 
