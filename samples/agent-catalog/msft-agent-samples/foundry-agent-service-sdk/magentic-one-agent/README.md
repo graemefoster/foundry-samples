@@ -26,13 +26,6 @@ Built with **Azure AI Agent Service**, the MagenticOne agent graph includes:
 - **BingSearch Agent** to retrieve recent or factual content with citation grounding.
 - **CodeExecutor Agent** to perform lightweight computation, validation, or summarization of structured data.
 
-The agent graph and routing configuration are defined declaratively in `.agent` and `.fdl` files.
-
----
-
-## 🧠 Architecture Overview
-
-![Architecture Diagram](assets/architecture-magenticone.png)
 
 ---
 
