@@ -18,15 +18,20 @@ var bingConnectionId = configuration["BingConnectionId"];
 // Create the Agent Client
 PersistentAgentsClient agentClient = new(projectEndpoint, new DefaultAzureCredential());
 
+BingGroundingSearchConfiguration searchConfig = new BingGroundingSearchConfiguration(bingConnectionId)
+{ 
+    Count = 5,
+    Freshness = "Week"
+};
+
 // Create the BingGroundingToolDefinition object used when creating the agent
 BingGroundingToolDefinition bingGroundingTool = new BingGroundingToolDefinition(
     new BingGroundingSearchToolParameters(
         [
-            new BingGroundingSearchConfiguration(bingConnectionId)
+            searchConfig
         ]
     )
 );
-
 // Create the Agent
 PersistentAgent agent = agentClient.Administration.CreateAgent(
     model: modelDeploymentName,
