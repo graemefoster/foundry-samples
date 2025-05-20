@@ -42,26 +42,36 @@ module projectCreate 'modules-network-secured/ai-project-reference.bicep' = {
   }
 }
 
+
+module formatProjectWorkspaceId 'modules-network-secured/format-project-workspace-id.bicep' = {
+  name: 'format-project-workspace-id-${uniqueSuffix}-deployment'
+  params: {
+    projectWorkspaceId: projectCreate.outputs.projectWorkspaceId
+  }
+}
+
 // This module creates the capability host for the project and account
 module addProjectCapabilityHost 'modules-network-secured/add-project-capability-host.bicep' = {
   name: 'capabilityHost-configuration-${uniqueSuffix}-deployment'
   params: {
     accountName: accountCreate.outputs.accountName
     projectName: projectCreate.outputs.projectName
-    cosmosDBConnection: projectCreate.outputs.cosmosDBConnection 
+    cosmosDBConnection: projectCreate.outputs.cosmosDBConnection
     azureStorageConnection: projectCreate.outputs.azureStorageConnection
     aiSearchConnection: projectCreate.outputs.aiSearchConnection
     projectCapHost: projectCapHost
   }
 }
 
+
+
 // The Cosmos DB Operator role must be assigned before the caphost is created
 module cosmosContainerRoleAssignments 'modules-network-secured/cosmos-container-role-assignments.bicep' = {
-  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment' 
+  name: 'cosmos-ra-${uniqueSuffix}-deployment'
   scope: resourceGroup()
   params: {
     cosmosAccountName: standardCreate.outputs.cosmosDBName
-    projectWorkspaceId: projectCreate.outputs.projectWorkspaceId
+    projectWorkspaceId: formatProjectWorkspaceId.outputs.projectWorkspaceIdGuid
     projectPrincipalId: projectCreate.outputs.projectPrincipalId
   }
 dependsOn: [
@@ -74,15 +84,12 @@ dependsOn: [
 module storageContainersRoleAssignment 'modules-network-secured/blob-storage-container-role-assignments.bicep' = {
   name: 'storage-containers-${uniqueSuffix}-deployment'
   scope: resourceGroup()
-  params: { 
+  params: {
     aiProjectPrincipalId: projectCreate.outputs.projectPrincipalId
     storageName: standardCreate.outputs.azureStorageName
-    workspaceId: projectCreate.outputs.projectWorkspaceId
+    workspaceId: formatProjectWorkspaceId.outputs.projectWorkspaceIdGuid
   }
   dependsOn: [
     addProjectCapabilityHost
   ]
 }
-
-
-

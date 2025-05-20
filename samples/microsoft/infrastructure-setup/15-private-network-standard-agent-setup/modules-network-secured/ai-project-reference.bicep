@@ -1,7 +1,7 @@
 param accountName string
 param projectName string
 param cosmosDBName string
-param azureStorageName string 
+param azureStorageName string
 param aiSearchName string
 
 
@@ -30,10 +30,11 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
 output projectName string = project.name
 output projectId string = project.id
 output projectPrincipalId string = project.identity.principalId
-output projectWorkspaceId string = project.properties.amlWorkspace.internalId
+
+#disable-next-line BCP053
+output projectWorkspaceId string = project.properties.internalId
 
 // return the BYO connection names
 output cosmosDBConnection string = cosmosDBName
 output azureStorageConnection string = azureStorageName
 output aiSearchConnection string = aiSearchName
-

@@ -176,7 +176,7 @@ module storageAccountRoleAssignment 'modules-standard/azure-storage-account-role
 
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assignment.bicep' = {
-  name: 'cosmos-account-role-assignments-${uniqueSuffix}-deployment'
+  name: 'cosmos-account-ra-${uniqueSuffix}-deployment'
   scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
   params: {
     cosmosDBName: aiDependencies.outputs.cosmosDBName
@@ -189,7 +189,7 @@ module cosmosAccountRoleAssignments 'modules-standard/cosmosdb-account-role-assi
 
 // This role can be assigned before or after the caphost is created
 module aiSearchRoleAssignments 'modules-standard/ai-search-role-assignments.bicep' = {
-  name: 'ai-search-role-assignments-${uniqueSuffix}-deployment'
+  name: 'ai-search-ra-${uniqueSuffix}-deployment'
   scope: resourceGroup(aiSearchServiceSubscriptionId, aiSearchServiceResourceGroupName)
   params: {
     aiSearchName: aiDependencies.outputs.aiSearchName
@@ -232,7 +232,7 @@ module storageContainersRoleAssignment 'modules-standard/blob-storage-container-
 }
 
 module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-assignments.bicep' = {
-  name: 'cosmos-role-assignments-${uniqueSuffix}-deployment'
+  name: 'cosmos-ra-${uniqueSuffix}-deployment'
   scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
   params: {
     cosmosAccountName: aiDependencies.outputs.cosmosDBName

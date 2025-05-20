@@ -1,4 +1,4 @@
-// Standard agent setup 
+// Standard agent setup
 
 @description('Resource group location')
 param resourceGroupLocation string = resourceGroup().location
@@ -128,7 +128,7 @@ module aiDependencies 'modules-network-secured/standard-dependent-resources.bice
     azureStorageName: azureStorageName
     aiSearchName: aiSearchName
     cosmosDBName: cosmosDBName
-    
+
     // AI Search Service parameters
     aiSearchResourceId: aiSearchResourceId
     aiSearchExists: validateExistingResources.outputs.aiSearchExists
@@ -197,7 +197,7 @@ module privateEndpointAndDNS 'modules-network-secured/private-endpoint-and-dns.b
 module storageAccountRoleAssignment 'modules-network-secured/azure-storage-account-role-assignment.bicep' = {
   name: 'storage-${azureStorageName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(azureStorageSubscriptionId, azureStorageResourceGroupName)
-  params: { 
+  params: {
     azureStorageName: aiDependencies.outputs.azureStorageName
     projectPrincipalId: aiProject.outputs.projectPrincipalId
   }
@@ -205,7 +205,7 @@ module storageAccountRoleAssignment 'modules-network-secured/azure-storage-accou
 
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-network-secured/cosmosdb-account-role-assignment.bicep' = {
-  name: 'cosmos-account-role-assignments-${projectName}-${uniqueSuffix}-deployment'
+  name: 'cosmos-account-ra-${projectName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
   params: {
     cosmosDBName: aiDependencies.outputs.cosmosDBName
@@ -219,7 +219,7 @@ module cosmosAccountRoleAssignments 'modules-network-secured/cosmosdb-account-ro
 
 // This role can be assigned before or after the caphost is created
 module aiSearchRoleAssignments 'modules-network-secured/ai-search-role-assignments.bicep' = {
-  name: 'ai-search-role-assignments-${projectName}-${uniqueSuffix}-deployment'
+  name: 'ai-search-ra-${projectName}-${uniqueSuffix}-deployment'
   scope: resourceGroup(aiSearchServiceSubscriptionId, aiSearchServiceResourceGroupName)
   params: {
     aiSearchName: aiDependencies.outputs.aiSearchName
