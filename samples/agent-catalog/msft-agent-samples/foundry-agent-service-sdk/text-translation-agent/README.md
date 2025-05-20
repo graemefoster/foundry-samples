@@ -46,7 +46,7 @@ The system consists of:
     3. Model deployment (type: Microsoft.CognitiveServices/accounts/deployments) 
 - A connection of the resource that supports Azure AI Translator service is added to the project of your Agent. 
   - To use the translator service with Azure AI Foundry resource or AI hub resource, choose "Azure AI foundry" connection. 
-  - To use the translator service with Azure AI Translator resource, use "Azure AI Translator" connection or "Custom keys" connection. 
+  - To use the translator service with Azure AI Translator resource, use "Custom keys" connection. 
   - To add a "Custom keys" connection, add a key value pair with Ocp-Apim-Subscription-Key as the key name, and the Azure AI Translator resource key as the value. 
   - For more info to create a connection, see [Create a connection](https://learn.microsoft.com/azure/ai-foundry/how-to/connections-add)
   - For more info about Azure AI Translator service, see [Text translation Overview](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview)

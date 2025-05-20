@@ -1,4 +1,4 @@
-# The endpoint of the Azure AI Foundry project where your Agent will be created. It can be found in the project overview page. 
+# The endpoint of the Azure AI Foundry project where your Agent will be created. It can be found in the project overview page. For example, https://my-resource.services.ai.azure.com/api/projects/my-project
 project_endpoint: 
 
 # The name of model deployment to be used for your Agent. 
