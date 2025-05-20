@@ -1,13 +1,13 @@
-# Azure AI Agent Service: Standard Agent Setup 1RP with Private E2E Networking 
+# Azure AI Agent Service: Standard Agent Setup 1RP with Private E2E Networking
 
-> **NOTE:** This template is to set-up a network secured Standard Agent in AI Foundry. Includes: 
+> **NOTE:** This template is to set-up a network secured Standard Agent in AI Foundry. Includes:
 * PNA disabled resources
 * PE's to all resources
 * Network injection enabled for Agents
 * Virtual Network Address speace support for Class B or Class C e.g. 172.16.0.0/16 or 192.168.0.0/16
 
 
-## Steps 
+## Steps
 
 1. Create new (or use existing) resource group:
 
