@@ -1,6 +1,10 @@
 # 🧠 MagenticOne Agent
 
-This code sample showcases a generalist, autonomous multi-agent system that performs deep research and problem-solving by orchestrating web search, code generation, and code execution agents. Helpful for tackling open-ended analytical or technical tasks.
+This code sample showcases a generalist, autonomous multi-agent system that helps create an agent to perform deep research and problem-solving by orchestrating web search, code generation, and code execution agents. Helpful for tackling open-ended analytical or technical tasks.
+
+**IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)). 
+
+Certain Agent offerings may be subject to legal and regulatory requirements, may require licenses, or may not be suitable for all industries, scenarios, or use cases. By using any sample, you are acknowledging that Agents or other output created using that sample are solely your responsibility, and that you will comply with all applicable laws, regulations, and relevant safety standards, terms of service, and codes of conduct.  
 
 ---
 
@@ -22,13 +26,6 @@ Built with **Azure AI Agent Service**, the MagenticOne agent graph includes:
 - **BingSearch Agent** to retrieve recent or factual content with citation grounding.
 - **CodeExecutor Agent** to perform lightweight computation, validation, or summarization of structured data.
 
-The agent graph and routing configuration are defined declaratively in `.agent` and `.fdl` files.
-
----
-
-## 🧠 Architecture Overview
-
-![Architecture Diagram](assets/architecture-magenticone.png)
 
 ---
 
@@ -90,4 +87,3 @@ The agent graph and routing configuration are defined declaratively in `.agent` 
 - `webBrowse.agent` — browser simulation for agent exploration
 - `BingSearch.agent` — fetches grounded real-time results
 - `codeExecutor.agent` — evaluates and returns Python logic or math
-- `

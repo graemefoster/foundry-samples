@@ -1,7 +1,13 @@
+> [!IMPORTANT]
+> Important Note From Microsoft:
+> * Your use of connected non-Microsoft services is subject to the terms between you and the service provider. By connecting to a non-Microsoft service, you acknowledge that some of your data, such as prompt content, is passed to the non-Microsoft service, and/or your application might receive data from the non-Microsoft service. You are responsible for your use (and any charges associated with your use) of non-Microsoft services and data.
+> * The code in this 3p-tools file were created by third parties, not Microsoft, and have not been tested or verified by Microsoft. Your use of the code samples is subject to the terms provided by the relevant third party. By using any third-party sample in this file, you are acknowledging that Microsoft has no responsibility to you or others with respect to these samples.
+
 ## Auquan
 
 **Tool Description:**
-Utilize Auquan agents to perform your financial data crunching. The Auquan Risk Agent is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The tool processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted json responses.
+AI-powered workflow automation for institutional finance. 
+The Auquan Risk Agent is an expert system designed to provide comprehensive risk analysis and timeline tracking for companies. It specializes in analyzing company risks across multiple dimensions including operational, financial, regulatory, and sustainability metrics. The tool processes structured risk data from Auquan's API, generates detailed timelines, and provides actionable insights through well-formatted json responses.
 
 **Prerequisites**
 Obtain an API key for your Auquan Risk Agent by contacting us.
