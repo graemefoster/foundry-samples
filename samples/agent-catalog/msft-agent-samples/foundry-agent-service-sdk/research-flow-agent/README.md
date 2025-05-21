@@ -33,12 +33,6 @@ All tools and agents are declaratively configured in `.agent` and `.fdl` files.
 
 ---
 
-## 🧠 Architecture Overview
-
-![Architecture Diagram](assets/architecture-researchflow.png)
-
----
-
 ## Setup Instructions
 
 ### Prerequisites

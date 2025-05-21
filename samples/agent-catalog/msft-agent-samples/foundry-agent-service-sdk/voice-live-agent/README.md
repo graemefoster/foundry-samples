@@ -1,6 +1,6 @@
 # Voice Live Agent
 
-This sample showcases how to voice-enable any agents built with Azure AI Agent Service, utilizing Azure AI Voice Live API.
+This sample showcases how to voice-enable any agents built with Azure AI Foundry Agent Service, utilizing Azure AI Voice Live API.
 
 **IMPORTANT NOTE:** Starter templates, instructions, code samples and resources in this msft-agent-samples file (“samples”) are designed to assist in accelerating development of agents for specific scenarios. It is important that you review all provided resources and carefully test Agent behavior in the context of your use case: ([Learn More](https://learn.microsoft.com/en-us/legal/cognitive-services/agents/transparency-note?context=%2Fazure%2Fai-services%2Fagents%2Fcontext%2Fcontext)).
 
@@ -63,7 +63,7 @@ A live demo (<https://aka.ms/voice-agent/demo>) is also available to experience 
 
 **Set up an agent**. Follow [the templates](../) to create an agent using the Azure AI Agent Service.
 
-**Resource and authentication**. An Azure AI Services resource is required to access the Voice Live API. To learn how to create an Azure AI Services resource, please see: <https://learn.microsoft.com/azure/ai-services/multi-service-resource>.
+**Resource and authentication**. An Azure AI Foundry resource is required to access the Voice Live API. To learn how to create an Azure AI Foundry resource, please see: <https://learn.microsoft.com/azure/ai-services/multi-service-resource>.
 
 Note: The resource must be in the `eastus2` or `swedencentral` regions at this time. Other regions are not supported.
 
@@ -84,11 +84,11 @@ You are supposed to specify the agent info in the WebSocket endpoint URL.
 | `agent-access-token` | The Entra access token to access the agent. Make sure the identity has access to Azure AI Project, You can grant the built-in role `Azure AI User` to the identity. The scope should be `https://ai.azure.com/.default`. |
 
 > Note: The token must be generated with the `https://ai.azure.com/.default` scope. e.g., `az account get-access-token --resource https://ai.azure.com --query accessToken -o tsv`.
-A sample endpoint is `wss://<custom-domain>.cognitiveservices.azure.com/voice-agent/realtime?api-version=2025-05-01-preview&agent-project-name=<agent-project-name>&agent-id=<agent-id>&agent-access-token=<access-token>`.
+A sample endpoint is `wss://<your-ai-foundry-resource-name>.cognitiveservices.azure.com/voice-live/realtime?api-version=2025-05-01-preview&agent-project-name=<agent-project-name>&agent-id=<agent-id>&agent-access-token=<access-token>`.
 
 ## Interact with the Voice Live API
 
-Refer to the [full documentation of Voice Live API](https://learn.microsoft.com/en-us/azure/ai-services/<placeholder>) for more details on how to interact with the Voice Live API.
+Refer to the [full documentation of Voice Live API](https://learn.microsoft.com/azure/ai-services/<placeholder>) for more details on how to interact with the Voice Live API.
 
 ## Getting started
 

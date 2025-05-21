@@ -15,9 +15,6 @@ print_color() {
 validate_env() {
     missing_vars=()
     
-    if [ -z "$AZURE_TENANT_ID" ]; then missing_vars+=("AZURE_TENANT_ID"); fi
-    if [ -z "$AZURE_CLIENT_ID" ]; then missing_vars+=("AZURE_CLIENT_ID"); fi
-    if [ -z "$AZURE_CLIENT_SECRET" ]; then missing_vars+=("AZURE_CLIENT_SECRET"); fi
     if [ -z "$AZURE_ENDPOINT" ]; then missing_vars+=("AZURE_ENDPOINT"); fi
     if [ -z "$AZURE_DEPLOYMENT" ]; then missing_vars+=("AZURE_DEPLOYMENT"); fi
     
@@ -64,12 +61,49 @@ if [ ! -f .env ]; then
     print_color "33" "Warning: .env file not found. Creating from template..."
     if [ -f .env.template ]; then
         cp .env.template .env
-        print_color "33" "Created .env file from template. Please edit it with your actual credentials before running tests."
+        print_color "33" "Created .env file from template. Please edit it with your actual configuration values before running tests."
         exit 1
     else
         print_color "31" "Error: .env.template file not found. Cannot create .env file."
         exit 1
     fi
+fi
+
+# Check if user is logged in with Azure CLI
+print_color "36" "Checking Azure CLI login status..."
+if ! az account show > /dev/null 2>&1; then
+    print_color "31" "Error: You are not logged in with the Azure CLI. Please run 'az login' first."
+    exit 1
+else
+    print_color "32" "Azure CLI login validated."
+fi
+
+# Check for required environment variables
+print_color "36" "Validating environment variables..."
+missing_vars=""
+
+while IFS='=' read -r key value || [ -n "$key" ]; do
+    # Ignore comment lines and empty lines
+    [[ $key == \#* ]] && continue
+    [[ -z "$key" ]] && continue
+    
+    key=$(echo $key | xargs)  # Trim whitespace
+
+    if [[ "$key" == "AZURE_ENDPOINT" && "$value" == *"your_endpoint_here"* ]]; then
+        missing_vars="$missing_vars AZURE_ENDPOINT"
+    fi
+
+    if [[ "$key" == "AZURE_DEPLOYMENT" && "$value" == *"your_deployment_name_here"* ]]; then
+        missing_vars="$missing_vars AZURE_DEPLOYMENT"
+    fi
+done < .env
+
+if [ ! -z "$missing_vars" ]; then
+    print_color "31" "Error: The following environment variables need to be updated in .env file:$missing_vars"
+    print_color "31" "Please edit the .env file with your actual configuration values before running tests."
+    exit 1
+else
+    print_color "32" "Environment variables validation passed."
 fi
 
 # Build the project first
