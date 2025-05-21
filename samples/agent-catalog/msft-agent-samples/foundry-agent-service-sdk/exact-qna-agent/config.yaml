@@ -1,7 +1,7 @@
-# The endpoint of the Azure AI Foundry project where your Agent will be created. It can be found in the project overview page. 
+# The endpoint of the Azure AI Foundry project where your Agent will be created. It can be found in the project overview page. For example, https://my-resource.services.ai.azure.com/api/projects/my-project
 project_endpoint: 
 
-# The name of model deployment to be used for your Agent.
+# The name of model deployment to be used for your Agent. 
 model_name: 
 
 # The endpoint for Azure AI Language service resource, Azure hub resource or Azure AI Foundry resource where your CLU and CQA projects are created. For example, https://my-resource.cognitiveservices.azure.com

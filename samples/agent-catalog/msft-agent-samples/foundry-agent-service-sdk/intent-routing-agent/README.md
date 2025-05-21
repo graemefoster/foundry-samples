@@ -56,7 +56,7 @@ The system consists of:
 - Conversational Language Understanding (CLU) deployment, see [CLU Overview](https://learn.microsoft.com/azure/ai-services/language-service/conversational-language-understanding/overview)
 - A connection of the resource used by your CLU and CQA projects are added to the project of your Agent. 
   - If CLU and CQA projects are created on an Azure AI Foundry resource or AI hub resource, choose "Azure AI foundry" connection. 
-  - If they are created on an Azure AI Language resource, use "Azure AI Lanaguage" connection or "Custom keys" connection. 
+  - If they are created on an Azure AI Language resource, use "Custom keys" connection. 
   - To add a "Custom keys" connection, add a key value pair with Ocp-Apim-Subscription-Key as the key name, and the Azure AI Language resource key as the value. 
   - For more info to create a connection, see [Create a connection](https://learn.microsoft.com/azure/ai-foundry/how-to/connections-add)
 
