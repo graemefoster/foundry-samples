@@ -1,60 +1,119 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.34.44.8038",
-      "templateHash": "1714052608002840600"
+      "version": "0.36.1.42791",
+      "templateHash": "783411110980926655"
     }
   },
   "parameters": {
-    "accountName": {
+    "account_name": {
       "type": "string",
-      "defaultValue": "[format('basicaccount{0}', substring(uniqueString(utcNow()), 0, 4))]"
+      "defaultValue": "foundy",
+      "maxLength": 9,
+      "metadata": {
+        "description": "The name of the Azure AI Foundry resource."
+      }
     },
     "projectName": {
       "type": "string",
-      "defaultValue": "project"
+      "defaultValue": "project",
+      "metadata": {
+        "description": "The name of your project"
+      }
     },
     "projectDescription": {
       "type": "string",
-      "defaultValue": "some description"
+      "defaultValue": "some description",
+      "metadata": {
+        "description": "The description of your project"
+      }
     },
     "projectDisplayName": {
       "type": "string",
-      "defaultValue": "project_display_name"
+      "defaultValue": "project_display_name",
+      "metadata": {
+        "description": "The display name of your project"
+      }
+    },
+    "azureDeployName": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
     },
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]"
+      "defaultValue": "westus",
+      "allowedValues": [
+        "australiaeast",
+        "canadaeast",
+        "eastus",
+        "eastus2",
+        "francecentral",
+        "japaneast",
+        "koreacentral",
+        "norwayeast",
+        "polandcentral",
+        "southindia",
+        "swedencentral",
+        "switzerlandnorth",
+        "uaenorth",
+        "uksouth",
+        "westus",
+        "westus3",
+        "westeurope",
+        "southeastasia"
+      ],
+      "metadata": {
+        "description": "The Azure region where your AI Foundry resource and project will be created."
+      }
     },
     "modelName": {
       "type": "string",
-      "defaultValue": "gpt-4o"
+      "defaultValue": "gpt-4o",
+      "metadata": {
+        "description": "The name of the OpenAI model you want to deploy"
+      }
     },
     "modelFormat": {
       "type": "string",
-      "defaultValue": "OpenAI"
+      "defaultValue": "OpenAI",
+      "metadata": {
+        "description": "The model format of the model you want to deploy. Example: OpenAI"
+      }
     },
     "modelVersion": {
       "type": "string",
-      "defaultValue": "2024-11-20"
+      "defaultValue": "2024-11-20",
+      "metadata": {
+        "description": "The version of the model you want to deploy. Example: 2024-11-20"
+      }
     },
     "modelSkuName": {
       "type": "string",
-      "defaultValue": "GlobalStandard"
+      "defaultValue": "GlobalStandard",
+      "metadata": {
+        "description": "The SKU name for the model deployment. Example: GlobalStandard"
+      }
     },
     "modelCapacity": {
       "type": "int",
-      "defaultValue": 30
+      "defaultValue": 30,
+      "metadata": {
+        "description": "The capacity of the model deployment in TPM."
+      }
     }
   },
-  "resources": [
-    {
+  "variables": {
+    "accountName": "[format('{0}{1}', parameters('account_name'), substring(uniqueString(parameters('azureDeployName')), 0, 4))]"
+  },
+  "resources": {
+    "account": {
       "type": "Microsoft.CognitiveServices/accounts",
       "apiVersion": "2025-04-01-preview",
-      "name": "[parameters('accountName')]",
+      "name": "[variables('accountName')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "S0"
@@ -65,7 +124,7 @@
       },
       "properties": {
         "allowProjectManagement": true,
-        "customSubDomainName": "[toLower(parameters('accountName'))]",
+        "customSubDomainName": "[toLower(variables('accountName'))]",
         "networkAcls": {
           "defaultAction": "Allow",
           "virtualNetworkRules": [],
@@ -75,10 +134,10 @@
         "disableLocalAuth": true
       }
     },
-    {
+    "project": {
       "type": "Microsoft.CognitiveServices/accounts/projects",
       "apiVersion": "2025-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('accountName'), parameters('projectName'))]",
+      "name": "[format('{0}/{1}', variables('accountName'), parameters('projectName'))]",
       "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
@@ -88,13 +147,13 @@
         "displayName": "[parameters('projectDisplayName')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+        "account"
       ]
     },
-    {
+    "modelDeployment": {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('accountName'), parameters('modelName'))]",
+      "name": "[format('{0}/{1}', variables('accountName'), parameters('modelName'))]",
       "sku": {
         "capacity": "[parameters('modelCapacity')]",
         "name": "[parameters('modelSkuName')]"
@@ -107,14 +166,14 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+        "account"
       ]
     }
-  ],
+  },
   "outputs": {
     "account_name": {
       "type": "string",
-      "value": "[parameters('accountName')]"
+      "value": "[variables('accountName')]"
     },
     "project_name": {
       "type": "string",
