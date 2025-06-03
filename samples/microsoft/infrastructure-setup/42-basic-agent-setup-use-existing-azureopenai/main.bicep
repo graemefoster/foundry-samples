@@ -14,6 +14,7 @@ param projectDescription string = 'some description'
 
 @description('The display name of your project')
 param projectDisplayName string = 'project_display_name'
+
 @allowed([
   'australiaeast'
   'canadaeast'
