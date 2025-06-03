@@ -1,14 +1,19 @@
 param azureDeployName string = utcNow()
 
 @maxLength(9)
+@description('The name of the Azure AI Foundry resource.')
 param account_name string = 'foundy'
 
 var accountName string = '${account_name}${substring(uniqueString(azureDeployName), 0,4)}'
 
+@description('The name of your project')
 param project_name string = 'project'
-param projectDescription string = 'some description'
-param projectDisplayName string = 'project_display_name'
 
+@description('The description of your project')
+param projectDescription string = 'some description'
+
+@description('The display name of your project')
+param projectDisplayName string = 'project_display_name'
 @allowed([
   'australiaeast'
   'canadaeast'
@@ -29,6 +34,7 @@ param projectDisplayName string = 'project_display_name'
   'westeurope'
   'southeastasia'
 ])
+@description('The Azure region where your AI Foundry resource and project will be created.')
 param location string = 'westus'
 
 // TO DO: Update the resource ID to point to an existing Azure OpenAI resource in your subscription

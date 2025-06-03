@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.36.1.42791",
-      "templateHash": "11179287742604584372"
+      "templateHash": "7460487288983622840"
     }
   },
   "parameters": {
@@ -17,19 +17,31 @@
     "account_name": {
       "type": "string",
       "defaultValue": "foundy",
-      "maxLength": 9
+      "maxLength": 9,
+      "metadata": {
+        "description": "The name of the Azure AI Foundry resource."
+      }
     },
     "project_name": {
       "type": "string",
-      "defaultValue": "project"
+      "defaultValue": "project",
+      "metadata": {
+        "description": "The name of your project"
+      }
     },
     "projectDescription": {
       "type": "string",
-      "defaultValue": "some description"
+      "defaultValue": "some description",
+      "metadata": {
+        "description": "The description of your project"
+      }
     },
     "projectDisplayName": {
       "type": "string",
-      "defaultValue": "project_display_name"
+      "defaultValue": "project_display_name",
+      "metadata": {
+        "description": "The display name of your project"
+      }
     },
     "location": {
       "type": "string",
@@ -53,7 +65,10 @@
         "westus3",
         "westeurope",
         "southeastasia"
-      ]
+      ],
+      "metadata": {
+        "description": "The Azure region where your AI Foundry resource and project will be created."
+      }
     },
     "existingAoaiResourceId": {
       "type": "string",
