@@ -22,6 +22,6 @@ See Instructions: https://microsoft-my.sharepoint.com/:w:/p/fosteramanda/ES-0A2W
 
 ## Use exitsing resources
 
-**Azure Cosmos DB**
-- Ensure your exitsing Cosmos DB resource has a total Total throughput limit of at least 60000 RU/s
-    - 3 containers will be provisioned in your existing Cosmos DB account and each need 20,000 RU/s
+**Azure Cosmos DB for NoSQL**
+- Your existing Azure Cosmos DB for NoSQL Account used in standard setup must have at least a total throughput limit of at least 3000 RU/s. Both Provisioned Thoughtput and Serverless are supported.
+    - 3 containers will be provisioned in your existing Cosmos DB account and each need 1000 RU/s
