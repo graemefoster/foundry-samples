@@ -42,12 +42,10 @@ The agent is configured through a Python script (`browser_automation.py`) and au
 
 ### Prerequisites
 
-Note: `browser_automation` tool is only supported in the eastus region.
-
 1. Azure subscription with the following permissions
    - Contributor or Cognitive Services Contributor role (for resource deployment)
    - Azure AI Developer and Cognitive Services user role (for agent creation)
-2. Agent setup: deploy the latest agent setup using this ([custom deployment](https://github.com/azure-ai-foundry/foundry-samples/tree/main/samples/microsoft/infrastructure-setup/40-basic-agent-setup)).
+2. Agent setup: deploy the latest agent setup using this ([Agents Set Up](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview#get-started-with-foundry-agent-service)).
    - The above creates:
       - AI Services resource
       - AI Project
@@ -61,6 +59,7 @@ Note: `browser_automation` tool is only supported in the eastus region.
    - Create a new connection of type Serverless Model and enter the following information.
       - Target URI - Playwright Workspace Region Endpoint (example - wss://eastus.api.playwright.microsoft.com/accounts/eastus_xxxxxxxxxxxxxxxxxxxxxxx/browsers).
       - Key - Playwright Access Key
+   - For more info to create a connection, see [Create a connection](https://learn.microsoft.com/azure/ai-foundry/how-to/connections-add)
 5. Python 3.8+
 6. Azure CLI
 
