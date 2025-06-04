@@ -1,7 +1,7 @@
 // Basic agent setup 
 @description('The name of the Azure AI Foundry resource.')
 @maxLength(9)
-param account_name string = 'foundy'
+param aiServicesName string = 'foundy'
 
 @description('The name of your project')
 param projectName string = 'project'
@@ -13,9 +13,10 @@ param projectDescription string = 'some description'
 param projectDisplayName string = 'project_display_name'
 
 //ensures unique name for the account
-param azureDeployName string = utcNow()
-var accountName string = '${account_name}${substring(uniqueString(azureDeployName), 0,4)}'
-
+// Create a short, unique suffix, that will be unique to each resource group
+param deploymentTimestamp string = utcNow('yyyyMMddHHmmss')
+var uniqueSuffix = substring(uniqueString('${resourceGroup().id}-${deploymentTimestamp}'), 0, 4)
+var accountName = toLower('${aiServicesName}${uniqueSuffix}')
 @allowed([
   'australiaeast'
   'canadaeast'
@@ -53,7 +54,6 @@ param modelSkuName string = 'GlobalStandard'
 
 @description('The capacity of the model deployment in TPM.')
 param modelCapacity int = 30
-
 
 #disable-next-line BCP081
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
@@ -122,5 +122,6 @@ resource modelDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-
   }
 }
 
-output account_name string = account.name
-output project_name string = project.name
+output accountName string = account.name
+output projectName string = project.name
+output accountEndpoint string = account.properties.endpoint

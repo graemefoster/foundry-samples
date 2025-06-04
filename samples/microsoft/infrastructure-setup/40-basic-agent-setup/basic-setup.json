@@ -1,16 +1,15 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.36.1.42791",
-      "templateHash": "783411110980926655"
+      "templateHash": "16198416145345516369"
     }
   },
   "parameters": {
-    "account_name": {
+    "aiServicesName": {
       "type": "string",
       "defaultValue": "foundy",
       "maxLength": 9,
@@ -39,9 +38,9 @@
         "description": "The display name of your project"
       }
     },
-    "azureDeployName": {
+    "deploymentTimestamp": {
       "type": "string",
-      "defaultValue": "[utcNow()]"
+      "defaultValue": "[utcNow('yyyyMMddHHmmss')]"
     },
     "location": {
       "type": "string",
@@ -107,10 +106,11 @@
     }
   },
   "variables": {
-    "accountName": "[format('{0}{1}', parameters('account_name'), substring(uniqueString(parameters('azureDeployName')), 0, 4))]"
+    "uniqueSuffix": "[substring(uniqueString(format('{0}-{1}', resourceGroup().id, parameters('deploymentTimestamp'))), 0, 4)]",
+    "accountName": "[toLower(format('{0}{1}', parameters('aiServicesName'), variables('uniqueSuffix')))]"
   },
-  "resources": {
-    "account": {
+  "resources": [
+    {
       "type": "Microsoft.CognitiveServices/accounts",
       "apiVersion": "2025-04-01-preview",
       "name": "[variables('accountName')]",
@@ -134,7 +134,7 @@
         "disableLocalAuth": true
       }
     },
-    "project": {
+    {
       "type": "Microsoft.CognitiveServices/accounts/projects",
       "apiVersion": "2025-04-01-preview",
       "name": "[format('{0}/{1}', variables('accountName'), parameters('projectName'))]",
@@ -147,10 +147,10 @@
         "displayName": "[parameters('projectDisplayName')]"
       },
       "dependsOn": [
-        "account"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
       ]
     },
-    "modelDeployment": {
+    {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
       "name": "[format('{0}/{1}', variables('accountName'), parameters('modelName'))]",
@@ -166,18 +166,22 @@
         }
       },
       "dependsOn": [
-        "account"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('accountName'))]"
       ]
     }
-  },
+  ],
   "outputs": {
-    "account_name": {
+    "accountName": {
       "type": "string",
       "value": "[variables('accountName')]"
     },
-    "project_name": {
+    "projectName": {
       "type": "string",
       "value": "[parameters('projectName')]"
+    },
+    "accountEndpoint": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('accountName')), '2025-04-01-preview').endpoint]"
     }
   }
 }
