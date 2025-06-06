@@ -1,6 +1,6 @@
 # Azure AI Agent Service: Basic Setup Using an Existing Azure OpenAI Resource
 
-This Bicep template provisions the required resources for a basic Azure AI Agent project. It creates a new Cognitive Services Account and project, and connects your existing Azure OpenAI resource for model deployments.
+This Bicep template provisions the required resources for a basic agent project. It creates a new Cognitive Services Account and project, and connects your existing Azure OpenAI resource for model deployments.
 
 > **Important:** You must provide the **resource ID** of your existing Azure OpenAI resource when deploying this template.
 
@@ -11,7 +11,7 @@ All agents created in this project will automatically use Microsoft-managed, mul
 ## Prerequisites
 
 1. **Azure Roles:**
-   - To deploy the template: **Cognitive Services Contributor** or **Contributor**
+   - To deploy the template: **Azure AI Account Owner** or **Contributor**
    - To create your first agent: **Azure AI User** 
 2. **Existing Azure OpenAI Resource:**
    - You must have an existing Azure OpenAI resource. [Learn more](https://learn.microsoft.com/azure/ai-services/openai/overview)
