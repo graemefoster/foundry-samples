@@ -1,6 +1,13 @@
 # Azure AI Foundry Agent Service: Standard Agent Setup with Public Networking
 
-> **NOTE:** This template is now supported.
+## Required Permissions
+1. To deploy this template and create a Standard Setup project you need the follow permissions:
+    * **Azure AI Account Owner**
+    * **Role Based Access Administrator**
+
+For more information on the setup process, [see the getting started documentation.](https://learn.microsoft.com/en-us/azure/ai-services/agents/environment-setup)
+
+For more details on the standard agent setup, see the [standard agent setup concept page.](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/standard-agent-setup)
 
 ## Steps
 
