@@ -1,4 +1,4 @@
-# Azure AI Agent Service: Basic Setup 1RP
+# Azure AI Foundry Agent Service: Basic Setup 
 
 ## Basic Agent Setup
    
