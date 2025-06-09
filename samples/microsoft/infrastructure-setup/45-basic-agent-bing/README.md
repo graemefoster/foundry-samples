@@ -12,10 +12,3 @@ Creating your first agent with Azure AI Foundry Agent Service is a two-step proc
 1. **Set up your agent environment.**
 2. **Create and configure your agent** using either your preferred SDK or the Azure Foundry Portal.
 
-## Getting Started
-
-Follow the steps below to create your agent environment.
-
-## Testing Agents on Foundry Developer Platform
-
-For detailed instructions on how to test Agents on the Foundry Developer Platform, see [this guide](https://microsoft-my.sharepoint.com/:w:/p/fosteramanda/ES-0A2WpCgVLrK3SH_7gT9YBBb8SZk639kKmU1AIpoeDJg?e=TE3JcO).
