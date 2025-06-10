@@ -39,12 +39,6 @@ The agent is configured through a Python script (`browser_automation.py`) and au
 
 ---
 
-## 🧠 Architecture Overview
-
-![Architecture Diagram](assets/architecture-browser-automation.png)
-
----
-
 ## ⚙️ Setup Instructions
 
 ### Prerequisites
