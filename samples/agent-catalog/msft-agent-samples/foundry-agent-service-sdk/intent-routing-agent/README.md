@@ -43,7 +43,7 @@ The system consists of:
 - Python 3.8+
 - Azure CLI
 - Azure subscription
-- Agent setup: deploy the latest agent setup using ([this custom deployment](https://github.com/azure-ai-foundry/foundry-samples/tree/main/use-cases/agents/setup/basic-setup)).
+- Agent setup: deploy the latest agent setup using ([this custom deployment](https://aka.ms/basic-agent-deployment)).
   - The above creates:
     1. AI Services resource (type: Microsoft.CognitiveServices/accounts),
     2. AI Project (type: Microsoft.CognitiveServices/accounts/projects),
