@@ -37,6 +37,7 @@ This agent leverages **Azure AI Agent Service** and uses:
 
 The agent is configured through a Python script (`browser_automation.py`) and authenticated using managed identity.
 
+---
 
 ## ⚙️ Setup Instructions
 

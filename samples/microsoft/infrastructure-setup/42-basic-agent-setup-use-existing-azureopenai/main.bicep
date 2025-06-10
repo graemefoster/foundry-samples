@@ -1,9 +1,42 @@
 param azureDeployName string = utcNow()
-param account_name string = 'aiServices${substring(uniqueString(azureDeployName), 0,4)}'
+
+@maxLength(9)
+@description('The name of the Azure AI Foundry resource.')
+param account_name string = 'foundy'
+
+var accountName string = '${account_name}${substring(uniqueString(azureDeployName), 0,4)}'
+
+@description('The name of your project')
 param project_name string = 'project'
+
+@description('The description of your project')
 param projectDescription string = 'some description'
+
+@description('The display name of your project')
 param projectDisplayName string = 'project_display_name'
-param location string = resourceGroup().location
+
+@allowed([
+  'australiaeast'
+  'canadaeast'
+  'eastus'
+  'eastus2'
+  'francecentral'
+  'japaneast'
+  'koreacentral'
+  'norwayeast'
+  'polandcentral'
+  'southindia'
+  'swedencentral'
+  'switzerlandnorth'
+  'uaenorth'
+  'uksouth'
+  'westus'
+  'westus3'
+  'westeurope'
+  'southeastasia'
+])
+@description('The Azure region where your AI Foundry resource and project will be created.')
+param location string = 'westus'
 
 // TO DO: Update the resource ID to point to an existing Azure OpenAI resource in your subscription
 @description('The resource ID of the existing Azure OpenAI resource.')
@@ -26,7 +59,7 @@ resource existingAoaiResource 'Microsoft.CognitiveServices/accounts@2023-05-01' 
 // Create a new account resource
 resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   #disable-next-line use-stable-resource-identifiers
-  name: account_name
+  name: accountName
   location: location
   sku: {
     name: 'S0'
@@ -37,7 +70,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   }
   properties: {
     allowProjectManagement: true
-    customSubDomainName: account_name
+    customSubDomainName: accountName
     networkAcls: {
       defaultAction: 'Allow'
       virtualNetworkRules: []
