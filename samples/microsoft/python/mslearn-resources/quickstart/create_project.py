@@ -70,3 +70,12 @@ project = client.projects.begin_create(
     }
 )
 # </create_additional>
+# <show_project>
+# Get project
+project = client.projects.get(
+    resource_group_name=resource_group_name,
+    account_name=foundry_resource_name,
+    project_name=foundry_project_name
+)
+print(project)
+# </show_project>
