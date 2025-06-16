@@ -4,6 +4,7 @@
 /samples/microsoft/java/mslearn-resources/quickstart/.env.template @sdgilley
 /samples/microsoft/javascript/mslearn-resources/quickstart/.env.template @sdgilley
 /samples/microsoft/csharp/mslearn-resources/quickstart/Samples/.env.example @sdgilley
+/samples/microsoft/python/mslearn-resources/quickstart/create_project.py @sdgilley
 /samples/microsoft/python/mslearn-resources/quickstart/quickstart.py @sdgilley
 /samples/microsoft/java/mslearn-resources/quickstart/src/main/java/com/azure/ai/foundry/samples/ChatCompletionSample.java @sdgilley
 /samples/microsoft/javascript/mslearn-resources/quickstart/src/quickstart.js @sdgilley
