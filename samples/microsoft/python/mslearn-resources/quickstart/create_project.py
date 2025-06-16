@@ -11,7 +11,7 @@ location = 'eastus'
 
 client = CognitiveServicesManagementClient(
     credential=DefaultAzureCredential(), 
-    subscription_id=sub_id,
+    subscription_id=subscription_id,
     api_version="2025-04-01-preview"
 )
 # </create_client>
@@ -20,8 +20,8 @@ client = CognitiveServicesManagementClient(
 # <create_resource_project>
 # Create resource
 resource = client.accounts.begin_create(
-    resource_group_name=rgp,
-    account_name=resource_name,
+    resource_group_name=resource_group_name,
+    account_name=foundry_resource_name,
     account={
         "location": location,
         "kind": "AIServices",
@@ -29,7 +29,7 @@ resource = client.accounts.begin_create(
         "identity": {"type": "SystemAssigned"},
         "properties": {
             "allowProjectManagement": True,
-            "customSubDomainName": resource_name
+            "customSubDomainName": foundry_resource_name
         }
     }
 )
@@ -39,9 +39,9 @@ resource_result = resource.result()
 
 # Create default project
 project = client.projects.begin_create(
-    resource_group_name=rgp,
-    account_name=resource_name,
-    project_name=project_name,
+    resource_group_name=resource_group_name,
+    account_name=foundry_resource_name,
+    project_name=foundry_project_name,
     project={
         "location": location,
         "identity": {
@@ -59,7 +59,7 @@ new_project_name = 'your-new-project-name'
 
 project = client.projects.begin_create(
     resource_group_name=rgp,
-    account_name=resource_name,
+    account_name=foundry_resource_name,
     project_name=new_project_name,
     project={
         "location": location,
