@@ -1,118 +1,144 @@
 package com.azure.ai.foundry.samples;
 
-import com.azure.ai.foundry.samples.utils.ConfigLoader;
-import com.azure.ai.projects.ProjectsClient;
-import com.azure.ai.projects.ProjectsClientBuilder;
-import com.azure.ai.projects.models.agent.Agent;
-import com.azure.ai.projects.models.agent.AgentClient;
-import com.azure.ai.projects.models.agent.AgentMessage;
-import com.azure.ai.projects.models.agent.AgentOptions;
-import com.azure.ai.projects.models.agent.AgentRole;
-import com.azure.ai.projects.models.agent.AgentRun;
-import com.azure.ai.projects.models.agent.AgentRunStatus;
-import com.azure.ai.projects.models.agent.AgentThread;
-import com.azure.identity.DefaultAzureCredential;
- 
-import java.util.List;
+import com.azure.ai.agents.persistent.PersistentAgentsClient;
+import com.azure.ai.agents.persistent.PersistentAgentsClientBuilder;
+import com.azure.ai.agents.persistent.PersistentAgentsAdministrationClient;
+import com.azure.ai.agents.persistent.models.CreateAgentOptions;
+import com.azure.ai.agents.persistent.models.CreateThreadAndRunOptions;
+import com.azure.ai.agents.persistent.models.PersistentAgent;
+import com.azure.ai.agents.persistent.models.ThreadRun;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 
 /**
- * This sample demonstrates how to create and run an agent using the Azure AI Foundry SDK.
+ * Sample demonstrating how to work with Azure AI Agents using the Azure AI Agents Persistent SDK.
  * 
- * Agents in Azure AI Foundry are specialized AI assistants that can be customized with
- * specific instructions and capabilities to perform particular tasks. They maintain conversation
- * history in threads and can be deployed for various use cases.
+ * This sample shows how to:
+ * - Set up authentication with Azure credentials
+ * - Create a persistent agent with custom instructions
+ * - Start a thread and run with the agent
+ * - Access various properties of the agent and thread run
+ * - Work with the PersistentAgentsClient and PersistentAgentsAdministrationClient
  * 
- * This sample shows:
- * 1. How to authenticate with Azure AI Foundry using DefaultAzureCredential
- * 2. How to create an agent with specific instructions and capabilities
- * 3. How to create a thread for conversation with the agent
- * 4. How to send messages to the agent and run it
- * 5. How to wait for the agent to complete its execution
- * 6. How to retrieve and display the agent's response
+ * Environment variables:
+ * - AZURE_ENDPOINT: Optional fallback. The base endpoint for your Azure AI service if PROJECT_ENDPOINT is not provided.
+ * - PROJECT_ENDPOINT: Required. The endpoint for your Azure AI Project.
+ * - MODEL_DEPLOYMENT_NAME: Optional. The model deployment name (defaults to "gpt-4o").
+ * - AGENT_NAME: Optional. The name to give to the created agent (defaults to "java-quickstart-agent").
+ * - AGENT_INSTRUCTIONS: Optional. The instructions for the agent (defaults to a helpful assistant).
  * 
- * Prerequisites:
- * - An Azure account with access to Azure AI Foundry
- * - Azure CLI installed and logged in ('az login')
- * - Environment variables set in .env file (AZURE_ENDPOINT, AZURE_DEPLOYMENT)
+ * Note: This sample requires proper Azure authentication. It uses DefaultAzureCredential which supports
+ * multiple authentication methods including environment variables, managed identities, and interactive login.
+ * 
+ * SDK Features Demonstrated:
+ * - Using the Azure AI Agents Persistent SDK (com.azure:azure-ai-agents-persistent:1.0.0-beta.2)
+ * - Creating an authenticated client with DefaultAzureCredential
+ * - Using the PersistentAgentsClientBuilder pattern for client instantiation
+ * - Working with the PersistentAgentsAdministrationClient for agent management
+ * - Creating agents with specific configurations (name, model, instructions)
+ * - Starting threads and runs for agent conversations
+ * - Working with agent state and thread management
+ * - Accessing agent and thread run properties
+ * - Implementing proper error handling for Azure service interactions
  */
 public class AgentSample {
+    private static final ClientLogger logger = new ClientLogger(AgentSample.class);
+
     public static void main(String[] args) {
-        // Load configuration values from the .env file
-        // These include the service endpoint and the deployment name of the model to use
-        String endpoint = ConfigLoader.getAzureEndpoint();
-        String deploymentName = ConfigLoader.getAzureDeployment();
+        // Load environment variables with better error handling, supporting both .env and system environment variables
+        String endpoint = System.getenv("AZURE_ENDPOINT");
+        String projectEndpoint = System.getenv("PROJECT_ENDPOINT");
+        String modelName = System.getenv("MODEL_DEPLOYMENT_NAME");
+        String agentName = System.getenv("AGENT_NAME");
+        String instructions = System.getenv("AGENT_INSTRUCTIONS");
+
         
-        // Get DefaultAzureCredential for authentication
-        // This uses the most appropriate authentication method based on the environment
-        // For local development, it will use your Azure CLI login credentials
-        DefaultAzureCredential credential = ConfigLoader.getDefaultCredential();
-        
-        // Create a projects client to interact with Azure AI Foundry services
-        // The client requires an authentication credential and an endpoint
-        ProjectsClient client = new ProjectsClientBuilder()
-            .credential(credential)
-            .endpoint(endpoint)
-            .buildClient();
-        
-        // Get an agent client, which provides operations for working with AI agents
-        // This includes creating, configuring, and running agents
-        AgentClient agentClient = client.getAgentClient();
-        
-        // Create a new agent with specialized capabilities and instructions
-        // The agent is configured with a name, description, instructions, and underlying model
-        System.out.println("Creating agent...");
-        Agent agent = agentClient.createAgent(new AgentOptions()
-            .setName("Research Assistant")                       // Descriptive name for the agent
-            .setDescription("An agent that helps with research tasks")  // Brief description of the agent's purpose
-            .setInstructions("You are a research assistant. Help users find information and summarize content.") // Detailed instructions for the agent's behavior
-            .setModel(deploymentName));                          // The underlying AI model to power the agent
-        
-        System.out.println("Agent created: " + agent.getName() + " (ID: " + agent.getId() + ")");
-        
-        // Create a thread for the conversation with the agent
-        // Threads maintain conversation history and state across multiple interactions
-        System.out.println("Creating thread...");
-        AgentThread thread = agentClient.createThread();
-        System.out.println("Thread created: " + thread.getId());
-        
-        // Create a user message
-        AgentMessage userMessage = new AgentMessage()
-            .setRole(AgentRole.USER)
-            .setContent("Explain what cloud computing is and list three benefits.");
-        
-        // Run the agent
-        System.out.println("Running agent...");
-        AgentRun run = agentClient.createRun(thread.getId(), agent.getId(), userMessage);
-        System.out.println("Run created: " + run.getId());
-        
-        // Wait for the run to complete
-        AgentRun completedRun = waitForRunCompletion(agentClient, thread.getId(), run.getId());
-        System.out.println("Run completed with status: " + completedRun.getStatus());
-        
-        // Get messages from the thread
-        List<AgentMessage> messages = agentClient.getMessages(thread.getId());
-        
-        // Display the assistant's response
-        System.out.println("\nConversation:");
-        for (AgentMessage message : messages) {
-            System.out.println(message.getRole() + ": " + message.getContent());
+
+        // Check for required endpoint configuration
+        if (projectEndpoint == null && endpoint == null) {
+            String errorMessage = "Environment variables not configured. Required: either PROJECT_ENDPOINT or AZURE_ENDPOINT must be set.";
+            logger.error("ERROR: {}", errorMessage);
+            logger.error("Please set your environment variables or create a .env file. See README.md for details.");
+            return;
         }
-    }
-    
-    private static AgentRun waitForRunCompletion(AgentClient agentClient, String threadId, String runId) {
-        AgentRun run = agentClient.getRun(threadId, runId);
         
-        while (run.getStatus() == AgentRunStatus.QUEUED || run.getStatus() == AgentRunStatus.IN_PROGRESS) {
-            try {
-                System.out.println("Run status: " + run.getStatus() + " - waiting...");
-                Thread.sleep(1000); // Wait for 1 second before checking again
-                run = agentClient.getRun(threadId, runId);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Thread was interrupted", e);
+        // Use AZURE_ENDPOINT as fallback if PROJECT_ENDPOINT not set
+        if (projectEndpoint == null) {
+            projectEndpoint = endpoint;
+            logger.info("Using AZURE_ENDPOINT as PROJECT_ENDPOINT: {}", projectEndpoint);
+        }
+
+        // Set defaults for optional parameters with informative logging
+        if (modelName == null) {
+            modelName = "gpt-4o";
+            logger.info("No MODEL_DEPLOYMENT_NAME provided, using default: {}", modelName);
+        }
+        if (agentName == null) {
+            agentName = "java-quickstart-agent";
+            logger.info("No AGENT_NAME provided, using default: {}", agentName);
+        }
+        if (instructions == null) {
+            instructions = "You are a helpful assistant that provides clear and concise information.";
+            logger.info("No AGENT_INSTRUCTIONS provided, using default instructions");
+        }
+
+        // Create Azure credential with DefaultAzureCredentialBuilder
+        // This supports multiple authentication methods including environment variables,
+        // managed identities, and interactive browser login
+        logger.info("Building DefaultAzureCredential");
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        try {
+            // Build the general agents client
+            logger.info("Creating PersistentAgentsClient with endpoint: {}", projectEndpoint);
+            PersistentAgentsClient agentsClient = new PersistentAgentsClientBuilder()
+                .endpoint(projectEndpoint)
+                .credential(credential)
+                .buildClient();
+
+            // Derive the administration client
+            logger.info("Getting PersistentAgentsAdministrationClient");
+            PersistentAgentsAdministrationClient adminClient =
+                agentsClient.getPersistentAgentsAdministrationClient();
+
+            // Create an agent
+            logger.info("Creating agent with name: {}, model: {}", agentName, modelName);
+            PersistentAgent agent = adminClient.createAgent(
+                new CreateAgentOptions(modelName)
+                    .setName(agentName)
+                    .setInstructions(instructions)
+            );
+            logger.info("Agent created: ID={}, Name={}", agent.getId(), agent.getName());
+            logger.info("Agent model: {}", agent.getModel());
+
+            // Start a thread/run on the general client
+            logger.info("Creating thread and run with agent ID: {}", agent.getId());
+            ThreadRun runResult = agentsClient.createThreadAndRun(
+                new CreateThreadAndRunOptions(agent.getId())
+            );
+            logger.info("ThreadRun created: ThreadId={}", runResult.getThreadId());
+
+            // List available getters on ThreadRun for informational purposes
+            logger.info("\nAvailable getters on ThreadRun:");
+            for (var method : ThreadRun.class.getMethods()) {
+                if (method.getName().startsWith("get")) {
+                    logger.info(" - {}", method.getName());
+                }
             }
+
+            logger.info("\nDemo completed successfully!");
+            
+        } catch (HttpResponseException e) {
+            // Handle service-specific errors with detailed information
+            int statusCode = e.getResponse().getStatusCode();
+            logger.error("Service error {}: {}", statusCode, e.getMessage());
+            logger.error("Refer to the Azure AI Agents documentation for troubleshooting information.");
+        } catch (Exception e) {
+            // Handle general exceptions
+            logger.error("Error in agent sample: {}", e.getMessage(), e);
         }
-        
-        return run;
     }
 }
