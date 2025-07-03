@@ -14,11 +14,11 @@ languages:
 
 > **IMPORTANT**
 > 
-> Class A subnet support is only available in a limited number of regions and requires your subscription id be allowlisted. Please reach out to fosteramanda@microsoft.com if you are interested in getting access.
+> Class A subnet support is only available in a limited number of regions and requires your subscription id be allowlisted. Please reach out to fosteramanda@microsoft.com if you are interested in getting access. **Regions with Class A Subnet Support:** westus, eastus us, eastus 2, central us, [NEW] japan east, [NEW] france central
 >
-> **Regions with Class A Subnet Support:** westus, eastus us, eastus 2, central us, [NEW] japan east, [NEW] france central
+> Class B and C subnet support is already GA and available in all regions supported by Azure AI Foundry Agent Service. No subscription allowlisting is required. Deployment templates and setup steps are identical for Class A, B, and C subnets; Class A remains in private preview solely because of its limited region coverage.
  
-## Important Information
+## Key Information
 
 **Limited Region Support for Class A Subnet IPs**
 - Class A subnet support is only available in select regions and requires allowlisting of your subscription ID. Supported regions: westus, eastus us, eastus 2, central us, [NEW] japan east, [NEW] france central
@@ -26,9 +26,6 @@ languages:
 **Region and Resource Placement Requirements**
 - **All Foundry workspace resources should be in the same region as the VNet**, including CosmosDB, Storage Account, AI Search, Foundry Account, Project, Managed Identity. The only exception is within the Foundry Account, you may choose to deploy your model to a different region, and any cross-region communication will be handled securely within our network infrastructure.
   - **Note:** Your Virtual Network can be in a different resource group than your Foundry workspace resources 
-
-**Reminder**
-- Class B and C subnet support is already GA and available in all regions supported by Azure AI Foundry Agent Service. No subscription allowlisting is required. The setup process and templates are identical across Class A, B, and C subnet IPs, this is why the same templates are used regardless of subnet class.
 
 ## Overview
 This infrastructure-as-code (IaC) solution deploys a network-secured Azure AI agent environment with private networking and role-based access control (RBAC).
