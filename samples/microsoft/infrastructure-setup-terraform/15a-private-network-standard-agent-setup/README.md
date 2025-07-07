@@ -103,13 +103,33 @@ The variables listed below are optional and if not specified will use the defaul
 
 1. Fill in the required information for the variables listed in the sample-terraform.tfvars file and rename the file to terraform.tfvars.
 
-2. Initialize Terraform
+2. If performing the deployment interactively, log in to Az CLI with a user that has sufficient permissions to deploy the resources.
+
+```bash
+az login
+```
+
+3. Ensure the proper environmental variables are set for [AzApi](https://registry.terraform.io/providers/Azure/azapi/latest/docs) and [AzureRm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) providers. At a minimum, you must set the ARM_SUBSCRIPTION_ID environment variable to the subscription the resoruces will be deployed to. You can do this with the commands below:
+
+Linux/MacOS
+```bash
+export ARM_SUBSCRIPTION_ID="YOUR_SUBSCRIPTION_ID"
+terraform apply
+```
+
+Windows
+```cmd
+set ARM_SUBSCRIPTION_ID="YOUR_SUBSCRIPTION_ID"
+terraform apply
+```
+
+4. Initialize Terraform
 
 ```bash
 terraform init
 ```
 
-3. Deploy the resources
+5. Deploy the resources
 ```bash
 terraform apply
 ```
