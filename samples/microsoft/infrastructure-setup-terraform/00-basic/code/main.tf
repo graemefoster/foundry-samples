@@ -22,8 +22,7 @@ resource "azurerm_resource_group" "rg" {
 ## Create the AI Foundry resource
 ##
 resource "azapi_resource" "ai_foundry" {
-
-  type                      = "Microsoft.CognitiveServices/accounts@2025-04-01-preview"
+  type                      = "Microsoft.CognitiveServices/accounts@2025-06-01"
   name                      = "aifoundry${random_string.unique.result}"
   parent_id                 = azurerm_resource_group.rg.id
   location                  = var.location
@@ -77,7 +76,7 @@ resource "azurerm_cognitive_deployment" "aifoundry_deployment_gpt_4o" {
 ## Create AI Foundry project
 ##
 resource "azapi_resource" "ai_foundry_project" {
-  type                      = "Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview"
+  type                      = "Microsoft.CognitiveServices/accounts/projects@2025-06-01"
   name                      = "project${random_string.unique.result}"
   parent_id                 = azapi_resource.ai_foundry.id
   location                  = var.location
