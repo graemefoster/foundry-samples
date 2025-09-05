@@ -4,20 +4,31 @@ Standard Setup Network Secured Steps for main.bicep
 */
 @description('Location for all resources.')
 @allowed([
-    'australiaeast'
-    'eastus'
-    'eastus2'
-    'francecentral'
-    'japaneast'
-    'norwayeast'
-    'southindia'
-    'swedencentral'
-    'uaenorth'
-    'uksouth'
-    'westus'
-    'westus3'
-    'westus2'
-  ])
+  'westus'
+  'eastus'
+  'eastus2'
+  'japaneast'
+  'francecentral'
+  'spaincentral'
+  'uaenorth'
+  'southcentralus'
+  'italynorth'
+  'germanywestcentral'
+  'brazilsouth'
+  'southafricanorth'
+  'australiaeast'
+  'swedencentral'
+
+  // allowed only Class B and C
+  'westus3'
+  'centralus'
+  'uksouth'
+  'southindia'
+  'koreacentral'
+  'polandcentral'
+  'switzerlandnorth'
+  'norwayeast'
+])
 param location string = 'eastus2'
 
 @description('Name for your AI Services resource.')
