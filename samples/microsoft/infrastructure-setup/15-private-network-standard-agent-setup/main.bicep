@@ -18,6 +18,8 @@ Standard Setup Network Secured Steps for main.bicep
   'southafricanorth'
   'australiaeast'
   'swedencentral'
+  'canadaeast'
+  'westeurope'
 
   // allowed only Class B and C
   'westus3'

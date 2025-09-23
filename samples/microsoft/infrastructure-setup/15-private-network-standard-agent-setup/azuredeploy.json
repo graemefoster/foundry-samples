@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.37.4.10188",
-      "templateHash": "7505661076331030715"
+      "templateHash": "12544223350131316346"
     }
   },
   "parameters": {
@@ -27,6 +27,8 @@
         "southafricanorth",
         "australiaeast",
         "swedencentral",
+        "canadaeast",
+        "westeurope",
         "westus3",
         "centralus",
         "uksouth",
