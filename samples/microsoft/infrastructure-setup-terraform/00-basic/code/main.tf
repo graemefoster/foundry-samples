@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "rg" {
 resource "azapi_resource" "ai_foundry" {
   type                      = "Microsoft.CognitiveServices/accounts@2025-06-01"
   name                      = "aifoundry${random_string.unique.result}"
-  parent_id                 = azurerm_resource_group.rg.id
+  parent_id                 = azurerm_resource_group.rg.name
   location                  = var.location
   schema_validation_enabled = false
 
