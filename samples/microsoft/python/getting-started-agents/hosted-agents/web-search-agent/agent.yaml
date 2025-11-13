@@ -1,4 +1,4 @@
-name: Web Search Agent
+name: WebSearchAgent
 description: This Agent can perform web searches and retrieve the latest information from Bing.
 metadata:
   example:
@@ -6,12 +6,15 @@ metadata:
       content: |-
         What's the latest news in AI?
   tags:
-    - example
-    - learning
+    - AI Agent Grounding
+    - AI Agent Hosting
+    - Azure AI AgentServer
+    - Bing Grounding
+    - Microsoft Agent Framework
   authors:
     - jeomhove
 template:
-  name: Web Search Agent
+  name: WebSearchAgent
   kind: hosted
   environment_variables:
     - name: AZURE_AI_PROJECT_ENDPOINT

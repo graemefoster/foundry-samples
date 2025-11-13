@@ -1,13 +1,16 @@
-name: Microsoft Learn MCP Agent
-description: This Agent can perform web searches and retrieve the latest information from Bing.
+name: MicrosoftLearnMCPAgent
+description: This Agent can access and search Microsoft Learn documentation using MCP (Model Context Protocol) with tool call approval.
 metadata:
   tags:
-    - example
-    - learning
+    - AI Agent Hosting
+    - Azure AI AgentServer
+    - MCP
+    - Microsoft Agent Framework
+    - Tool Call Approval
   authors:
     - jeomhove
 template:
-  name: Microsoft Learn MCP Agent
+  name: MicrosoftLearnMCPAgent
   kind: hosted
   environment_variables:
     - name: AZURE_AI_PROJECT_ENDPOINT

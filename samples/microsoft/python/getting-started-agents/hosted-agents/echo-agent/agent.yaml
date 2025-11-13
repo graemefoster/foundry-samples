@@ -1,15 +1,16 @@
 # Unique identifier/name for this agent
 name: echo-agent
 # Brief description of what this agent does
-description: |-
-  This Agent just returns an echo from the user input.
-  It is useful for testing and debugging.
+description: >
+  This sample demonstrates how to create a custom AI agent that echoes user input.
+  It is useful for testing, debugging, and learning how to build custom agents.
 metadata:
   # Categorization tags for organizing and discovering agents
   tags:
-    - example
-    - utility
-    - basic-example
+    - AI Agent Hosting
+    - Azure AI AgentServer
+    - Custom Agent Implementation
+    - Microsoft Agent Framework
 template:
   name: echo-agent
   # The type of agent - "hosted" for HOBO, "container" for COBO
