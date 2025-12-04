@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.37.4.10188",
-      "templateHash": "14544376727674236664"
+      "version": "0.39.26.7824",
+      "templateHash": "13333646941739374884"
     }
   },
   "parameters": {
@@ -18,6 +18,7 @@
         "eastus2",
         "japaneast",
         "francecentral",
+        "spaincentral",
         "uaenorth",
         "southcentralus",
         "italynorth",
@@ -29,8 +30,6 @@
         "canadaeast",
         "westeurope",
         "westus3",
-        "spaincentral",
-        "centralus",
         "uksouth",
         "southindia",
         "koreacentral",
@@ -253,7 +252,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -298,8 +297,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "10919077993927687050"
+              "version": "0.39.26.7824",
+              "templateHash": "8505298823279202405"
             }
           },
           "parameters": {
@@ -376,7 +375,7 @@
             {
               "condition": "[not(parameters('useExistingVnet'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2025-04-01",
               "name": "vnet-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -412,8 +411,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.37.4.10188",
-                      "templateHash": "7085351233854231162"
+                      "version": "0.39.26.7824",
+                      "templateHash": "4954184648131521061"
                     }
                   },
                   "parameters": {
@@ -549,7 +548,7 @@
             {
               "condition": "[parameters('useExistingVnet')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2025-04-01",
               "name": "existing-vnet-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -585,8 +584,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.37.4.10188",
-                      "templateHash": "13730000354097581091"
+                      "version": "0.39.26.7824",
+                      "templateHash": "3152324712046183852"
                     }
                   },
                   "parameters": {
@@ -642,7 +641,7 @@
                   "resources": [
                     {
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2022-09-01",
+                      "apiVersion": "2025-04-01",
                       "name": "[format('agent-subnet-{0}', uniqueString(deployment().name, parameters('agentSubnetName')))]",
                       "resourceGroup": "[parameters('vnetResourceGroupName')]",
                       "properties": {
@@ -675,8 +674,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.37.4.10188",
-                              "templateHash": "5406780699922367374"
+                              "version": "0.39.26.7824",
+                              "templateHash": "17043822047386586435"
                             }
                           },
                           "parameters": {
@@ -732,7 +731,7 @@
                     },
                     {
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2022-09-01",
+                      "apiVersion": "2025-04-01",
                       "name": "[format('pe-subnet-{0}', uniqueString(deployment().name, parameters('peSubnetName')))]",
                       "resourceGroup": "[parameters('vnetResourceGroupName')]",
                       "properties": {
@@ -758,8 +757,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.37.4.10188",
-                              "templateHash": "5406780699922367374"
+                              "version": "0.39.26.7824",
+                              "templateHash": "17043822047386586435"
                             }
                           },
                           "parameters": {
@@ -855,19 +854,19 @@
           "outputs": {
             "virtualNetworkName": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.virtualNetworkName.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.virtualNetworkName.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.virtualNetworkName.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.virtualNetworkName.value)]"
             },
             "virtualNetworkId": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.virtualNetworkId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.virtualNetworkId.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.virtualNetworkId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.virtualNetworkId.value)]"
             },
             "virtualNetworkSubscriptionId": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.virtualNetworkSubscriptionId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.virtualNetworkSubscriptionId.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.virtualNetworkSubscriptionId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.virtualNetworkSubscriptionId.value)]"
             },
             "virtualNetworkResourceGroup": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.virtualNetworkResourceGroup.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.virtualNetworkResourceGroup.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.virtualNetworkResourceGroup.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.virtualNetworkResourceGroup.value)]"
             },
             "agentSubnetName": {
               "type": "string",
@@ -879,11 +878,11 @@
             },
             "agentSubnetId": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.agentSubnetId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.agentSubnetId.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.agentSubnetId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.agentSubnetId.value)]"
             },
             "peSubnetId": {
               "type": "string",
-              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2022-09-01').outputs.peSubnetId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2022-09-01').outputs.peSubnetId.value)]"
+              "value": "[if(parameters('useExistingVnet'), reference(resourceId('Microsoft.Resources/deployments', 'existing-vnet-deployment'), '2025-04-01').outputs.peSubnetId.value, reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.peSubnetId.value)]"
             }
           }
         }
@@ -891,7 +890,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -921,7 +920,7 @@
             "value": "[parameters('modelCapacity')]"
           },
           "agentSubnetId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2022-09-01').outputs.agentSubnetId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2025-04-01').outputs.agentSubnetId.value]"
           }
         },
         "template": {
@@ -930,8 +929,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "5138025051650535289"
+              "version": "0.39.26.7824",
+              "templateHash": "854097619778148359"
             }
           },
           "parameters": {
@@ -981,9 +980,10 @@
                 "allowProjectManagement": true,
                 "customSubDomainName": "[parameters('accountName')]",
                 "networkAcls": {
-                  "defaultAction": "Allow",
+                  "defaultAction": "Deny",
                   "virtualNetworkRules": [],
-                  "ipRules": []
+                  "ipRules": [],
+                  "bypass": "AzureServices"
                 },
                 "publicNetworkAccess": "Disabled",
                 "networkInjections": "[if(equals(parameters('networkInjection'), 'true'), createArray(createObject('scenario', 'agent', 'subnetArmId', parameters('agentSubnetId'), 'useMicrosoftManagedNetwork', false())), null())]",
@@ -1036,7 +1036,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1069,8 +1069,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "15369197585500198758"
+              "version": "0.39.26.7824",
+              "templateHash": "15994578372975581196"
             }
           },
           "parameters": {
@@ -1203,7 +1203,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('dependencies-{0}-deployment', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1227,19 +1227,19 @@
             "value": "[parameters('aiSearchResourceId')]"
           },
           "aiSearchExists": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchExists.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchExists.value]"
           },
           "azureStorageAccountResourceId": {
             "value": "[parameters('azureStorageAccountResourceId')]"
           },
           "azureStorageExists": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageExists.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageExists.value]"
           },
           "cosmosDBResourceId": {
             "value": "[parameters('azureCosmosDBAccountResourceId')]"
           },
           "cosmosDBExists": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBExists.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBExists.value]"
           }
         },
         "template": {
@@ -1248,8 +1248,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "12678471838706931131"
+              "version": "0.39.26.7824",
+              "templateHash": "2754228344238136934"
             }
           },
           "parameters": {
@@ -1465,7 +1465,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('{0}-private-endpoint', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1474,34 +1474,34 @@
         "mode": "Incremental",
         "parameters": {
           "aiAccountName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2022-09-01').outputs.accountName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
           },
           "aiSearchName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchName.value]"
           },
           "storageName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageName.value]"
           },
           "cosmosDBName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBName.value]"
           },
           "apiManagementName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.apiManagementName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.apiManagementName.value]"
           },
           "vnetName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2022-09-01').outputs.virtualNetworkName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2025-04-01').outputs.virtualNetworkName.value]"
           },
           "peSubnetName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2022-09-01').outputs.peSubnetName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2025-04-01').outputs.peSubnetName.value]"
           },
           "suffix": {
             "value": "[variables('uniqueSuffix')]"
           },
           "vnetResourceGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2022-09-01').outputs.virtualNetworkResourceGroup.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2025-04-01').outputs.virtualNetworkResourceGroup.value]"
           },
           "vnetSubscriptionId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2022-09-01').outputs.virtualNetworkSubscriptionId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('vnet-{0}-{1}-deployment', variables('trimVnetName'), variables('uniqueSuffix'))), '2025-04-01').outputs.virtualNetworkSubscriptionId.value]"
           },
           "cosmosDBSubscriptionId": {
             "value": "[variables('cosmosDBSubscriptionId')]"
@@ -1522,10 +1522,10 @@
             "value": "[variables('azureStorageSubscriptionId')]"
           },
           "apiManagementResourceGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.apiManagementResourceGroupName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.apiManagementResourceGroupName.value]"
           },
           "apiManagementSubscriptionId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.apiManagementSubscriptionId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.apiManagementSubscriptionId.value]"
           },
           "existingDnsZones": {
             "value": "[parameters('existingDnsZones')]"
@@ -1537,8 +1537,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "14787255005610725415"
+              "version": "0.39.26.7824",
+              "templateHash": "16093594075579008850"
             }
           },
           "parameters": {
@@ -2102,7 +2102,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2123,34 +2123,34 @@
             "value": "[parameters('location')]"
           },
           "aiSearchName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchName.value]"
           },
           "aiSearchServiceResourceGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchServiceResourceGroupName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchServiceResourceGroupName.value]"
           },
           "aiSearchServiceSubscriptionId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchServiceSubscriptionId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchServiceSubscriptionId.value]"
           },
           "cosmosDBName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBName.value]"
           },
           "cosmosDBSubscriptionId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBSubscriptionId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBSubscriptionId.value]"
           },
           "cosmosDBResourceGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBResourceGroupName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBResourceGroupName.value]"
           },
           "azureStorageName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageName.value]"
           },
           "azureStorageSubscriptionId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageSubscriptionId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageSubscriptionId.value]"
           },
           "azureStorageResourceGroupName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageResourceGroupName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageResourceGroupName.value]"
           },
           "accountName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2022-09-01').outputs.accountName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
           }
         },
         "template": {
@@ -2159,8 +2159,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "13015324414040487580"
+              "version": "0.39.26.7824",
+              "templateHash": "5095087340309076800"
             }
           },
           "parameters": {
@@ -2316,7 +2316,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('format-project-workspace-id-{0}-deployment', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2325,7 +2325,7 @@
         "mode": "Incremental",
         "parameters": {
           "projectWorkspaceId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectWorkspaceId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectWorkspaceId.value]"
           }
         },
         "template": {
@@ -2334,8 +2334,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "8377605865688192705"
+              "version": "0.39.26.7824",
+              "templateHash": "6910483561575524105"
             }
           },
           "parameters": {
@@ -2366,7 +2366,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('storage-ra-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('azureStorageSubscriptionId')]",
       "resourceGroup": "[variables('azureStorageResourceGroupName')]",
@@ -2377,10 +2377,10 @@
         "mode": "Incremental",
         "parameters": {
           "azureStorageName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageName.value]"
           },
           "projectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectPrincipalId.value]"
           }
         },
         "template": {
@@ -2389,8 +2389,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "4249888543967924849"
+              "version": "0.39.26.7824",
+              "templateHash": "14683840003859985069"
             }
           },
           "parameters": {
@@ -2424,7 +2424,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('cosmos-account-ra-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('cosmosDBSubscriptionId')]",
       "resourceGroup": "[variables('cosmosDBResourceGroupName')]",
@@ -2435,10 +2435,10 @@
         "mode": "Incremental",
         "parameters": {
           "cosmosDBName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBName.value]"
           },
           "projectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectPrincipalId.value]"
           }
         },
         "template": {
@@ -2447,8 +2447,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "6132395890022031665"
+              "version": "0.39.26.7824",
+              "templateHash": "2161753938341361575"
             }
           },
           "parameters": {
@@ -2488,7 +2488,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('ai-search-ra-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('aiSearchServiceSubscriptionId')]",
       "resourceGroup": "[variables('aiSearchServiceResourceGroupName')]",
@@ -2499,10 +2499,10 @@
         "mode": "Incremental",
         "parameters": {
           "aiSearchName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchName.value]"
           },
           "projectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectPrincipalId.value]"
           }
         },
         "template": {
@@ -2511,8 +2511,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "1394521226822648818"
+              "version": "0.39.26.7824",
+              "templateHash": "7968115481508840"
             }
           },
           "parameters": {
@@ -2563,7 +2563,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('capabilityHost-configuration-{0}-deployment', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2572,19 +2572,19 @@
         "mode": "Incremental",
         "parameters": {
           "accountName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2022-09-01').outputs.accountName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
           },
           "projectName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectName.value]"
           },
           "cosmosDBConnection": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBConnection.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBConnection.value]"
           },
           "azureStorageConnection": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageConnection.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageConnection.value]"
           },
           "aiSearchConnection": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.aiSearchConnection.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchConnection.value]"
           },
           "projectCapHost": {
             "value": "[parameters('projectCapHost')]"
@@ -2596,8 +2596,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "17808151692204226228"
+              "version": "0.39.26.7824",
+              "templateHash": "17458377866351620215"
             }
           },
           "parameters": {
@@ -2664,7 +2664,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('storage-containers-ra-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('azureStorageSubscriptionId')]",
       "resourceGroup": "[variables('azureStorageResourceGroupName')]",
@@ -2675,13 +2675,13 @@
         "mode": "Incremental",
         "parameters": {
           "aiProjectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectPrincipalId.value]"
           },
           "storageName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.azureStorageName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageName.value]"
           },
           "workspaceId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('format-project-workspace-id-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.projectWorkspaceIdGuid.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('format-project-workspace-id-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.projectWorkspaceIdGuid.value]"
           }
         },
         "template": {
@@ -2690,8 +2690,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "15407014014992135484"
+              "version": "0.39.26.7824",
+              "templateHash": "13874725855824693255"
             }
           },
           "parameters": {
@@ -2743,7 +2743,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('cosmos-container-ra-{0}-deployment', variables('uniqueSuffix'))]",
       "subscriptionId": "[variables('cosmosDBSubscriptionId')]",
       "resourceGroup": "[variables('cosmosDBResourceGroupName')]",
@@ -2754,13 +2754,13 @@
         "mode": "Incremental",
         "parameters": {
           "cosmosAccountName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.cosmosDBName.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.cosmosDBName.value]"
           },
           "projectWorkspaceId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('format-project-workspace-id-{0}-deployment', variables('uniqueSuffix'))), '2022-09-01').outputs.projectWorkspaceIdGuid.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('format-project-workspace-id-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.projectWorkspaceIdGuid.value]"
           },
           "projectPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2022-09-01').outputs.projectPrincipalId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('projectName'), variables('uniqueSuffix'))), '2025-04-01').outputs.projectPrincipalId.value]"
           }
         },
         "template": {
@@ -2769,8 +2769,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.37.4.10188",
-              "templateHash": "12597905598408064881"
+              "version": "0.39.26.7824",
+              "templateHash": "16291470712974205281"
             }
           },
           "parameters": {
@@ -2791,43 +2791,18 @@
             }
           },
           "variables": {
-            "userThreadName": "[format('{0}-thread-message-store', parameters('projectWorkspaceId'))]",
-            "systemThreadName": "[format('{0}-system-thread-message-store', parameters('projectWorkspaceId'))]",
-            "entityStoreName": "[format('{0}-agent-entity-store', parameters('projectWorkspaceId'))]",
             "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', parameters('cosmosAccountName'), '00000000-0000-0000-0000-000000000002')]",
-            "scopeSystemContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('systemThreadName'))]",
-            "scopeUserContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('userThreadName'))]",
-            "scopeEntityContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('entityStoreName'))]"
+            "accountScope": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'))]"
           },
           "resources": [
             {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
               "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('userThreadName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
+              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), parameters('cosmosAccountName'), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
               "properties": {
                 "principalId": "[parameters('projectPrincipalId')]",
                 "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeUserContainer')]"
-              }
-            },
-            {
-              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-              "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('systemThreadName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
-              "properties": {
-                "principalId": "[parameters('projectPrincipalId')]",
-                "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeSystemContainer')]"
-              }
-            },
-            {
-              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-              "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('entityStoreName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
-              "properties": {
-                "principalId": "[parameters('projectPrincipalId')]",
-                "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeEntityContainer')]"
+                "scope": "[variables('accountScope')]"
               }
             }
           ]

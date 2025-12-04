@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.38.33.27573",
-      "templateHash": "10504569810887488431"
+      "version": "0.39.26.7824",
+      "templateHash": "1485106587909607955"
     }
   },
   "parameters": {
@@ -30,7 +30,6 @@
         "canadaeast",
         "westeurope",
         "westus3",
-        "centralus",
         "uksouth",
         "southindia",
         "koreacentral",
@@ -284,8 +283,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "13672135239617994134"
+              "version": "0.39.26.7824",
+              "templateHash": "12473591672685297473"
             }
           },
           "parameters": {
@@ -385,8 +384,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "3000326239105866665"
+              "version": "0.39.26.7824",
+              "templateHash": "8505298823279202405"
             }
           },
           "parameters": {
@@ -499,8 +498,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.38.33.27573",
-                      "templateHash": "9671686431891144160"
+                      "version": "0.39.26.7824",
+                      "templateHash": "4954184648131521061"
                     }
                   },
                   "parameters": {
@@ -672,8 +671,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.38.33.27573",
-                      "templateHash": "9765569614489247577"
+                      "version": "0.39.26.7824",
+                      "templateHash": "3152324712046183852"
                     }
                   },
                   "parameters": {
@@ -762,8 +761,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.38.33.27573",
-                              "templateHash": "1547357962959978060"
+                              "version": "0.39.26.7824",
+                              "templateHash": "17043822047386586435"
                             }
                           },
                           "parameters": {
@@ -845,8 +844,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.38.33.27573",
-                              "templateHash": "1547357962959978060"
+                              "version": "0.39.26.7824",
+                              "templateHash": "17043822047386586435"
                             }
                           },
                           "parameters": {
@@ -1020,8 +1019,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "4149761019378707561"
+              "version": "0.39.26.7824",
+              "templateHash": "12620781326236378852"
             }
           },
           "parameters": {
@@ -1077,9 +1076,10 @@
                 "allowProjectManagement": true,
                 "customSubDomainName": "[parameters('accountName')]",
                 "networkAcls": {
-                  "defaultAction": "Allow",
+                  "defaultAction": "Deny",
                   "virtualNetworkRules": [],
-                  "ipRules": []
+                  "ipRules": [],
+                  "bypass": "AzureServices"
                 },
                 "publicNetworkAccess": "Disabled",
                 "networkInjections": "[if(equals(parameters('networkInjection'), 'true'), createArray(createObject('scenario', 'agent', 'subnetArmId', parameters('agentSubnetId'), 'useMicrosoftManagedNetwork', false())), null())]",
@@ -1159,8 +1159,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "16601100743607825661"
+              "version": "0.39.26.7824",
+              "templateHash": "7641310640078958122"
             }
           },
           "parameters": {
@@ -1311,8 +1311,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "17070046545573522018"
+              "version": "0.39.26.7824",
+              "templateHash": "2754228344238136934"
             }
           },
           "parameters": {
@@ -1591,8 +1591,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "17544905015811744191"
+              "version": "0.39.26.7824",
+              "templateHash": "8094529554453089222"
             }
           },
           "parameters": {
@@ -2123,8 +2123,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "9141314581740624058"
+              "version": "0.39.26.7824",
+              "templateHash": "3622791801420135420"
             }
           },
           "parameters": {
@@ -2301,8 +2301,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "15304671762339152539"
+              "version": "0.39.26.7824",
+              "templateHash": "6910483561575524105"
             }
           },
           "parameters": {
@@ -2356,8 +2356,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "3832223064555251670"
+              "version": "0.39.26.7824",
+              "templateHash": "14683840003859985069"
             }
           },
           "parameters": {
@@ -2414,8 +2414,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "569562087392034404"
+              "version": "0.39.26.7824",
+              "templateHash": "25128059954858801"
             }
           },
           "parameters": {
@@ -2478,8 +2478,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "7728144288834450944"
+              "version": "0.39.26.7824",
+              "templateHash": "7968115481508840"
             }
           },
           "parameters": {
@@ -2563,8 +2563,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "11276064020188747288"
+              "version": "0.39.26.7824",
+              "templateHash": "17458377866351620215"
             }
           },
           "parameters": {
@@ -2657,8 +2657,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "15079808740991865877"
+              "version": "0.39.26.7824",
+              "templateHash": "13874725855824693255"
             }
           },
           "parameters": {
@@ -2736,8 +2736,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.38.33.27573",
-              "templateHash": "10560822562740686594"
+              "version": "0.39.26.7824",
+              "templateHash": "16291470712974205281"
             }
           },
           "parameters": {
@@ -2758,43 +2758,18 @@
             }
           },
           "variables": {
-            "userThreadName": "[format('{0}-thread-message-store', parameters('projectWorkspaceId'))]",
-            "systemThreadName": "[format('{0}-system-thread-message-store', parameters('projectWorkspaceId'))]",
-            "entityStoreName": "[format('{0}-agent-entity-store', parameters('projectWorkspaceId'))]",
             "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', parameters('cosmosAccountName'), '00000000-0000-0000-0000-000000000002')]",
-            "scopeSystemContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('systemThreadName'))]",
-            "scopeUserContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('userThreadName'))]",
-            "scopeEntityContainer": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/dbs/enterprise_memory/colls/{3}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'), variables('entityStoreName'))]"
+            "accountScope": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}', subscription().subscriptionId, resourceGroup().name, parameters('cosmosAccountName'))]"
           },
           "resources": [
             {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
               "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('userThreadName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
+              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), parameters('cosmosAccountName'), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
               "properties": {
                 "principalId": "[parameters('projectPrincipalId')]",
                 "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeUserContainer')]"
-              }
-            },
-            {
-              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-              "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('systemThreadName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
-              "properties": {
-                "principalId": "[parameters('projectPrincipalId')]",
-                "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeSystemContainer')]"
-              }
-            },
-            {
-              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-              "apiVersion": "2022-05-15",
-              "name": "[format('{0}/{1}', parameters('cosmosAccountName'), guid(parameters('projectWorkspaceId'), resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('cosmosAccountName'), 'enterprise_memory', variables('entityStoreName')), variables('roleDefinitionId'), parameters('projectPrincipalId')))]",
-              "properties": {
-                "principalId": "[parameters('projectPrincipalId')]",
-                "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "scope": "[variables('scopeEntityContainer')]"
+                "scope": "[variables('accountScope')]"
               }
             }
           ]

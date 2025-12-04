@@ -233,7 +233,6 @@ module cosmosContainerRoleAssignments 'modules-standard/cosmos-container-role-as
   scope: resourceGroup(cosmosDBSubscriptionId, cosmosDBResourceGroupName)
   params: {
     cosmosAccountName: aiDependencies.outputs.cosmosDBName
-    projectId: aiProject.outputs.projectId
     projectPrincipalId: aiProject.outputs.projectPrincipalId
   
   }
