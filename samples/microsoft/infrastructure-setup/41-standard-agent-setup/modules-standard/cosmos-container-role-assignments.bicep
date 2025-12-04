@@ -8,23 +8,10 @@ param projectPrincipalId string
 
 param projectWorkspaceId string
 
-// var userThreadName = '${projectWorkspaceId}-thread-message-store'
-
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2024-12-01-preview' existing = {
   name: cosmosAccountName
   scope: resourceGroup()
 }
-
-// // Reference existing database
-// resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-12-01-preview' existing = {
-//   parent: cosmosAccount
-//   name: 'enterprise_memory'
-// }
-
-// resource containerUserMessageStore  'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-12-01-preview' existing = {
-//   parent: database
-//   name: userThreadName
-// }
 
 var roleDefinitionId = resourceId(
   'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', 
