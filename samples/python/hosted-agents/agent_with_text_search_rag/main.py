@@ -91,7 +91,7 @@ class TextSearchContextProvider(ContextProvider):
         )
 
 
-def main():
+def create_agent():
     # Create an Agent using the Azure OpenAI Chat Client
     agent = AzureOpenAIChatClient(credential=DefaultAzureCredential()).create_agent(
         name="SupportSpecialist",
@@ -101,9 +101,12 @@ def main():
         ),
         context_providers=TextSearchContextProvider(),
     )
+    return agent
 
+
+def main():
     # Run the agent as a hosted agent
-    from_agent_framework(agent).run()
+    from_agent_framework(lambda _: create_agent()).run()
 
 
 if __name__ == "__main__":
