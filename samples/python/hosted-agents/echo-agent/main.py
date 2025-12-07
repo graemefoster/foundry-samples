@@ -14,6 +14,7 @@ from agent_framework import (
     TextContent,
 )
 from azure.ai.agentserver.agentframework import from_agent_framework
+from azure.identity.aio import DefaultAzureCredential
 
 """
 Custom Agent Implementation Example
@@ -146,9 +147,11 @@ class EchoAgent(BaseAgent):
             await self._notify_thread_of_new_messages(thread, normalized_messages, complete_response)
 
 
-if __name__ == "__main__":
+def create_agent() -> EchoAgent:
     agent = EchoAgent(
         name="EchoBot", description="A simple agent that echoes messages with a prefix", echo_prefix="🔊 Echo: "
     )
+    return agent
 
-    from_agent_framework(agent).run()
+if __name__ == "__main__":
+    from_agent_framework(lambda _: create_agent()).run()

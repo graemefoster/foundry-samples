@@ -1,4 +1,3 @@
-import asyncio
 import os
 from agent_framework import ChatAgent, HostedMCPTool
 from agent_framework_azure_ai import AzureAIAgentClient
@@ -28,7 +27,7 @@ async def handle_approvals_with_thread(query: str, agent: "AgentProtocol", threa
     return result
 
 
-def get_agent() -> ChatAgent:
+def create_agent() -> ChatAgent:
     """Create and return a ChatAgent with Bing Grounding search tool."""
     assert "AZURE_AI_PROJECT_ENDPOINT" in os.environ, (
         "AZURE_AI_PROJECT_ENDPOINT environment variable must be set."
@@ -42,7 +41,6 @@ def get_agent() -> ChatAgent:
         async_credential=DefaultAzureCredential(),
     )
 
-    # Create ChatAgent with the Bing search tool
     agent = chat_client.create_agent(
         name="DocsAgent",
         instructions="You are a helpful assistant that can help with microsoft documentation questions.",
@@ -53,12 +51,5 @@ def get_agent() -> ChatAgent:
     )
     return agent
 
-async def test_agent():
-    agent = get_agent()
-    thread = agent.get_new_thread()
-    response = await handle_approvals_with_thread("How do I create an Azure Function in Python?", agent, thread)
-    print("Agent response:", response.text)
-
 if __name__ == "__main__":
-    # asyncio.run(test_agent())
-    from_agent_framework(get_agent()).run()
+    from_agent_framework(lambda _: create_agent()).run()
