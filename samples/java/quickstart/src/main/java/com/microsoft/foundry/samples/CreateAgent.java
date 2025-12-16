@@ -7,8 +7,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CreateAgent {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENT_MODEL");
+        String endpoint = Configuration.getGlobalConfiguration().get("PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("MODEL_DEPLOYMENT_NAME");
         // Code sample for creating an agent
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -16,7 +16,7 @@ public class CreateAgent {
                 .buildAgentsClient();
 
         PromptAgentDefinition request = new PromptAgentDefinition(model);
-        AgentVersionDetails agent = agentsClient.createAgentVersion("agent_created_from_java", request);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("MyAgent", request);
 
         System.out.println("Agent ID: " + agent.getId());
         System.out.println("Agent Name: " + agent.getName());

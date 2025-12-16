@@ -19,7 +19,7 @@ import com.openai.models.responses.ResponseCreateParams;
 public class ChatWithAgent {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String agentName = "agent_created_from_java";
+        String agentName = "MyAgent";
         
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
