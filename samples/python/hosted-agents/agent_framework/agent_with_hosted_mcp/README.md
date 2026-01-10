@@ -8,24 +8,22 @@ Microsoft has no responsibility to you or others with respect to any of these sa
 
 # What this sample demonstrates
 
-This sample demonstrates how to use the TextSearchProvider to add retrieval augmented generation (RAG) capabilities to a
+This sample demonstrates how to use a Hosted Model Context Protocol (MCP) server with a
 [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview#ai-agents) AI agent and
 host it using [Azure AI AgentServer SDK](https://learn.microsoft.com/en-us/dotnet/api/overview/azure/ai.agentserver.agentframework-readme) and
 deploy it to Microsoft Foundry using the Azure Developer CLI [ai agent](https://aka.ms/azdaiagent/docs) extension.
 
 ## How It Works
 
-### Retrieval Augmented Generation (RAG) with `TextSearchContextProvider`
+### MCP Integration
 
-This sample uses a `TextSearchContextProvider` to demonstrate the RAG pattern. The RAG workflow operates as follows:
+This sample uses a Hosted Model Context Protocol (MCP) server to provide external tools to the agent. The MCP workflow operates as follows:
 
-1. When the user asks a question, the `TextSearchContextProvider` intercepts it
-2. The search function looks for relevant documents based on the query
-3. Retrieved documents are injected into the model's context
-4. The AI responds using both its training and the provided context
-5. The agent can cite specific source documents in its answers
+1. The agent is configured with a `HostedMCPTool` pointing to `https://learn.microsoft.com/api/mcp`
+2. When you ask questions, the Azure OpenAI Responses service automatically invokes the MCP tool to search Microsoft Learn documentation
+3. The agent returns answers based on the retrieved Microsoft Learn content
 
-**Note**: The `TextSearchContextProvider` returns pre-defined snippets for demonstration purposes. In a production scenario, replace this with actual searches against your knowledge base (e.g., Azure AI Search, vector database, or other data sources).
+**Note**: In this configuration, the Azure OpenAI Responses service manages tool invocation directly - the Agent Framework does not handle MCP tool calls.
 
 ### Agent Hosting
 
@@ -71,6 +69,8 @@ Install the required Python dependencies using pip:
 pip install -r requirements.txt
 ```
 
+> It is always a good practice to use a virtual environment for Python projects.
+
 ### Running the Sample
 
 To run the agent, execute the following command in your terminal:
@@ -79,14 +79,14 @@ To run the agent, execute the following command in your terminal:
 python main.py
 ```
 
-This will start the hosted agent locally on `http://localhost:8080/`.
+This will start the hosted agent locally on `http://localhost:8088/`.
 
 ### Interacting with the Agent
 
 You can interact with the agent using:
 
 ```powershell
-curl -sS -H "Content-Type: application/json" -X POST http://localhost:8088/responses -d '{"input": "What is the return policy?","stream":false}'
+curl -sS -H "Content-Type: application/json" -X POST http://localhost:8088/responses -d '{"input": "How to create an Azure storage account using az cli?","stream":false}'
 ```
 
 ### Deploying the Agent to Microsoft Foundry
