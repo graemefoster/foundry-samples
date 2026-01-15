@@ -43,7 +43,7 @@ param connectionName string = ''
 @description('APIM subscription name for API key auth')
 param apimSubscriptionName string = 'master'
 
-@allowed(['ApiKey'])
+@allowed(['ApiKey', 'ProjectManagedIdentity'])
 @description('Authentication type')
 param authType string = 'ApiKey'
 
