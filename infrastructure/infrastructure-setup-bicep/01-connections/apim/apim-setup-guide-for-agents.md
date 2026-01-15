@@ -55,6 +55,96 @@ Foundry Agents are specifically interested in **chat completions APIs** for AI m
 
 > **💡 Important**: Agents will primarily use the chat completions endpoint, so it's crucial to verify this specific operation is working through APIM before creating the Foundry connection.
 
+### Step 2.5: 🔐 Configure Managed Identity Authentication (Optional)
+
+If you want to use **Azure Managed Identity authentication** instead of APIM subscription keys, you need to configure APIM to validate and forward Entra ID tokens.
+
+#### 🔍 How Authentication Flow Works
+
+The policy checks if a subscription key is present (`context.Subscription`). If a **valid APIM subscription key exists**, it's used for authentication. If **no subscription key is provided**, the policy validates the Authorization header token, ensuring it's a valid Entra ID token with the correct audience (`https://cognitiveservices.azure.com`).
+
+> **⚠️ Important**: To enable this dual authentication mode, you must **disable the "Subscription required" setting** on your APIM API to allow requests without subscription keys.
+
+#### 🛠️ Setup Instructions
+
+Add these policies to your APIM API's **inbound** section:
+
+1. **📍 Navigate to Your API**: Go to your imported API in APIM (e.g., `agent-aoai`)
+2. **📝 Edit API-Level Policy**: Click on **"All operations"** and then **"Policies"**
+3. **📋 Add Authentication Policies**: Add the following XML to the `<inbound>` section:
+
+```xml
+<inbound>
+    <choose>
+        <when condition="@(context.Subscription == null)">
+            <!-- Token authentication - validate token -->
+            <validate-azure-ad-token 
+                tenant-id="YOUR-TENANT-ID" 
+                header-name="Authorization" 
+                failed-validation-httpcode="401" 
+                failed-validation-error-message="Unauthorized. Valid Entra token is required." 
+                output-token-variable-name="jwt">
+                <audiences>
+                    <audience>https://cognitiveservices.azure.com</audience>
+                </audiences>
+                <required-claims>
+                    <claim name="xms_mirid" match="any">
+                        <value>/subscriptions/YOUR-SUBSCRIPTION-ID/resourcegroups/YOUR-RESOURCE-GROUP/providers/Microsoft.CognitiveServices/accounts/YOUR-FOUNDRY-ACCOUNT/projects/YOUR-FOUNDRY-PROJECT</value>
+                    </claim>
+                </required-claims>
+            </validate-azure-ad-token>
+        </when>
+        <otherwise>
+            <!-- API Key authentication - set backend-id -->
+            <set-backend-service id="apim-generated-policy" backend-id="YOUR-BACKEND-ID" />
+        </otherwise>
+    </choose>
+    <base />
+</inbound>
+```
+
+> **🔧 Required Configuration**:
+> - **`YOUR-TENANT-ID`**: Your Azure Entra ID tenant ID
+> - **`YOUR-BACKEND-ID`**: Your APIM backend ID for Cognitive Services
+> - **`YOUR-SUBSCRIPTION-ID`**: Your Azure subscription ID
+> - **`YOUR-RESOURCE-GROUP`**: Resource group name (case-sensitive)
+> - **`YOUR-FOUNDRY-ACCOUNT`**: Your Foundry account name
+> - **`YOUR-FOUNDRY-PROJECT`**: Your Foundry project name
+
+#### 🔒 Understanding Required Claims
+
+The `<required-claims>` section validates that tokens come from your specific Foundry project, preventing unauthorized access from other projects or accounts.
+
+
+4. **💾 Save Policy**: Save the policy configuration
+
+#### 🔍 How It Works
+
+- **Token Flow**: When no subscription key is provided, validates the Entra ID token at the API level. Backend routing is configured at the operation level (see completions and management operations below)
+- **API Key Flow**: When an APIM subscription key is provided, requests are routed using the configured backend-id
+
+#### 🎯 Configure Chat Completions Operation
+
+For the **chat completions operation**, you need to validate the token and configure backend routing:
+
+1. **📍 Navigate to Completions Operation**: Go to your chat completions operation in APIM
+2. **📝 Edit Operation-Level Policy**: Click on **"Policies"** for this specific operation
+3. **📋 Add Token Validation and Backend Configuration**: Add the following XML to the `<inbound>` section:
+
+```xml
+<inbound>
+    <base />
+    <set-backend-service base-url="YOUR-COGNITIVE-SERVICES-URL" />
+</inbound>
+```
+
+> **🔧 Important**: Replace `YOUR-COGNITIVE-SERVICES-URL` with your Cognitive Services endpoint URL (e.g., `https://your-account.openai.azure.com`)
+
+4. **💾 Save Policy**: Save the policy configuration
+
+**🔍 How This Works**: For token-based requests (already validated at API level), this sets the backend URL and forwards the token to the Cognitive Services backend for end-to-end managed identity authentication. For Api key based requests, the API level policy sets the backend id, which configures APIM to use its own identity on this call.
+
+
 ### Step 3: 🔍 Configure Model Discovery
 
 Once chat completions are working, you need to configure how Foundry Agents will discover available models. You have two options:
