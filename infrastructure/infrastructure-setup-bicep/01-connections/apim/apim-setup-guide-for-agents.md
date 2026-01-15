@@ -387,16 +387,22 @@ First, install the required Python package:
 pip install requests
 ```
 
-Then run the validation script:
+Then run the validation script (use ONE of the authentication methods):
 ```bash
-# For APIM connection testing:
+# For ApiKey authentication (uses APIM subscription key):
 python3 test_apim_connection.py --params samples/YOUR_CHOSEN_FILE.json --api-key YOUR_APIM_SUBSCRIPTION_KEY --deployment-name YOUR_DEPLOYMENT --target-url YOUR_APIM_BASE_URL
+
+# For ProjectManagedIdentity authentication (uses Authorization header):
+python3 test_apim_connection.py --params samples/YOUR_CHOSEN_FILE.json --authorization "Bearer YOUR_TOKEN" --deployment-name YOUR_DEPLOYMENT --target-url YOUR_APIM_BASE_URL
 ```
 
 **Example:**
 ```bash
-# Complete example with actual values
+# ApiKey auth example
 python3 test_apim_connection.py --params samples/parameters-static-models.json --api-key abc123def456 --deployment-name gpt-4o --target-url https://my-apim.azure-api.net/foundry/models
+
+# ProjectManagedIdentity auth example (with Bearer token)
+python3 test_apim_connection.py --params samples/parameters-static-models.json --authorization "Bearer eyJ0eXAi..." --deployment-name gpt-4o --target-url https://my-apim.azure-api.net/foundry/models
 ```
 
 This validation script tests:
