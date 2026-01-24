@@ -1,5 +1,5 @@
 # Unique identifier/name for this agent
-name: agent-with-hosted-mcp
+name: af-agent-with-foundry-tools
 # Brief description of what this agent does
 description: >
   An AI agent that uses Azure OpenAI with a Hosted Model Context Protocol (MCP) server.
@@ -7,15 +7,14 @@ description: >
 metadata:
   # Categorization tags for organizing and discovering agents
   authors:
-    - Microsoft Agent Framework Team
+    - Microsoft
   tags:
     - Azure AI AgentServer
     - Microsoft Agent Framework
     - Model Context Protocol
     - MCP
 template:
-  name: agent-with-hosted-mcp
-  # The type of agent - "hosted" for HOBO, "container" for COBO
+  name: af-agent-with-foundry-tools
   kind: hosted
   protocols:
     - protocol: responses
@@ -24,6 +23,8 @@ template:
       value: ${AZURE_OPENAI_ENDPOINT}
     - name: AZURE_OPENAI_CHAT_DEPLOYMENT_NAME
       value: "{{chat}}"
+    - name: AZURE_AI_PROJECT_TOOL_CONNECTION_ID
+      value: ""
 resources:
   - kind: model
     id: gpt-4o-mini
