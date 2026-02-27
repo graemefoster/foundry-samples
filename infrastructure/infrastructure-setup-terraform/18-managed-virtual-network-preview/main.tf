@@ -11,17 +11,13 @@ locals {
   storage_name    = "st${local.resource_suffix}"
   aisearch_name   = "srch-${local.resource_suffix}"
   cosmos_name     = "cosmos-${local.resource_suffix}"
-  keyvault_name   = "kv-${local.resource_suffix}"
 }
 
 resource "azurerm_resource_group" "main" {
   name     = local.rg_name
   location = var.location
 
-  tags = merge(
-    var.tags,
-    {
-      environment = "lab"
-    }
-  )
+  tags = {
+    environment = "lab"
+  }
 }

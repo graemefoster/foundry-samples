@@ -20,18 +20,6 @@ variable "foundry_identifier" {
   default     = "foundry"
 }
 
-variable "tags" {
-  description = "A map of tags to apply to all resources"
-  type        = map(string)
-  default     = {}
-}
-
-variable "allowed_public_ips" {
-  description = "List of public IP addresses (CIDR format) allowed to access Key Vault"
-  type        = list(string)
-  default     = []
-}
-
 # Feature flags for optional resources
 variable "enable_networking" {
   description = "Enable VNet, subnets, and network infrastructure"
@@ -125,6 +113,12 @@ variable "vm_name" {
 
 variable "vm_admin_username" {
   description = "Admin username for the VM"
+  type        = string
+  sensitive   = true
+}
+
+variable "vm_admin_password" {
+  description = "Admin password for the VM"
   type        = string
   sensitive   = true
 }
