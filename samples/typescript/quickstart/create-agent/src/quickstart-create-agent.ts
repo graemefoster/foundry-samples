@@ -1,18 +1,22 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { AIProjectClient } from "@azure/ai-projects";
-import "dotenv/config";
 
-const projectEndpoint = process.env["PROJECT_ENDPOINT"] || "<project endpoint>";
-const deploymentName = process.env["MODEL_DEPLOYMENT_NAME"] || "<model deployment name>";
+// Format: "https://resource_name.ai.azure.com/api/projects/project_name"
+const FOUNDRY_PROJECT_ENDPOINT = "your_project_endpoint";
+const FOUNDRY_MODEL_NAME = "gpt-5-mini"; 
+const FOUNDRY_AGENT_NAME = "your_agent_name";
 
 async function main(): Promise<void> {
-    const project = new AIProjectClient(projectEndpoint, new DefaultAzureCredential());
-    const agent = await project.agents.createVersion("my-agent-basic", {
+    // Create project client to call Foundry API
+    const project = new AIProjectClient(FOUNDRY_PROJECT_ENDPOINT, new DefaultAzureCredential());
+
+    // Create an agent with a model and instructions
+    const agent = await project.agents.createVersion(FOUNDRY_AGENT_NAME, {
         kind: "prompt",
-        model: deploymentName,
+        model: FOUNDRY_MODEL_NAME,
         instructions: "You are a helpful assistant that answers general questions",
-  });
-  console.log(`Agent created (id: ${agent.id}, name: ${agent.name}, version: ${agent.version})`);
+    });
+    console.log(`Agent created (id: ${agent.id}, name: ${agent.name}, version: ${agent.version})`);
 }
 
 main().catch(console.error);
