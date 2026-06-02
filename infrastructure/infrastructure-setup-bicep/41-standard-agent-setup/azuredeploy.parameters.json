@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "value": "eastus"
+      "value": "australiaeast"
     },
     "aiServices": {
-      "value": "aiservices"
+      "value": "grfcapfdy"
     },
     "firstProjectName": {
       "value": "project"
@@ -27,13 +27,13 @@
       "value": 1
     },
     "aiSearchResourceId": {
-      "value": ""
+      "value": "/subscriptions/b045f4eb-724b-4361-80ff-2a0ff999a996/resourceGroups/PublicFoundry/providers/Microsoft.Search/searchServices/grfaisearch"
     },
     "azureStorageAccountResourceId": {
-      "value": ""
+      "value": "/subscriptions/b045f4eb-724b-4361-80ff-2a0ff999a996/resourceGroups/PublicFoundry/providers/Microsoft.Storage/storageAccounts/fdrystorage"
     },
     "azureCosmosDBAccountResourceId": {
-      "value": ""
+      "value": "/subscriptions/b045f4eb-724b-4361-80ff-2a0ff999a996/resourceGroups/PublicFoundry/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdbpublicfoundryb045f4"
     }
   }
 }

@@ -83,7 +83,8 @@ resource connectionAAD 'Microsoft.CognitiveServices/accounts/projects/connection
     authType: 'ProjectManagedIdentity'
     audience: 'https://cognitiveservices.azure.com'
     isSharedToAll: isSharedToAll
-    credentials: {}
+    credentials: {
+    }
     metadata: metadata
   }
 }
