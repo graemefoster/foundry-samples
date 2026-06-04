@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "12032725970255444981"
+      "templateHash": "9049884660868214179"
     }
   },
   "parameters": {
@@ -2966,6 +2966,9 @@
           },
           "agentSubnetId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('foundry-spoke-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.agentSubnetId.value]"
+          },
+          "keyVaultName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultName.value]"
           }
         },
         "template": {
@@ -2975,7 +2978,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "5288100193867930575"
+              "templateHash": "15007443201667433744"
             }
           },
           "parameters": {
@@ -3014,6 +3017,12 @@
               "metadata": {
                 "description": "Agent subnet resource ID for network injection"
               }
+            },
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault name (used to construct FQDN for allowed outbound list)"
+              }
             }
           },
           "resources": [
@@ -3043,7 +3052,9 @@
                 "publicNetworkAccess": "Disabled",
                 "disableLocalAuth": false,
                 "restrictOutboundNetworkAccess": true,
-                "allowedFqdnList": [],
+                "allowedFqdnList": [
+                  "[format('{0}.vault.azure.net', parameters('keyVaultName'))]"
+                ],
                 "networkAcls": {
                   "defaultAction": "Allow",
                   "virtualNetworkRules": [],
@@ -3202,6 +3213,9 @@
           },
           "keyVaultKeyUri": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUri.value]"
+          },
+          "acrPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrPrincipalId.value]"
           }
         },
         "template": {
@@ -3211,7 +3225,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "15520931409236663343"
+              "templateHash": "10244663391636222680"
             }
           },
           "parameters": {
@@ -3232,6 +3246,12 @@
               "metadata": {
                 "description": "Key Vault key URI (without version) for CMK encryption"
               }
+            },
+            "acrPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "The principal ID of the ACR system-assigned identity"
+              }
             }
           },
           "resources": [
@@ -3251,7 +3271,7 @@
                   "status": "enabled",
                   "keyVaultProperties": {
                     "keyIdentifier": "[parameters('keyVaultKeyUri')]",
-                    "identity": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName')), '2025-11-01', 'full').identity.principalId]"
+                    "identity": "[parameters('acrPrincipalId')]"
                   }
                 }
               }
@@ -4223,7 +4243,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "9054966053953739317"
+              "templateHash": "6505232099281936174"
             }
           },
           "parameters": {
@@ -4336,7 +4356,7 @@
             },
             {
               "type": "Microsoft.CognitiveServices/accounts/projects/connections",
-              "apiVersion": "2025-10-01-preview",
+              "apiVersion": "2026-03-01",
               "name": "[format('{0}/{1}/{2}', parameters('accountName'), parameters('projectName'), parameters('mcpServerName'))]",
               "properties": {
                 "category": "RemoteTool",

@@ -9,12 +9,11 @@ param location string
 @description('Key Vault key URI (without version) for CMK encryption')
 param keyVaultKeyUri string
 
-resource existingAcr 'Microsoft.ContainerRegistry/registries@2025-11-01' existing = {
-  name: acrName
-}
+@description('The principal ID of the ACR system-assigned identity')
+param acrPrincipalId string
 
 resource acrUpdate 'Microsoft.ContainerRegistry/registries@2025-11-01' = {
-  name: existingAcr.name
+  name: acrName
   location: location
   sku: {
     name: 'Premium'
@@ -27,7 +26,7 @@ resource acrUpdate 'Microsoft.ContainerRegistry/registries@2025-11-01' = {
       status: 'enabled'
       keyVaultProperties: {
         keyIdentifier: keyVaultKeyUri
-        identity: existingAcr.identity.principalId
+        identity: acrPrincipalId
       }
     }
   }

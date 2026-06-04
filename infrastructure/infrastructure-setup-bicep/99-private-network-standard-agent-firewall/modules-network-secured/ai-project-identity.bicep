@@ -94,7 +94,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-previ
   }
 
   //Sample MCP server
-  resource project_connection_mcp_server 'connections@2025-10-01-preview' = {
+  resource project_connection_mcp_server 'connections@2026-03-01' = {
     name: mcpServerName
     properties: {
       category: 'RemoteTool'

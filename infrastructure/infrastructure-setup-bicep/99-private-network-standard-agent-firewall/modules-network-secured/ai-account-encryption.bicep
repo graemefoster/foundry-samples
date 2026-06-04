@@ -18,6 +18,9 @@ param keyVersion string
 @description('Agent subnet resource ID for network injection')
 param agentSubnetId string
 
+@description('Key Vault name (used to construct FQDN for allowed outbound list)')
+param keyVaultName string
+
 resource existingAccount 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
   name: accountName
 }
@@ -47,7 +50,9 @@ resource accountUpdate 'Microsoft.CognitiveServices/accounts@2025-04-01-preview'
     publicNetworkAccess: 'Disabled'
     disableLocalAuth: false
     restrictOutboundNetworkAccess: true
-    allowedFqdnList: []
+    allowedFqdnList: [
+      '${keyVaultName}.vault.azure.net'
+    ]
     networkAcls: {
       defaultAction: 'Allow'
       virtualNetworkRules: []

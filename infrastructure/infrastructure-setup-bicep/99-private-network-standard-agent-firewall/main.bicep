@@ -390,6 +390,7 @@ module aiAccountEncryption 'modules-network-secured/ai-account-encryption.bicep'
     keyName: keyVault.outputs.keyName
     keyVersion: last(split(keyVault.outputs.keyUriWithVersion, '/'))
     agentSubnetId: foundrySpokeVnet.outputs.agentSubnetId
+    keyVaultName: keyVault.outputs.keyVaultName
   }
   dependsOn: [
     keyVaultRoleAssignments
@@ -421,6 +422,7 @@ module acrEncryption 'modules-network-secured/acr-encryption.bicep' = {
     acrName: acr.outputs.acrName
     location: location
     keyVaultKeyUri: keyVault.outputs.keyUri
+    acrPrincipalId: acr.outputs.acrPrincipalId
   }
   dependsOn: [
     keyVaultRoleAssignments
