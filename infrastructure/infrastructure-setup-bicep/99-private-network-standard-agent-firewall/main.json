@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "6166204524339275573"
+      "templateHash": "12549108090508610157"
     }
   },
   "parameters": {
@@ -2851,7 +2851,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "16013592819699767080"
+              "templateHash": "15513447480840107966"
             }
           },
           "parameters": {
@@ -2885,10 +2885,10 @@
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
               "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
-              "name": "[guid(parameters('aiServicesPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "name": "[guid(parameters('aiServicesPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
               "properties": {
                 "principalId": "[parameters('aiServicesPrincipalId')]",
-                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')]",
                 "principalType": "ServicePrincipal"
               }
             },

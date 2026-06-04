@@ -1,4 +1,4 @@
-// Assigns Key Vault Crypto Service Encryption User role to service identities for CMK
+// Assigns Key Vault crypto roles to service identities for CMK
 
 @description('Name of the Key Vault')
 param keyVaultName string
@@ -17,18 +17,26 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 }
 
 // Key Vault Crypto Service Encryption User: e147488a-f6f5-4113-8e2d-b22465e65bf6
+// Only permits wrapKey/unwrapKey - sufficient for Storage, Search
 resource kvCryptoServiceEncryptionUserRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   name: 'e147488a-f6f5-4113-8e2d-b22465e65bf6'
   scope: resourceGroup()
 }
 
-// AI Services
+// Key Vault Crypto User: 12338af0-0e69-4776-bea7-57ae8d297424
+// Includes sign/verify in addition to wrap/unwrap - required by AI Services
+resource kvCryptoUserRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: '12338af0-0e69-4776-bea7-57ae8d297424'
+  scope: resourceGroup()
+}
+
+// AI Services - needs Crypto User (sign action required)
 resource aiServicesRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: keyVault
-  name: guid(aiServicesPrincipalId, kvCryptoServiceEncryptionUserRole.id, keyVault.id)
+  name: guid(aiServicesPrincipalId, kvCryptoUserRole.id, keyVault.id)
   properties: {
     principalId: aiServicesPrincipalId
-    roleDefinitionId: kvCryptoServiceEncryptionUserRole.id
+    roleDefinitionId: kvCryptoUserRole.id
     principalType: 'ServicePrincipal'
   }
 }
