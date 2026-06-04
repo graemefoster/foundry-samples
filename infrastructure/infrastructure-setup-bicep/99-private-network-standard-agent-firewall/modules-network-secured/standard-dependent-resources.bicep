@@ -3,9 +3,6 @@
 @description('Azure region of the deployment')
 param location string
 
-@description('Key Vault key URI (without version) for Cosmos DB CMK encryption')
-param keyVaultKeyUri string
-
 @description('The name of the AI Search resource')
 param aiSearchName string
 
@@ -83,7 +80,6 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2024-11-15' = if (!cosm
         isZoneRedundant: false
       }
     ]
-    keyVaultKeyUri: keyVaultKeyUri
     databaseAccountOfferType: 'Standard'
   }
 }

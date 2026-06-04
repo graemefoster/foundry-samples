@@ -48,7 +48,3 @@ param dnsZoneNames = [
 param vmAdminUsername = 'graeme'
 param vmAdminPassword = 'sdfkjh8789*(&876234basdghui)'
 
-// Object ID of the Cosmos DB first-party service principal in your tenant.
-// Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv
-param cosmosDBServicePrincipalId = '8e408dc3-90d9-45f1-bdb4-da14a756ad12'
-

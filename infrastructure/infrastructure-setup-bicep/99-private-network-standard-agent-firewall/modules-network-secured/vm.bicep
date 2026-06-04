@@ -6,18 +6,6 @@ param adminUsername string
 @secure()
 param adminPassword string
 
-@description('Unique DNS Name for the Public IP used to access the Virtual Machine.')
-param dnsLabelPrefix string = toLower('${vmName}-${uniqueString(resourceGroup().id, vmName)}')
-
-@description('Name for the Public IP used to access the Virtual Machine.')
-param publicIpName string = 'myPublicIP'
-
-@description('Allocation method for the Public IP used to access the Virtual Machine.')
-param publicIPAllocationMethod string = 'Static'
-
-@description('SKU for the Public IP used to access the Virtual Machine.')
-param publicIpSku string = 'Standard'
-
 @description('The Windows version for the VM. This will pick a fully patched image of this given Windows version.')
 @allowed([
   '2016-datacenter-gensecond'

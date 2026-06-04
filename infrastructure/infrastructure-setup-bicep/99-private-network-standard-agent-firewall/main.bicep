@@ -90,9 +90,6 @@ param vmAdminPassword string
 
 param vmAdminUsername string
 
-@description('Object ID of the Azure Cosmos DB first-party service principal in your tenant. Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv')
-param cosmosDBServicePrincipalId string
-
 @description('Object mapping DNS zone names to their resource group, or empty string to indicate creation')
 param existingDnsZones object = {
   'privatelink.services.ai.azure.com': ''
@@ -323,12 +320,7 @@ module aiDependencies 'modules-network-secured/standard-dependent-resources.bice
     //wire up the YARP proxy
     foundryName: aiAccount.outputs.accountName
 
-    // CMK encryption (Cosmos DB uses keyVaultKeyUri at creation time)
-    keyVaultKeyUri: keyVault.outputs.keyUri
   }
-  dependsOn: [
-    keyVaultCosmosDbRbac
-  ]
 }
 
 resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
@@ -359,15 +351,6 @@ module acr './modules-network-secured/acr.bicep' = {
 }
 
 // ==================== CMK RBAC & ENCRYPTION ====================
-
-// Cosmos DB first-party principal needs KV access BEFORE Cosmos is created with keyVaultKeyUri
-module keyVaultCosmosDbRbac 'modules-network-secured/keyvault-cosmosdb-rbac.bicep' = {
-  name: 'keyvault-cosmos-rbac-${uniqueSuffix}-deployment'
-  params: {
-    keyVaultName: keyVault.outputs.keyVaultName
-    cosmosDBServicePrincipalId: cosmosDBServicePrincipalId
-  }
-}
 
 // Assign Key Vault Crypto Service Encryption User to service identities (post-creation)
 module keyVaultRoleAssignments 'modules-network-secured/keyvault-role-assignments.bicep' = {

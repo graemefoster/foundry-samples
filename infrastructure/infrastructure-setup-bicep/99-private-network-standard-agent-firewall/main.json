@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "12549108090508610157"
+      "templateHash": "12323312584774862133"
     }
   },
   "parameters": {
@@ -153,12 +153,6 @@
     },
     "vmAdminUsername": {
       "type": "string"
-    },
-    "cosmosDBServicePrincipalId": {
-      "type": "string",
-      "metadata": {
-        "description": "Object ID of the Azure Cosmos DB first-party service principal in your tenant. Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv"
-      }
     },
     "existingDnsZones": {
       "type": "object",
@@ -2045,9 +2039,6 @@
           },
           "foundryName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
-          },
-          "keyVaultKeyUri": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUri.value]"
           }
         },
         "template": {
@@ -2057,7 +2048,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "15517435770244172"
+              "templateHash": "8129618260793613163"
             }
           },
           "parameters": {
@@ -2065,12 +2056,6 @@
               "type": "string",
               "metadata": {
                 "description": "Azure region of the deployment"
-              }
-            },
-            "keyVaultKeyUri": {
-              "type": "string",
-              "metadata": {
-                "description": "Key Vault key URI (without version) for Cosmos DB CMK encryption"
               }
             },
             "aiSearchName": {
@@ -2214,7 +2199,6 @@
                     "isZoneRedundant": false
                   }
                 ],
-                "keyVaultKeyUri": "[parameters('keyVaultKeyUri')]",
                 "databaseAccountOfferType": "Standard"
               }
             },
@@ -2650,8 +2634,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('appservice-spoke-{0}-deployment', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('keyvault-cosmos-rbac-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]",
         "[resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix')))]"
       ]
@@ -2759,66 +2741,6 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2025-04-01",
-      "name": "[format('keyvault-cosmos-rbac-{0}-deployment', variables('uniqueSuffix'))]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "keyVaultName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultName.value]"
-          },
-          "cosmosDBServicePrincipalId": {
-            "value": "[parameters('cosmosDBServicePrincipalId')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.43.8.12551",
-              "templateHash": "13766133627895024051"
-            }
-          },
-          "parameters": {
-            "keyVaultName": {
-              "type": "string",
-              "metadata": {
-                "description": "Name of the Key Vault"
-              }
-            },
-            "cosmosDBServicePrincipalId": {
-              "type": "string",
-              "metadata": {
-                "description": "Object ID of the Cosmos DB first-party service principal in this tenant"
-              }
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2022-04-01",
-              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
-              "name": "[guid(parameters('cosmosDBServicePrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
-              "properties": {
-                "principalId": "[parameters('cosmosDBServicePrincipalId')]",
-                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
-                "principalType": "ServicePrincipal"
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]"
       ]
     },
     {
@@ -4877,7 +4799,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "5233935838557399329"
+              "templateHash": "8571038670107135234"
             }
           },
           "parameters": {
@@ -4892,34 +4814,6 @@
               "minLength": 12,
               "metadata": {
                 "description": "Password for the Virtual Machine."
-              }
-            },
-            "dnsLabelPrefix": {
-              "type": "string",
-              "defaultValue": "[toLower(format('{0}-{1}', parameters('vmName'), uniqueString(resourceGroup().id, parameters('vmName'))))]",
-              "metadata": {
-                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
-              }
-            },
-            "publicIpName": {
-              "type": "string",
-              "defaultValue": "myPublicIP",
-              "metadata": {
-                "description": "Name for the Public IP used to access the Virtual Machine."
-              }
-            },
-            "publicIPAllocationMethod": {
-              "type": "string",
-              "defaultValue": "Static",
-              "metadata": {
-                "description": "Allocation method for the Public IP used to access the Virtual Machine."
-              }
-            },
-            "publicIpSku": {
-              "type": "string",
-              "defaultValue": "Standard",
-              "metadata": {
-                "description": "SKU for the Public IP used to access the Virtual Machine."
               }
             },
             "OSVersion": {
