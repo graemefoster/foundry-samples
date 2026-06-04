@@ -265,6 +265,7 @@ module aiAccount 'modules-network-secured/ai-account-identity.bicep' = {
     appInsightsConnectionString: appInsights.properties.ConnectionString
     appInsightsResourceId: appInsights.id
     mcpServerName: 'mcp-${appServicePlanName}.azurewebsites.net'
+    keyVaultName: keyVaultName
   }
 }
 /*
@@ -376,7 +377,6 @@ module keyVaultRoleAssignments 'modules-network-secured/keyvault-role-assignment
     aiServicesPrincipalId: aiAccount.outputs.accountPrincipalId
     storagePrincipalId: aiDependencies.outputs.storagePrincipalId
     aiSearchPrincipalId: aiDependencies.outputs.aiSearchPrincipalId
-    acrPrincipalId: acr.outputs.acrPrincipalId
   }
 }
 
@@ -409,20 +409,6 @@ module storageEncryption 'modules-network-secured/storage-encryption.bicep' = if
     keyVaultUri: keyVault.outputs.keyVaultUri
     keyVaultKeyName: keyVault.outputs.keyName
     skuName: storageSkuName
-  }
-  dependsOn: [
-    keyVaultRoleAssignments
-  ]
-}
-
-// Update ACR with CMK encryption (must be after RBAC assignment)
-module acrEncryption 'modules-network-secured/acr-encryption.bicep' = {
-  name: 'acr-encryption-${uniqueSuffix}-deployment'
-  params: {
-    acrName: acr.outputs.acrName
-    location: location
-    keyVaultKeyUri: keyVault.outputs.keyUri
-    acrPrincipalId: acr.outputs.acrPrincipalId
   }
   dependsOn: [
     keyVaultRoleAssignments

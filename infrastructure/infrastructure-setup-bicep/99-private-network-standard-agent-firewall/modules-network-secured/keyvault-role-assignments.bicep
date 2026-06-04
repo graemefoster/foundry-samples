@@ -12,9 +12,6 @@ param storagePrincipalId string
 @description('Principal ID of the AI Search service (SystemAssigned) - empty if BYO resource')
 param aiSearchPrincipalId string
 
-@description('Principal ID of the ACR (SystemAssigned)')
-param acrPrincipalId string
-
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyVaultName
 }
@@ -53,17 +50,6 @@ resource aiSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
   name: guid(aiSearchPrincipalId, kvCryptoServiceEncryptionUserRole.id, keyVault.id)
   properties: {
     principalId: aiSearchPrincipalId
-    roleDefinitionId: kvCryptoServiceEncryptionUserRole.id
-    principalType: 'ServicePrincipal'
-  }
-}
-
-// ACR
-resource acrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  scope: keyVault
-  name: guid(acrPrincipalId, kvCryptoServiceEncryptionUserRole.id, keyVault.id)
-  properties: {
-    principalId: acrPrincipalId
     roleDefinitionId: kvCryptoServiceEncryptionUserRole.id
     principalType: 'ServicePrincipal'
   }

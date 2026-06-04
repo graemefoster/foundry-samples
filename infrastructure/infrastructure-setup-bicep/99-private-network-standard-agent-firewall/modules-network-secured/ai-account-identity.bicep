@@ -9,6 +9,7 @@ param agentSubnetId string
 param networkInjection string = 'true'
 param logAnalyticsWorkspaceId string
 param mcpServerName string
+param keyVaultName string = ''
 
 @secure()
 param appInsightsConnectionString string
@@ -52,8 +53,8 @@ resource account 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
     // Set disable local auth to true or false. Agent service does not support API key based authentication
     disableLocalAuth: false
     restrictOutboundNetworkAccess: true
-    allowedFqdnList: [
-      //mcpServerName
+    allowedFqdnList: empty(keyVaultName) ? [] : [
+      '${keyVaultName}.vault.azure.net'
     ]
   }
 

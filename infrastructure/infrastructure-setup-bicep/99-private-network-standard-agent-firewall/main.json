@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "9049884660868214179"
+      "templateHash": "6166204524339275573"
     }
   },
   "parameters": {
@@ -1508,6 +1508,9 @@
           },
           "mcpServerName": {
             "value": "[format('mcp-{0}.azurewebsites.net', variables('appServicePlanName'))]"
+          },
+          "keyVaultName": {
+            "value": "[variables('keyVaultName')]"
           }
         },
         "template": {
@@ -1517,7 +1520,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "18211897484661506949"
+              "templateHash": "8565903103300080972"
             }
           },
           "parameters": {
@@ -1554,6 +1557,10 @@
             },
             "mcpServerName": {
               "type": "string"
+            },
+            "keyVaultName": {
+              "type": "string",
+              "defaultValue": ""
             },
             "appInsightsConnectionString": {
               "type": "securestring"
@@ -1614,7 +1621,7 @@
                 "networkInjections": "[if(equals(parameters('networkInjection'), 'true'), createArray(createObject('scenario', 'agent', 'subnetArmId', parameters('agentSubnetId'), 'useMicrosoftManagedNetwork', false())), null())]",
                 "disableLocalAuth": false,
                 "restrictOutboundNetworkAccess": true,
-                "allowedFqdnList": []
+                "allowedFqdnList": "[if(empty(parameters('keyVaultName')), createArray(), createArray(format('{0}.vault.azure.net', parameters('keyVaultName'))))]"
               }
             },
             {
@@ -2835,9 +2842,6 @@
           },
           "aiSearchPrincipalId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchPrincipalId.value]"
-          },
-          "acrPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrPrincipalId.value]"
           }
         },
         "template": {
@@ -2847,7 +2851,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "18240729181561864692"
+              "templateHash": "16013592819699767080"
             }
           },
           "parameters": {
@@ -2873,12 +2877,6 @@
               "type": "string",
               "metadata": {
                 "description": "Principal ID of the AI Search service (SystemAssigned) - empty if BYO resource"
-              }
-            },
-            "acrPrincipalId": {
-              "type": "string",
-              "metadata": {
-                "description": "Principal ID of the ACR (SystemAssigned)"
               }
             }
           },
@@ -2917,23 +2915,11 @@
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
                 "principalType": "ServicePrincipal"
               }
-            },
-            {
-              "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2022-04-01",
-              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
-              "name": "[guid(parameters('acrPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
-              "properties": {
-                "principalId": "[parameters('acrPrincipalId')]",
-                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
-                "principalType": "ServicePrincipal"
-              }
             }
           ]
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]"
@@ -3191,96 +3177,6 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2025-04-01",
-      "name": "[format('acr-encryption-{0}-deployment', variables('uniqueSuffix'))]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "acrName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrName.value]"
-          },
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "keyVaultKeyUri": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUri.value]"
-          },
-          "acrPrincipalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrPrincipalId.value]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.43.8.12551",
-              "templateHash": "10244663391636222680"
-            }
-          },
-          "parameters": {
-            "acrName": {
-              "type": "string",
-              "metadata": {
-                "description": "Name of the ACR"
-              }
-            },
-            "location": {
-              "type": "string",
-              "metadata": {
-                "description": "Location for the resource"
-              }
-            },
-            "keyVaultKeyUri": {
-              "type": "string",
-              "metadata": {
-                "description": "Key Vault key URI (without version) for CMK encryption"
-              }
-            },
-            "acrPrincipalId": {
-              "type": "string",
-              "metadata": {
-                "description": "The principal ID of the ACR system-assigned identity"
-              }
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.ContainerRegistry/registries",
-              "apiVersion": "2025-11-01",
-              "name": "[parameters('acrName')]",
-              "location": "[parameters('location')]",
-              "sku": {
-                "name": "Premium"
-              },
-              "identity": {
-                "type": "SystemAssigned"
-              },
-              "properties": {
-                "encryption": {
-                  "status": "enabled",
-                  "keyVaultProperties": {
-                    "keyIdentifier": "[parameters('keyVaultKeyUri')]",
-                    "identity": "[parameters('acrPrincipalId')]"
-                  }
-                }
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
       ]
