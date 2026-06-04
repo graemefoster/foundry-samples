@@ -143,6 +143,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
           networkSecurityGroup: {
             id: networkSecurityGroup.id
           }
+          defaultOutboundAccess: false
         }
       }
     ]
