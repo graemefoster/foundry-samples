@@ -90,6 +90,9 @@ param vmAdminPassword string
 
 param vmAdminUsername string
 
+@description('Object ID of the Azure Cosmos DB first-party service principal in your tenant. Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv')
+param cosmosDBServicePrincipalId string
+
 @description('Object mapping DNS zone names to their resource group, or empty string to indicate creation')
 param existingDnsZones object = {
   'privatelink.services.ai.azure.com': ''
@@ -98,6 +101,7 @@ param existingDnsZones object = {
   'privatelink.search.windows.net': ''
   'privatelink.blob.${environment().suffixes.storage}': ''
   'privatelink.documents.azure.com': ''
+  'privatelink.vaultcore.azure.net': ''
 }
 
 @description('Zone Names for Validation of existing Private Dns Zones')
@@ -108,12 +112,14 @@ param dnsZoneNames array = [
   'privatelink.search.windows.net'
   'privatelink.blob.${environment().suffixes.storage}'
   'privatelink.documents.azure.com'
+  'privatelink.vaultcore.azure.net'
 ]
 
 var projectName = toLower('${firstProjectName}${uniqueSuffix}')
 var cosmosDBName = toLower('${aiServices}${uniqueSuffix}cosmosdb')
 var aiSearchName = toLower('${aiServices}${uniqueSuffix}search')
 var azureStorageName = toLower('${aiServices}${uniqueSuffix}stg')
+var keyVaultName = toLower('${aiServices}${uniqueSuffix}kv')
 
 // Check if existing resources have been passed in
 var storagePassedIn = azureStorageAccountResourceId != ''
@@ -275,6 +281,17 @@ module validateExistingResources 'modules-network-secured/validate-existing-reso
   }
 }
 
+// ==================== KEY VAULT (CMK) ====================
+
+module keyVault 'modules-network-secured/keyvault.bicep' = {
+  name: 'keyvault-${uniqueSuffix}-deployment'
+  params: {
+    keyVaultName: keyVaultName
+    location: location
+    logAnalyticsId: lanalytics.id
+  }
+}
+
 // Create new agent dependent resources (Storage, CosmosDB, AI Search, App Service)
 module aiDependencies 'modules-network-secured/standard-dependent-resources.bicep' = {
   name: 'dependencies-${uniqueSuffix}-deployment'
@@ -305,7 +322,12 @@ module aiDependencies 'modules-network-secured/standard-dependent-resources.bice
     //wire up the YARP proxy
     foundryName: aiAccount.outputs.accountName
 
+    // CMK encryption (Cosmos DB uses keyVaultKeyUri at creation time)
+    keyVaultKeyUri: keyVault.outputs.keyUri
   }
+  dependsOn: [
+    keyVaultCosmosDbRbac
+  ]
 }
 
 resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
@@ -333,6 +355,75 @@ module acr './modules-network-secured/acr.bicep' = {
     acrName: acrName
     logAnalyticsWorkspaceId: lanalytics.id
   }
+}
+
+// ==================== CMK RBAC & ENCRYPTION ====================
+
+// Cosmos DB first-party principal needs KV access BEFORE Cosmos is created with keyVaultKeyUri
+module keyVaultCosmosDbRbac 'modules-network-secured/keyvault-cosmosdb-rbac.bicep' = {
+  name: 'keyvault-cosmos-rbac-${uniqueSuffix}-deployment'
+  params: {
+    keyVaultName: keyVault.outputs.keyVaultName
+    cosmosDBServicePrincipalId: cosmosDBServicePrincipalId
+  }
+}
+
+// Assign Key Vault Crypto Service Encryption User to service identities (post-creation)
+module keyVaultRoleAssignments 'modules-network-secured/keyvault-role-assignments.bicep' = {
+  name: 'keyvault-rbac-${uniqueSuffix}-deployment'
+  params: {
+    keyVaultName: keyVault.outputs.keyVaultName
+    aiServicesPrincipalId: aiAccount.outputs.accountPrincipalId
+    storagePrincipalId: aiDependencies.outputs.storagePrincipalId
+    aiSearchPrincipalId: aiDependencies.outputs.aiSearchPrincipalId
+    acrPrincipalId: acr.outputs.acrPrincipalId
+  }
+}
+
+// Update AI Services account with CMK encryption (must be after RBAC assignment)
+module aiAccountEncryption 'modules-network-secured/ai-account-encryption.bicep' = {
+  name: 'ai-encryption-${uniqueSuffix}-deployment'
+  params: {
+    accountName: aiAccount.outputs.accountName
+    location: location
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    keyName: keyVault.outputs.keyName
+    keyVersion: last(split(keyVault.outputs.keyUriWithVersion, '/'))
+  }
+  dependsOn: [
+    keyVaultRoleAssignments
+  ]
+}
+
+// Update Storage Account with CMK encryption (must be after RBAC assignment)
+var noZRSRegions = ['southindia', 'westus', 'northcentralus']
+var storageSkuName = contains(noZRSRegions, location) ? 'Standard_GRS' : 'Standard_ZRS'
+
+module storageEncryption 'modules-network-secured/storage-encryption.bicep' = if (!storagePassedIn) {
+  name: 'storage-encryption-${uniqueSuffix}-deployment'
+  params: {
+    storageName: aiDependencies.outputs.azureStorageName
+    location: location
+    keyVaultUri: keyVault.outputs.keyVaultUri
+    keyVaultKeyName: keyVault.outputs.keyName
+    skuName: storageSkuName
+  }
+  dependsOn: [
+    keyVaultRoleAssignments
+  ]
+}
+
+// Update ACR with CMK encryption (must be after RBAC assignment)
+module acrEncryption 'modules-network-secured/acr-encryption.bicep' = {
+  name: 'acr-encryption-${uniqueSuffix}-deployment'
+  params: {
+    acrName: acr.outputs.acrName
+    location: location
+    keyVaultKeyUri: keyVault.outputs.keyUri
+  }
+  dependsOn: [
+    keyVaultRoleAssignments
+  ]
 }
 
 // ==================== PRIVATE ENDPOINTS & DNS ====================
@@ -366,6 +457,7 @@ module privateEndpointAndDNS 'modules-network-secured/private-endpoint-and-dns.b
     existingDnsZones: existingDnsZones
     appServiceWebAppNames: [aiDependencies.outputs.yarpWebAppName, aiDependencies.outputs.mcpWebAppName]
     acrName: acr.outputs.acrName
+    keyVaultName: keyVault.outputs.keyVaultName
   }
   dependsOn: [
     aiSearch

@@ -9,6 +9,9 @@ resource acr 'Microsoft.ContainerRegistry/registries@2025-11-01' = {
   sku: {
     name: 'Premium'
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     adminUserEnabled: adminUserEnabled
   }
@@ -31,4 +34,5 @@ resource acrDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-previe
 output acrLoginServer string = acr.properties.loginServer
 output acrId string = acr.id
 output acrName string = acr.name
+output acrPrincipalId string = acr.identity.principalId
 

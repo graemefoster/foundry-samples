@@ -70,6 +70,7 @@ param existingDnsZones object = {
 
 param appServiceWebAppNames string[]
 param acrName string
+param keyVaultName string
 
 // ---- Resource references ----
 resource aiAccount 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
@@ -94,6 +95,11 @@ resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2024-11-15' exis
 
 resource acr 'Microsoft.ContainerRegistry/registries@2025-11-01' existing = {
   name: acrName
+  scope: resourceGroup()
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyVaultName
   scope: resourceGroup()
 }
 
@@ -191,6 +197,23 @@ resource cosmosDBPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01'
   }
 }
 
+resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01' = {
+  name: '${keyVaultName}-private-endpoint'
+  location: resourceGroup().location
+  properties: {
+    subnet: { id: foundryPeSubnet.id }
+    privateLinkServiceConnections: [
+      {
+        name: '${keyVaultName}-private-link-service-connection'
+        properties: {
+          privateLinkServiceId: keyVault.id
+          groupIds: ['vault']
+        }
+      }
+    ]
+  }
+}
+
 /* -------------------------------------------- App Service PEs (in App Service Spoke) -------------------------------------------- */
 
 resource appService 'Microsoft.Web/sites@2025-03-01' existing = [
@@ -228,6 +251,7 @@ var storageDnsZoneName = 'privatelink.blob.${environment().suffixes.storage}'
 var cosmosDBDnsZoneName = 'privatelink.documents.azure.com'
 var appServiceDnsZoneName = 'privatelink.azurewebsites.net'
 var acrDnsZoneName = 'privatelink.azurecr.io'
+var keyVaultDnsZoneName = 'privatelink.vaultcore.azure.net'
 
 // ---- DNS Zone Resource Group lookups ----
 var aiServicesDnsZoneRG = existingDnsZones[aiServicesDnsZoneName]
@@ -236,12 +260,24 @@ var cognitiveServicesDnsZoneRG = existingDnsZones[cognitiveServicesDnsZoneName]
 var aiSearchDnsZoneRG = existingDnsZones[aiSearchDnsZoneName]
 var storageDnsZoneRG = existingDnsZones[storageDnsZoneName]
 var cosmosDBDnsZoneRG = existingDnsZones[cosmosDBDnsZoneName]
+var keyVaultDnsZoneRG = existingDnsZones[keyVaultDnsZoneName]
 
 // ---- DNS Zone Resources ----
 resource acrServicePrivateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = {
   name: acrDnsZoneName
   location: 'global'
 }
+
+resource keyVaultPrivateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = if (empty(keyVaultDnsZoneRG)) {
+  name: keyVaultDnsZoneName
+  location: 'global'
+}
+
+resource existingKeyVaultPrivateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' existing = if (!empty(keyVaultDnsZoneRG)) {
+  name: keyVaultDnsZoneName
+  scope: resourceGroup(keyVaultDnsZoneRG)
+}
+var keyVaultDnsZoneId = empty(keyVaultDnsZoneRG) ? keyVaultPrivateDnsZone.id : existingKeyVaultPrivateDnsZone.id
 
 resource appServiceDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: appServiceDnsZoneName
@@ -322,6 +358,16 @@ resource acrLinkHub 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-
   parent: acrServicePrivateDnsZone
   location: 'global'
   name: 'acr-${suffix}-hub-link'
+  properties: {
+    virtualNetwork: { id: hubVnet.id }
+    registrationEnabled: false
+  }
+}
+
+resource keyVaultLinkHub 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = if (empty(keyVaultDnsZoneRG)) {
+  parent: keyVaultPrivateDnsZone
+  location: 'global'
+  name: 'keyvault-${suffix}-hub-link'
   properties: {
     virtualNetwork: { id: hubVnet.id }
     registrationEnabled: false
@@ -445,6 +491,19 @@ resource cosmosDBDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGrou
   }
   dependsOn: [
     empty(cosmosDBDnsZoneRG) ? cosmosDBLinkHub : null
+  ]
+}
+
+resource keyVaultDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01' = {
+  parent: keyVaultPrivateEndpoint
+  name: '${keyVaultName}-dns-group'
+  properties: {
+    privateDnsZoneConfigs: [
+      { name: '${keyVaultName}-dns-config', properties: { privateDnsZoneId: keyVaultDnsZoneId } }
+    ]
+  }
+  dependsOn: [
+    empty(keyVaultDnsZoneRG) ? keyVaultLinkHub : null
   ]
 }
 

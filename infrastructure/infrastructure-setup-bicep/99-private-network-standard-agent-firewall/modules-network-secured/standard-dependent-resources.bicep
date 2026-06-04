@@ -3,8 +3,8 @@
 @description('Azure region of the deployment')
 param location string
 
-// @description('The name of the Key Vault')
-// param keyvaultName string
+@description('Key Vault key URI (without version) for Cosmos DB CMK encryption')
+param keyVaultKeyUri string
 
 @description('The name of the AI Search resource')
 param aiSearchName string
@@ -83,6 +83,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2024-11-15' = if (!cosm
         isZoneRedundant: false
       }
     ]
+    keyVaultKeyUri: keyVaultKeyUri
     databaseAccountOfferType: 'Standard'
   }
 }
@@ -120,7 +121,7 @@ resource aiSearch 'Microsoft.Search/searchServices@2025-05-01' = if (!aiSearchEx
     disableLocalAuth: false
     authOptions: { aadOrApiKey: { aadAuthFailureMode: 'http401WithBearerChallenge' } }
     encryptionWithCmk: {
-      enforcement: 'Unspecified'
+      enforcement: 'Enabled'
     }
     hostingMode: 'Default'
     partitionCount: 1
@@ -168,6 +169,9 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = if (!azureStor
   location: location
   kind: 'StorageV2'
   sku: sku
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     minimumTlsVersion: 'TLS1_2'
     allowBlobPublicAccess: false
@@ -281,4 +285,7 @@ output yarpWebAppName string = appService.outputs.yarpWebAppName
 output mcpWebAppName string = appService.outputs.mcpWebAppName
 output yarpWebAppFqdn string = appService.outputs.yarpWebAppFqdn
 output mcpWebAppFqdn string = appService.outputs.mcpWebAppFqdn
+
+output storagePrincipalId string = !azureStorageExists ? storage.identity.principalId : ''
+output aiSearchPrincipalId string = !aiSearchExists ? aiSearch.identity.principalId : ''
 

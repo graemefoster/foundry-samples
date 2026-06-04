@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "8252502295761261987"
+      "templateHash": "1835033358132582380"
     }
   },
   "parameters": {
@@ -154,6 +154,12 @@
     "vmAdminUsername": {
       "type": "string"
     },
+    "cosmosDBServicePrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "Object ID of the Azure Cosmos DB first-party service principal in your tenant. Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv"
+      }
+    },
     "existingDnsZones": {
       "type": "object",
       "defaultValue": {
@@ -162,7 +168,8 @@
         "privatelink.cognitiveservices.azure.com": "",
         "privatelink.search.windows.net": "",
         "[format('privatelink.blob.{0}', environment().suffixes.storage)]": "",
-        "privatelink.documents.azure.com": ""
+        "privatelink.documents.azure.com": "",
+        "privatelink.vaultcore.azure.net": ""
       },
       "metadata": {
         "description": "Object mapping DNS zone names to their resource group, or empty string to indicate creation"
@@ -176,7 +183,8 @@
         "privatelink.cognitiveservices.azure.com",
         "privatelink.search.windows.net",
         "[format('privatelink.blob.{0}', environment().suffixes.storage)]",
-        "privatelink.documents.azure.com"
+        "privatelink.documents.azure.com",
+        "privatelink.vaultcore.azure.net"
       ],
       "metadata": {
         "description": "Zone Names for Validation of existing Private Dns Zones"
@@ -197,6 +205,7 @@
     "cosmosDBName": "[toLower(format('{0}{1}cosmosdb', parameters('aiServices'), variables('uniqueSuffix')))]",
     "aiSearchName": "[toLower(format('{0}{1}search', parameters('aiServices'), variables('uniqueSuffix')))]",
     "azureStorageName": "[toLower(format('{0}{1}stg', parameters('aiServices'), variables('uniqueSuffix')))]",
+    "keyVaultName": "[toLower(format('{0}{1}kv', parameters('aiServices'), variables('uniqueSuffix')))]",
     "storagePassedIn": "[not(equals(parameters('azureStorageAccountResourceId'), ''))]",
     "searchPassedIn": "[not(equals(parameters('aiSearchResourceId'), ''))]",
     "cosmosPassedIn": "[not(equals(parameters('azureCosmosDBAccountResourceId'), ''))]",
@@ -213,7 +222,13 @@
     "logAnalyticsName": "[toLower(format('{0}-la', variables('uniqueSuffix')))]",
     "appInsightsName": "[toLower(format('{0}-appi', variables('uniqueSuffix')))]",
     "acrName": "[toLower(format('{0}acr', variables('uniqueSuffix')))]",
-    "firewallPolicyName": "[format('{0}fwallpol', variables('uniqueSuffix'))]"
+    "firewallPolicyName": "[format('{0}fwallpol', variables('uniqueSuffix'))]",
+    "noZRSRegions": [
+      "southindia",
+      "westus",
+      "northcentralus"
+    ],
+    "storageSkuName": "[if(contains(variables('noZRSRegions'), parameters('location')), 'Standard_GRS', 'Standard_ZRS')]"
   },
   "resources": [
     {
@@ -1490,6 +1505,9 @@
           },
           "appInsightsResourceId": {
             "value": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+          },
+          "mcpServerName": {
+            "value": "[format('mcp-{0}.azurewebsites.net', variables('appServicePlanName'))]"
           }
         },
         "template": {
@@ -1499,7 +1517,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "12378238152586523412"
+              "templateHash": "18211897484661506949"
             }
           },
           "parameters": {
@@ -1532,6 +1550,9 @@
               "defaultValue": "true"
             },
             "logAnalyticsWorkspaceId": {
+              "type": "string"
+            },
+            "mcpServerName": {
               "type": "string"
             },
             "appInsightsConnectionString": {
@@ -1591,7 +1612,9 @@
                 },
                 "publicNetworkAccess": "Disabled",
                 "networkInjections": "[if(equals(parameters('networkInjection'), 'true'), createArray(createObject('scenario', 'agent', 'subnetArmId', parameters('agentSubnetId'), 'useMicrosoftManagedNetwork', false())), null())]",
-                "disableLocalAuth": false
+                "disableLocalAuth": false,
+                "restrictOutboundNetworkAccess": true,
+                "allowedFqdnList": []
               }
             },
             {
@@ -1795,6 +1818,175 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
+      "name": "[format('keyvault-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "keyVaultName": {
+            "value": "[variables('keyVaultName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "logAnalyticsId": {
+            "value": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "10536406496495870812"
+            }
+          },
+          "parameters": {
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Key Vault"
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Azure region of the deployment"
+              }
+            },
+            "logAnalyticsId": {
+              "type": "string",
+              "metadata": {
+                "description": "Log Analytics Workspace ID for diagnostics"
+              }
+            },
+            "keyName": {
+              "type": "string",
+              "defaultValue": "cmk-encryption-key",
+              "metadata": {
+                "description": "Name of the CMK encryption key to create"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2023-07-01",
+              "name": "[parameters('keyVaultName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "tenantId": "[subscription().tenantId]",
+                "enableRbacAuthorization": true,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enablePurgeProtection": true,
+                "publicNetworkAccess": "Disabled",
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Deny"
+                }
+              }
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults/keys",
+              "apiVersion": "2023-07-01",
+              "name": "[format('{0}/{1}', parameters('keyVaultName'), parameters('keyName'))]",
+              "properties": {
+                "kty": "RSA",
+                "keySize": 3072,
+                "attributes": {
+                  "enabled": true
+                },
+                "rotationPolicy": {
+                  "attributes": {
+                    "expiryTime": "P2Y"
+                  },
+                  "lifetimeActions": [
+                    {
+                      "action": {
+                        "type": "rotate"
+                      },
+                      "trigger": {
+                        "timeBeforeExpiry": "P90D"
+                      }
+                    },
+                    {
+                      "action": {
+                        "type": "notify"
+                      },
+                      "trigger": {
+                        "timeBeforeExpiry": "P30D"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "diagnostics",
+              "properties": {
+                "workspaceId": "[parameters('logAnalyticsId')]",
+                "logs": [
+                  {
+                    "categoryGroup": "allLogs",
+                    "enabled": true
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "keyVaultName": {
+              "type": "string",
+              "value": "[parameters('keyVaultName')]"
+            },
+            "keyVaultId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            },
+            "keyVaultUri": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')), '2023-07-01').vaultUri]"
+            },
+            "keyName": {
+              "type": "string",
+              "value": "[parameters('keyName')]"
+            },
+            "keyUri": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.KeyVault/vaults/keys', parameters('keyVaultName'), parameters('keyName')), '2023-07-01').keyUri]"
+            },
+            "keyUriWithVersion": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.KeyVault/vaults/keys', parameters('keyVaultName'), parameters('keyName')), '2023-07-01').keyUriWithVersion]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
       "name": "[format('dependencies-{0}-deployment', variables('uniqueSuffix'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1846,6 +2038,9 @@
           },
           "foundryName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
+          },
+          "keyVaultKeyUri": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUri.value]"
           }
         },
         "template": {
@@ -1855,7 +2050,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "13108167576018445415"
+              "templateHash": "15517435770244172"
             }
           },
           "parameters": {
@@ -1863,6 +2058,12 @@
               "type": "string",
               "metadata": {
                 "description": "Azure region of the deployment"
+              }
+            },
+            "keyVaultKeyUri": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault key URI (without version) for Cosmos DB CMK encryption"
               }
             },
             "aiSearchName": {
@@ -2006,6 +2207,7 @@
                     "isZoneRedundant": false
                   }
                 ],
+                "keyVaultKeyUri": "[parameters('keyVaultKeyUri')]",
                 "databaseAccountOfferType": "Standard"
               }
             },
@@ -2044,7 +2246,7 @@
                   }
                 },
                 "encryptionWithCmk": {
-                  "enforcement": "Unspecified"
+                  "enforcement": "Enabled"
                 },
                 "hostingMode": "Default",
                 "partitionCount": 1,
@@ -2085,6 +2287,9 @@
               "location": "[parameters('location')]",
               "kind": "StorageV2",
               "sku": "[parameters('sku')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
               "properties": {
                 "minimumTlsVersion": "TLS1_2",
                 "allowBlobPublicAccess": false,
@@ -2423,6 +2628,14 @@
             "mcpWebAppFqdn": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceDeployment'), '2025-04-01').outputs.mcpWebAppFqdn.value]"
+            },
+            "storagePrincipalId": {
+              "type": "string",
+              "value": "[if(not(parameters('azureStorageExists')), reference(resourceId('Microsoft.Storage/storageAccounts', parameters('azureStorageName')), '2023-05-01', 'full').identity.principalId, '')]"
+            },
+            "aiSearchPrincipalId": {
+              "type": "string",
+              "value": "[if(not(parameters('aiSearchExists')), reference(resourceId('Microsoft.Search/searchServices', parameters('aiSearchName')), '2025-05-01', 'full').identity.principalId, '')]"
             }
           }
         }
@@ -2430,6 +2643,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('appservice-spoke-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-cosmos-rbac-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]",
         "[resourceId('Microsoft.Resources/deployments', format('validate-existing-resources-{0}-deployment', variables('uniqueSuffix')))]"
       ]
@@ -2461,7 +2676,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "913412527620865018"
+              "templateHash": "17647570970862622575"
             }
           },
           "parameters": {
@@ -2488,6 +2703,9 @@
               "location": "[parameters('location')]",
               "sku": {
                 "name": "Premium"
+              },
+              "identity": {
+                "type": "SystemAssigned"
               },
               "properties": {
                 "adminUserEnabled": "[parameters('adminUserEnabled')]"
@@ -2524,12 +2742,505 @@
             "acrName": {
               "type": "string",
               "value": "[parameters('acrName')]"
+            },
+            "acrPrincipalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName')), '2025-11-01', 'full').identity.principalId]"
             }
           }
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('keyvault-cosmos-rbac-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "keyVaultName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultName.value]"
+          },
+          "cosmosDBServicePrincipalId": {
+            "value": "[parameters('cosmosDBServicePrincipalId')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "13766133627895024051"
+            }
+          },
+          "parameters": {
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Key Vault"
+              }
+            },
+            "cosmosDBServicePrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Object ID of the Cosmos DB first-party service principal in this tenant"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "[guid(parameters('cosmosDBServicePrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "properties": {
+                "principalId": "[parameters('cosmosDBServicePrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "keyVaultName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultName.value]"
+          },
+          "aiServicesPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountPrincipalId.value]"
+          },
+          "storagePrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.storagePrincipalId.value]"
+          },
+          "aiSearchPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.aiSearchPrincipalId.value]"
+          },
+          "acrPrincipalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrPrincipalId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "18240729181561864692"
+            }
+          },
+          "parameters": {
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Key Vault"
+              }
+            },
+            "aiServicesPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Principal ID of the AI Services account (SystemAssigned)"
+              }
+            },
+            "storagePrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Principal ID of the Storage Account (SystemAssigned) - empty if BYO resource"
+              }
+            },
+            "aiSearchPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Principal ID of the AI Search service (SystemAssigned) - empty if BYO resource"
+              }
+            },
+            "acrPrincipalId": {
+              "type": "string",
+              "metadata": {
+                "description": "Principal ID of the ACR (SystemAssigned)"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "[guid(parameters('aiServicesPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "properties": {
+                "principalId": "[parameters('aiServicesPrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "principalType": "ServicePrincipal"
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('storagePrincipalId')))]",
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "[guid(parameters('storagePrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "properties": {
+                "principalId": "[parameters('storagePrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "principalType": "ServicePrincipal"
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('aiSearchPrincipalId')))]",
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "[guid(parameters('aiSearchPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "properties": {
+                "principalId": "[parameters('aiSearchPrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "principalType": "ServicePrincipal"
+              }
+            },
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+              "name": "[guid(parameters('acrPrincipalId'), resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6'), resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName')))]",
+              "properties": {
+                "principalId": "[parameters('acrPrincipalId')]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6')]",
+                "principalType": "ServicePrincipal"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('ai-encryption-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "accountName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix'))), '2025-04-01').outputs.accountName.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultUri.value]"
+          },
+          "keyName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyName.value]"
+          },
+          "keyVersion": {
+            "value": "[last(split(reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUriWithVersion.value, '/'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "11814027657704496288"
+            }
+          },
+          "parameters": {
+            "accountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the AI Services account"
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Location for the resource"
+              }
+            },
+            "keyVaultUri": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault URI"
+              }
+            },
+            "keyName": {
+              "type": "string",
+              "metadata": {
+                "description": "Key name in the Key Vault"
+              }
+            },
+            "keyVersion": {
+              "type": "string",
+              "metadata": {
+                "description": "Key version in the Key Vault"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.CognitiveServices/accounts",
+              "apiVersion": "2025-04-01-preview",
+              "name": "[parameters('accountName')]",
+              "location": "[parameters('location')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "kind": "AIServices",
+              "sku": {
+                "name": "S0"
+              },
+              "properties": {
+                "encryption": {
+                  "keySource": "Microsoft.KeyVault",
+                  "keyVaultProperties": {
+                    "keyVaultUri": "[parameters('keyVaultUri')]",
+                    "keyName": "[parameters('keyName')]",
+                    "keyVersion": "[parameters('keyVersion')]"
+                  }
+                },
+                "allowProjectManagement": true,
+                "customSubDomainName": "[parameters('accountName')]",
+                "publicNetworkAccess": "Disabled",
+                "disableLocalAuth": false
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
+      ]
+    },
+    {
+      "condition": "[not(variables('storagePassedIn'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('storage-encryption-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.azureStorageName.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "keyVaultUri": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultUri.value]"
+          },
+          "keyVaultKeyName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyName.value]"
+          },
+          "skuName": {
+            "value": "[variables('storageSkuName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "11207997028342020422"
+            }
+          },
+          "parameters": {
+            "storageName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Storage Account"
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Location for the resource"
+              }
+            },
+            "keyVaultUri": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault URI"
+              }
+            },
+            "keyVaultKeyName": {
+              "type": "string",
+              "metadata": {
+                "description": "Key name in the Key Vault"
+              }
+            },
+            "skuName": {
+              "type": "string",
+              "metadata": {
+                "description": "Storage account SKU name"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2023-05-01",
+              "name": "[parameters('storageName')]",
+              "location": "[parameters('location')]",
+              "kind": "StorageV2",
+              "sku": {
+                "name": "[parameters('skuName')]"
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "encryption": {
+                  "keySource": "Microsoft.Keyvault",
+                  "keyvaultproperties": {
+                    "keyvaulturi": "[parameters('keyVaultUri')]",
+                    "keyname": "[parameters('keyVaultKeyName')]"
+                  },
+                  "services": {
+                    "blob": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    },
+                    "file": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    },
+                    "queue": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    },
+                    "table": {
+                      "enabled": true,
+                      "keyType": "Account"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('dependencies-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('acr-encryption-{0}-deployment', variables('uniqueSuffix'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "acrName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrName.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "keyVaultKeyUri": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUri.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.43.8.12551",
+              "templateHash": "2158325877069236497"
+            }
+          },
+          "parameters": {
+            "acrName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the ACR"
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Location for the resource"
+              }
+            },
+            "keyVaultKeyUri": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault key URI (without version) for CMK encryption"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ContainerRegistry/registries",
+              "apiVersion": "2025-11-01",
+              "name": "[parameters('acrName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "Premium"
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "encryption": {
+                  "status": "enabled",
+                  "keyVaultProperties": {
+                    "keyIdentifier": "[parameters('keyVaultKeyUri')]"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
       ]
     },
     {
@@ -2601,6 +3312,9 @@
           },
           "acrName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', format('acr-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.acrName.value]"
+          },
+          "keyVaultName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyVaultName.value]"
           }
         },
         "template": {
@@ -2611,7 +3325,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "8741691765903046432"
+              "templateHash": "9331209905372847496"
             }
           },
           "parameters": {
@@ -2753,6 +3467,9 @@
             },
             "acrName": {
               "type": "string"
+            },
+            "keyVaultName": {
+              "type": "string"
             }
           },
           "variables": {
@@ -2764,12 +3481,15 @@
             "cosmosDBDnsZoneName": "privatelink.documents.azure.com",
             "appServiceDnsZoneName": "privatelink.azurewebsites.net",
             "acrDnsZoneName": "privatelink.azurecr.io",
+            "keyVaultDnsZoneName": "privatelink.vaultcore.azure.net",
             "aiServicesDnsZoneRG": "[parameters('existingDnsZones')[variables('aiServicesDnsZoneName')]]",
             "openAiDnsZoneRG": "[parameters('existingDnsZones')[variables('openAiDnsZoneName')]]",
             "cognitiveServicesDnsZoneRG": "[parameters('existingDnsZones')[variables('cognitiveServicesDnsZoneName')]]",
             "aiSearchDnsZoneRG": "[parameters('existingDnsZones')[variables('aiSearchDnsZoneName')]]",
             "storageDnsZoneRG": "[parameters('existingDnsZones')[variables('storageDnsZoneName')]]",
             "cosmosDBDnsZoneRG": "[parameters('existingDnsZones')[variables('cosmosDBDnsZoneName')]]",
+            "keyVaultDnsZoneRG": "[parameters('existingDnsZones')[variables('keyVaultDnsZoneName')]]",
+            "keyVaultDnsZoneId": "[if(empty(variables('keyVaultDnsZoneRG')), resourceId('Microsoft.Network/privateDnsZones', variables('keyVaultDnsZoneName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('keyVaultDnsZoneRG')), 'Microsoft.Network/privateDnsZones', variables('keyVaultDnsZoneName')))]",
             "aiServicesDnsZoneId": "[if(empty(variables('aiServicesDnsZoneRG')), resourceId('Microsoft.Network/privateDnsZones', variables('aiServicesDnsZoneName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('aiServicesDnsZoneRG')), 'Microsoft.Network/privateDnsZones', variables('aiServicesDnsZoneName')))]",
             "openAiDnsZoneId": "[if(empty(variables('openAiDnsZoneRG')), resourceId('Microsoft.Network/privateDnsZones', variables('openAiDnsZoneName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('openAiDnsZoneRG')), 'Microsoft.Network/privateDnsZones', variables('openAiDnsZoneName')))]",
             "cognitiveServicesDnsZoneId": "[if(empty(variables('cognitiveServicesDnsZoneRG')), resourceId('Microsoft.Network/privateDnsZones', variables('cognitiveServicesDnsZoneName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('cognitiveServicesDnsZoneRG')), 'Microsoft.Network/privateDnsZones', variables('cognitiveServicesDnsZoneName')))]",
@@ -2813,6 +3533,12 @@
               "type": "Microsoft.ContainerRegistry/registries",
               "apiVersion": "2025-11-01",
               "name": "[parameters('acrName')]"
+            },
+            "keyVault": {
+              "existing": true,
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2023-07-01",
+              "name": "[parameters('keyVaultName')]"
             },
             "hubVnet": {
               "existing": true,
@@ -2934,6 +3660,28 @@
                 ]
               }
             },
+            "keyVaultPrivateEndpoint": {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2024-05-01",
+              "name": "[format('{0}-private-endpoint', parameters('keyVaultName'))]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "subnet": {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('foundrySpokeVnetName'), parameters('foundryPeSubnetName'))]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[format('{0}-private-link-service-connection', parameters('keyVaultName'))]",
+                    "properties": {
+                      "privateLinkServiceId": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+                      "groupIds": [
+                        "vault"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
             "appService": {
               "copy": {
                 "name": "appService",
@@ -2975,6 +3723,21 @@
               "apiVersion": "2024-06-01",
               "name": "[variables('acrDnsZoneName')]",
               "location": "global"
+            },
+            "keyVaultPrivateDnsZone": {
+              "condition": "[empty(variables('keyVaultDnsZoneRG'))]",
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2024-06-01",
+              "name": "[variables('keyVaultDnsZoneName')]",
+              "location": "global"
+            },
+            "existingKeyVaultPrivateDnsZone": {
+              "condition": "[not(empty(variables('keyVaultDnsZoneRG')))]",
+              "existing": true,
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2024-06-01",
+              "resourceGroup": "[variables('keyVaultDnsZoneRG')]",
+              "name": "[variables('keyVaultDnsZoneName')]"
             },
             "appServiceDnsZone": {
               "type": "Microsoft.Network/privateDnsZones",
@@ -3085,6 +3848,22 @@
               },
               "dependsOn": [
                 "acrServicePrivateDnsZone"
+              ]
+            },
+            "keyVaultLinkHub": {
+              "condition": "[empty(variables('keyVaultDnsZoneRG'))]",
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2024-06-01",
+              "name": "[format('{0}/{1}', variables('keyVaultDnsZoneName'), format('keyvault-{0}-hub-link', parameters('suffix')))]",
+              "location": "global",
+              "properties": {
+                "virtualNetwork": {
+                  "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('hubVnetSubscriptionId'), parameters('hubVnetResourceGroupName')), 'Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+                },
+                "registrationEnabled": false
+              },
+              "dependsOn": [
+                "keyVaultPrivateDnsZone"
               ]
             },
             "aiServicesLinkHub": {
@@ -3294,6 +4073,26 @@
                 "cosmosDBPrivateEndpoint"
               ]
             },
+            "keyVaultDnsGroup": {
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2024-05-01",
+              "name": "[format('{0}/{1}', format('{0}-private-endpoint', parameters('keyVaultName')), format('{0}-dns-group', parameters('keyVaultName')))]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "[format('{0}-dns-config', parameters('keyVaultName'))]",
+                    "properties": {
+                      "privateDnsZoneId": "[variables('keyVaultDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "keyVaultLinkHub",
+                "keyVaultPrivateDnsZone",
+                "keyVaultPrivateEndpoint"
+              ]
+            },
             "appServiceDnsZoneGroup": {
               "copy": {
                 "name": "appServiceDnsZoneGroup",
@@ -3329,7 +4128,8 @@
         "[resourceId('Microsoft.Resources/deployments', format('foundry-spoke-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('hub-network-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('hub-appservice-peering-{0}', variables('uniqueSuffix')))]",
-        "[resourceId('Microsoft.Resources/deployments', format('hub-foundry-peering-{0}', variables('uniqueSuffix')))]"
+        "[resourceId('Microsoft.Resources/deployments', format('hub-foundry-peering-{0}', variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]"
       ]
     },
     {
