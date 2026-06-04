@@ -389,6 +389,7 @@ module aiAccountEncryption 'modules-network-secured/ai-account-encryption.bicep'
     keyVaultUri: keyVault.outputs.keyVaultUri
     keyName: keyVault.outputs.keyName
     keyVersion: last(split(keyVault.outputs.keyUriWithVersion, '/'))
+    agentSubnetId: foundrySpokeVnet.outputs.agentSubnetId
   }
   dependsOn: [
     keyVaultRoleAssignments

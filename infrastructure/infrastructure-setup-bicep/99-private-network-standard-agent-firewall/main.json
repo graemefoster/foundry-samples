@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.43.8.12551",
-      "templateHash": "1835033358132582380"
+      "templateHash": "12032725970255444981"
     }
   },
   "parameters": {
@@ -2963,6 +2963,9 @@
           },
           "keyVersion": {
             "value": "[last(split(reference(resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.keyUriWithVersion.value, '/'))]"
+          },
+          "agentSubnetId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', format('foundry-spoke-{0}-deployment', variables('uniqueSuffix'))), '2025-04-01').outputs.agentSubnetId.value]"
           }
         },
         "template": {
@@ -2972,7 +2975,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "11814027657704496288"
+              "templateHash": "5288100193867930575"
             }
           },
           "parameters": {
@@ -3005,6 +3008,12 @@
               "metadata": {
                 "description": "Key version in the Key Vault"
               }
+            },
+            "agentSubnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "Agent subnet resource ID for network injection"
+              }
             }
           },
           "resources": [
@@ -3032,7 +3041,22 @@
                 "allowProjectManagement": true,
                 "customSubDomainName": "[parameters('accountName')]",
                 "publicNetworkAccess": "Disabled",
-                "disableLocalAuth": false
+                "disableLocalAuth": false,
+                "restrictOutboundNetworkAccess": true,
+                "allowedFqdnList": [],
+                "networkAcls": {
+                  "defaultAction": "Allow",
+                  "virtualNetworkRules": [],
+                  "ipRules": [],
+                  "bypass": "AzureServices"
+                },
+                "networkInjections": [
+                  {
+                    "scenario": "agent",
+                    "subnetArmId": "[parameters('agentSubnetId')]",
+                    "useMicrosoftManagedNetwork": false
+                  }
+                ]
               }
             }
           ]
@@ -3040,6 +3064,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', format('ai-{0}-{1}-deployment', variables('accountName'), variables('uniqueSuffix')))]",
+        "[resourceId('Microsoft.Resources/deployments', format('foundry-spoke-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('keyvault-{0}-deployment', variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.Resources/deployments', format('keyvault-rbac-{0}-deployment', variables('uniqueSuffix')))]"
       ]
@@ -3078,7 +3103,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "11207997028342020422"
+              "templateHash": "2897667783826293505"
             }
           },
           "parameters": {
@@ -3135,20 +3160,16 @@
                   },
                   "services": {
                     "blob": {
-                      "enabled": true,
-                      "keyType": "Account"
+                      "enabled": true
                     },
                     "file": {
-                      "enabled": true,
-                      "keyType": "Account"
+                      "enabled": true
                     },
                     "queue": {
-                      "enabled": true,
-                      "keyType": "Account"
+                      "enabled": true
                     },
                     "table": {
-                      "enabled": true,
-                      "keyType": "Account"
+                      "enabled": true
                     }
                   }
                 }
@@ -3190,7 +3211,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.43.8.12551",
-              "templateHash": "2158325877069236497"
+              "templateHash": "15520931409236663343"
             }
           },
           "parameters": {
@@ -3229,7 +3250,8 @@
                 "encryption": {
                   "status": "enabled",
                   "keyVaultProperties": {
-                    "keyIdentifier": "[parameters('keyVaultKeyUri')]"
+                    "keyIdentifier": "[parameters('keyVaultKeyUri')]",
+                    "identity": "[reference(resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName')), '2025-11-01', 'full').identity.principalId]"
                   }
                 }
               }

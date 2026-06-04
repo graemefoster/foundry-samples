@@ -29,7 +29,8 @@ param existingDnsZones = {
   'privatelink.search.windows.net': ''           
   'privatelink.blob.core.windows.net': ''                            
   'privatelink.documents.azure.com': ''
-  'privatelink.azure-api.net': ''                       
+  'privatelink.azure-api.net': ''
+  'privatelink.vaultcore.azure.net': ''
 }
 
 //DNSZones names for validating if they exist
@@ -41,8 +42,13 @@ param dnsZoneNames = [
   'privatelink.blob.core.windows.net'
   'privatelink.documents.azure.com'
   'privatelink.azure-api.net'
+  'privatelink.vaultcore.azure.net'
 ]
 
 param vmAdminUsername = 'graeme'
 param vmAdminPassword = 'sdfkjh8789*(&876234basdghui)'
+
+// Object ID of the Cosmos DB first-party service principal in your tenant.
+// Retrieve with: az ad sp show --id a232010e-820c-4083-83bb-3ace5fc29d0b --query id -o tsv
+param cosmosDBServicePrincipalId = '8e408dc3-90d9-45f1-bdb4-da14a756ad12'
 

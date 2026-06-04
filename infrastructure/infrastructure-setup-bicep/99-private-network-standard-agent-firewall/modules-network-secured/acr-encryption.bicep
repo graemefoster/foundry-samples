@@ -27,6 +27,7 @@ resource acrUpdate 'Microsoft.ContainerRegistry/registries@2025-11-01' = {
       status: 'enabled'
       keyVaultProperties: {
         keyIdentifier: keyVaultKeyUri
+        identity: existingAcr.identity.principalId
       }
     }
   }

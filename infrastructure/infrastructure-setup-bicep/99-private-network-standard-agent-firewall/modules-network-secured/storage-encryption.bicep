@@ -37,10 +37,10 @@ resource storageUpdate 'Microsoft.Storage/storageAccounts@2023-05-01' = {
         keyname: keyVaultKeyName
       }
       services: {
-        blob: { enabled: true, keyType: 'Account' }
-        file: { enabled: true, keyType: 'Account' }
-        queue: { enabled: true, keyType: 'Account' }
-        table: { enabled: true, keyType: 'Account' }
+        blob: { enabled: true }
+        file: { enabled: true }
+        queue: { enabled: true }
+        table: { enabled: true }
       }
     }
   }

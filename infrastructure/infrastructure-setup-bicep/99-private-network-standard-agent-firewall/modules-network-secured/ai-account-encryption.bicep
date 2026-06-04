@@ -15,6 +15,9 @@ param keyName string
 @description('Key version in the Key Vault')
 param keyVersion string
 
+@description('Agent subnet resource ID for network injection')
+param agentSubnetId string
+
 resource existingAccount 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' existing = {
   name: accountName
 }
@@ -43,5 +46,20 @@ resource accountUpdate 'Microsoft.CognitiveServices/accounts@2025-04-01-preview'
     customSubDomainName: accountName
     publicNetworkAccess: 'Disabled'
     disableLocalAuth: false
+    restrictOutboundNetworkAccess: true
+    allowedFqdnList: []
+    networkAcls: {
+      defaultAction: 'Allow'
+      virtualNetworkRules: []
+      ipRules: []
+      bypass: 'AzureServices'
+    }
+    networkInjections: [
+      {
+        scenario: 'agent'
+        subnetArmId: agentSubnetId
+        useMicrosoftManagedNetwork: false
+      }
+    ]
   }
 }
