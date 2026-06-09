@@ -2,9 +2,9 @@ using './main.bicep'
 
 param location = 'australiaeast'
 param aiServices = 'aiservices'
-param modelName = 'gpt-4o'
+param modelName = 'gpt-5.4'
 param modelFormat = 'OpenAI'
-param modelVersion = '2024-11-20'
+param modelVersion = '2026-03-05'
 param modelSkuName = 'GlobalStandard'
 param modelCapacity = 30
 param firstProjectName = 'project'

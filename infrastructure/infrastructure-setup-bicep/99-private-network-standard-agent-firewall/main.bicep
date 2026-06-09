@@ -517,6 +517,17 @@ module appInsightsRoleAssignment 'modules-network-secured/app-insights-role-assi
   }
 }
 
+/*
+  Assigns the project SMI Container Registry Repository Reader role on ACR.
+*/
+module acrRoleAssignment 'modules-network-secured/acr-role-assignment.bicep' = {
+  name: 'acr-ra-${uniqueSuffix}-deployment'
+  params: {
+    acrName: acr.outputs.acrName
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
+  }
+}
+
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-network-secured/cosmosdb-account-role-assignment.bicep' = {
   name: 'cosmos-account-ra-${uniqueSuffix}-deployment'
