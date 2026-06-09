@@ -505,6 +505,18 @@ module storageAccountRoleAssignment 'modules-network-secured/azure-storage-accou
   ]
 }
 
+/*
+  Assigns the project SMI Reader role on Application Insights.
+  This supports running Evaluations on existing traces.
+*/
+module appInsightsRoleAssignment 'modules-network-secured/app-insights-role-assignment.bicep' = {
+  name: 'appi-ra-${uniqueSuffix}-deployment'
+  params: {
+    appInsightsName: appInsightsName
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
+  }
+}
+
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-network-secured/cosmosdb-account-role-assignment.bicep' = {
   name: 'cosmos-account-ra-${uniqueSuffix}-deployment'
