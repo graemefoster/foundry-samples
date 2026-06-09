@@ -12,6 +12,9 @@ param storagePrincipalId string
 @description('Principal ID of the AI Search service (SystemAssigned) - empty if BYO resource')
 param aiSearchPrincipalId string
 
+@description('Additional principal IDs to assign Key Vault Crypto User role (for service-managed identities used during CMK operations)')
+param additionalCryptoUserPrincipalIds array = []
+
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyVaultName
 }
@@ -62,3 +65,16 @@ resource aiSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
     principalType: 'ServicePrincipal'
   }
 }
+
+// Optional: extra identities that also need Crypto User for key read/wrap/unwrap
+resource additionalCryptoUserRoleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
+  for principalId in additionalCryptoUserPrincipalIds: {
+    scope: keyVault
+    name: guid(principalId, kvCryptoUserRole.id, keyVault.id)
+    properties: {
+      principalId: principalId
+      roleDefinitionId: kvCryptoUserRole.id
+      principalType: 'ServicePrincipal'
+    }
+  }
+]

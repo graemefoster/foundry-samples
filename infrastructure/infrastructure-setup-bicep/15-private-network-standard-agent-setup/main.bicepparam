@@ -1,10 +1,10 @@
 using './main.bicep'
 
-param location = 'westus'
+param location = 'australiaeast'
 param aiServices = 'foundry'
-param modelName = 'gpt-4.1'
+param modelName = 'gpt-5.4'
 param modelFormat = 'OpenAI'
-param modelVersion = '2025-04-14'
+param modelVersion = '2026-03-05'
 param modelSkuName = 'GlobalStandard'
 param modelCapacity = 30
 param firstProjectName = 'project'
