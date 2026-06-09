@@ -529,6 +529,18 @@ module acrRoleAssignment 'modules-network-secured/acr-role-assignment.bicep' = {
   }
 }
 
+/*
+  Assigns Foundry User role to the project SMI on the Foundry project resource.
+*/
+module foundryProjectRoleAssignment 'modules-network-secured/foundry-project-role-assignment.bicep' = {
+  name: 'foundry-project-ra-${uniqueSuffix}-deployment'
+  params: {
+    accountName: aiAccount.outputs.accountName
+    projectName: aiProject.outputs.projectName
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
+  }
+}
+
 // The Comos DB Operator role must be assigned before the caphost is created
 module cosmosAccountRoleAssignments 'modules-network-secured/cosmosdb-account-role-assignment.bicep' = {
   name: 'cosmos-account-ra-${uniqueSuffix}-deployment'

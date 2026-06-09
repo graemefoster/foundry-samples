@@ -1,6 +1,5 @@
 // Assigns Application Insights Reader role to the AI project managed identity.
 // This supports running Evaluations on existing traces.
-
 @description('Application Insights resource name')
 param appInsightsName string
 
@@ -28,6 +27,7 @@ resource appInsightsLogAnalyticsReaderAssignment 'Microsoft.Authorization/roleAs
 }
 
 
+//To setup a Foundry Agent to run continuous evals I needed this
 @description('Principal ID of the AI project managed identity')
 param projectPrincipalId string
 
