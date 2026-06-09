@@ -514,6 +514,7 @@ module appInsightsRoleAssignment 'modules-network-secured/app-insights-role-assi
   params: {
     appInsightsName: appInsightsName
     accountPrincipalId: aiAccount.outputs.accountPrincipalId
+    projectPrincipalId: aiProject.outputs.projectPrincipalId
   }
 }
 
