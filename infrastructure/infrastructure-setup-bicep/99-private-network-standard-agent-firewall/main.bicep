@@ -513,7 +513,7 @@ module appInsightsRoleAssignment 'modules-network-secured/app-insights-role-assi
   name: 'appi-ra-${uniqueSuffix}-deployment'
   params: {
     appInsightsName: appInsightsName
-    projectPrincipalId: aiProject.outputs.projectPrincipalId
+    accountPrincipalId: aiAccount.outputs.accountPrincipalId
   }
 }
 
