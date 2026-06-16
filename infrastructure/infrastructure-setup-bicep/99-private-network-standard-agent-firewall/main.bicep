@@ -360,6 +360,7 @@ module keyVaultRoleAssignments 'modules-network-secured/keyvault-role-assignment
     aiServicesPrincipalId: aiAccount.outputs.accountPrincipalId
     storagePrincipalId: aiDependencies.outputs.storagePrincipalId
     aiSearchPrincipalId: aiDependencies.outputs.aiSearchPrincipalId
+    aiServicesProjectPrincipalId: aiProject.outputs.projectPrincipalId
   }
 }
 

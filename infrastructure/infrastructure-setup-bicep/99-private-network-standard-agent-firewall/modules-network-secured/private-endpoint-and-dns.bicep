@@ -66,6 +66,8 @@ param existingDnsZones object = {
   'privatelink.search.windows.net': ''
   'privatelink.blob.${environment().suffixes.storage}': ''
   'privatelink.documents.azure.com': ''
+  'privatelink.azurecr.io': ''
+  'privatelink.vaultcore.azure.net': ''
 }
 
 param appServiceWebAppNames string[]
@@ -208,6 +210,23 @@ resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01'
         properties: {
           privateLinkServiceId: keyVault.id
           groupIds: ['vault']
+        }
+      }
+    ]
+  }
+}
+
+resource acrPrivateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01' = {
+  name: '${acrName}-private-endpoint'
+  location: resourceGroup().location
+  properties: {
+    subnet: { id: foundryPeSubnet.id }
+    privateLinkServiceConnections: [
+      {
+        name: '${acrName}-private-link-service-connection'
+        properties: {
+          privateLinkServiceId: acr.id
+          groupIds: ['registry']
         }
       }
     ]
@@ -521,3 +540,16 @@ resource appServiceDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZo
     ]
   }
 ]
+
+resource acrDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01' = {
+  parent: acrPrivateEndpoint
+  name: '${acrName}-dns-group'
+  properties: {
+    privateDnsZoneConfigs: [
+      { name: '${acrName}-dns-config', properties: { privateDnsZoneId: acrServicePrivateDnsZone.id } }
+    ]
+  }
+  dependsOn: [
+    acrLinkHub
+  ]
+}

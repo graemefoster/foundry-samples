@@ -31,6 +31,7 @@ param existingDnsZones = {
   'privatelink.documents.azure.com': ''
   'privatelink.azure-api.net': ''
   'privatelink.vaultcore.azure.net': ''
+  'privatelink.azurecr.io': ''
 }
 
 //DNSZones names for validating if they exist
@@ -43,6 +44,8 @@ param dnsZoneNames = [
   'privatelink.documents.azure.com'
   'privatelink.azure-api.net'
   'privatelink.vaultcore.azure.net'
+  'privatelink.azurecr.io'
+
 ]
 
 param vmAdminUsername = 'graeme'
