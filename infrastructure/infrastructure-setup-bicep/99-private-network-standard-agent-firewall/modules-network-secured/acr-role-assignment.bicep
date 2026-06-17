@@ -25,3 +25,21 @@ resource acrRepositoryReaderRoleAssignment 'Microsoft.Authorization/roleAssignme
     principalType: 'ServicePrincipal'
   }
 }
+
+// Reader: acdd72a7-3385-48ef-bd42-f606fba81ae7
+resource readerRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+  scope: resourceGroup()
+}
+
+resource acrReaderRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: acr
+  name: guid(projectPrincipalId, readerRole.id, acr.id)
+  properties: {
+    principalId: projectPrincipalId
+    roleDefinitionId: readerRole.id
+    principalType: 'ServicePrincipal'
+  }
+}
+
+//
