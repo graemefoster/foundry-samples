@@ -129,7 +129,7 @@ resource aiSearch 'Microsoft.Search/searchServices@2025-05-01' = if (!aiSearchEx
     }
   }
   sku: {
-    name: 'standard'
+    name: 'basic'
   }
 }
 
